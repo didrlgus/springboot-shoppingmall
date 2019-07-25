@@ -1,0 +1,95 @@
+/*
+Top-bottom boxed border Skin
+*/
+
+/* first level items */
+.menuzord-menu > li{
+	padding: 18px 0;
+}
+.menuzord-menu > li > a{
+	padding: 7px 16px;
+	border-bottom: solid 1px transparent;
+	border-top: solid 1px transparent;
+	-o-transition: border .2s linear;
+	-moz-transition: border .2s linear;
+	-webkit-transition: border .2s linear;
+	transition: border .2s linear;
+}
+
+/* active/hover state (first level) */
+.menuzord-menu > li.active > a,
+.menuzord-menu > li:hover > a{
+	border-color: #333;
+}
+
+/* dropdown */
+.menuzord-menu ul.dropdown{
+	top: 71px;
+}
+.menuzord-menu ul.dropdown li ul.dropdown{
+    top: 0;
+}
+
+/* megamenu */
+.menuzord-menu > li > .megamenu{
+	top: 71px;
+}
+
+/* form */
+.menuzord-menu > li.search form{
+	padding: 2px 16px;
+}
+
+/* color schemes */
+/* blue */
+.menuzord.blue .menuzord-menu > li.active > a, 
+.menuzord.blue .menuzord-menu > li:hover > a{ 
+	border-color: #5D9CEC; 
+}
+/* green */
+.menuzord.green .menuzord-menu > li.active > a, 
+.menuzord.green .menuzord-menu > li:hover > a{ 
+	border-color: #48CFAD;
+}
+/* red */
+.menuzord.red .menuzord-menu > li.active > a, 
+.menuzord.red .menuzord-menu > li:hover > a{ 
+	border-color: #FC6E51;
+}
+/* orange */
+.menuzord.orange .menuzord-menu > li.active > a, 
+.menuzord.orange .menuzord-menu > li:hover > a{ 
+	border-color: #ff853f;
+}
+/* yellow */
+.menuzord.yellow .menuzord-menu > li.active > a, 
+.menuzord.yellow .menuzord-menu > li:hover > a{ 
+	border-color: #FFCE54;
+}
+/* purple */
+.menuzord.purple .menuzord-menu > li.active > a, 
+.menuzord.purple .menuzord-menu > li:hover > a{ 
+	border-color: #AC92EC;
+}
+/* pink */
+.menuzord.pink .menuzord-menu > li.active > a, 
+.menuzord.pink .menuzord-menu > li:hover > a{ 
+	border-color: #EC87C0;
+}
+
+/* Mobile mode (Responsive mode) */
+@media (max-width: 900px){
+	/* Menu items */
+	.menuzord-responsive .menuzord-menu > li{
+		padding: 0;
+	}
+	.menuzord-responsive .menuzord-menu > li > a{
+		padding: 12px 20px !important;
+		border-radius: 0;
+	}
+	
+	/* Dropdown items */
+	.menuzord-responsive .menuzord-menu ul.dropdown li a{
+		border-color: #f0f0f0;
+	}
+}

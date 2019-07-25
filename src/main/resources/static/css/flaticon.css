@@ -1,0 +1,107 @@
+@font-face {
+	font-family: "Flaticon";
+	src: url("../fonts/flaticon.eot");
+	src: url("../fonts/flaticon.eot#iefix") format("embedded-opentype"),
+	url("../fonts/flaticon.woff") format("woff"),
+	url("../fonts/flaticon.ttf") format("truetype"),
+	url("../fonts/flaticon.svg") format("svg");
+	font-weight: normal;
+	font-style: normal;
+}
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
+	font-family: Flaticon;
+    font-size: 20px;
+	font-style: normal;
+	margin-left: 20px;
+	line-height: 20px;
+}.flaticon-almsgiving:before {
+	content: "\e000";
+}
+.flaticon-bread23:before {
+	content: "\e001";
+}
+.flaticon-child13:before {
+	content: "\e002";
+}
+.flaticon-donation1:before {
+	content: "\e003";
+}
+.flaticon-donation2:before {
+	content: "\e004";
+}
+.flaticon-donation3:before {
+	content: "\e005";
+}
+.flaticon-dove2:before {
+	content: "\e006";
+}
+.flaticon-dove3:before {
+	content: "\e007";
+}
+.flaticon-energy24:before {
+	content: "\e008";
+}
+.flaticon-fruit9:before {
+	content: "\e009";
+}
+.flaticon-gift79:before {
+	content: "\e00a";
+}
+.flaticon-hand220:before {
+	content: "\e00b";
+}
+.flaticon-hand221:before {
+	content: "\e00c";
+}
+.flaticon-hand222:before {
+	content: "\e00d";
+}
+.flaticon-hands11:before {
+	content: "\e00e";
+}
+.flaticon-hands12:before {
+	content: "\e00f";
+}
+.flaticon-hands13:before {
+	content: "\e010";
+}
+.flaticon-heart318:before {
+	content: "\e011";
+}
+.flaticon-heart319:before {
+	content: "\e012";
+}
+.flaticon-heart320:before {
+	content: "\e013";
+}
+.flaticon-home163:before {
+	content: "\e014";
+}
+.flaticon-home164:before {
+	content: "\e015";
+}
+.flaticon-home165:before {
+	content: "\e016";
+}
+.flaticon-insurance4:before {
+	content: "\e017";
+}
+.flaticon-ribbon61:before {
+	content: "\e018";
+}
+.flaticon-ribbon62:before {
+	content: "\e019";
+}
+.flaticon-shake1:before {
+	content: "\e01a";
+}
+.flaticon-track:before {
+	content: "\e01b";
+}
+.flaticon-water67:before {
+	content: "\e01c";
+}
+.flaticon-water68:before {
+	content: "\e01d";
+}

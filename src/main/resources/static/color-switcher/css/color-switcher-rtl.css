@@ -1,0 +1,12 @@
+#style-switcher{right:0;}
+#style-switcher h3{text-align:right;}
+#style-switcher h2{padding-right:25px;}
+#style-switcher .switcher-toggle{right:84%;border-radius:3px 0 0 3px;padding-left:5px;}
+.icon-switcher{border-radius:6px 0 0 6px;margin-right:37px;}
+.switcher-style-list li{float:right;}
+.layout select{margin:0 -5px 0 0;}
+#button-reset{margin:0 2px 15px 15px;text-align:left;}
+.clean-check #r1 + label, .clean-check #r2 + label, .clean-check #r3 + label{margin-right:22px;}
+.clean-check #s1 + label, .clean-check #sd_right + label{margin-right:22px;}
+.menu-position li{float:right;margin:0 20px 0 0;}
+.container-height li{float:right;margin:0 20px 0 0;}

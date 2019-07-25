@@ -1,0 +1,39 @@
+/**
+ * @author    ThemePunch <info@themepunch.com>
+ * @link      http://www.themepunch.com/
+ * @copyright 2017 ThemePunch
+ */
+
+.rs-addon-polyfold {
+	
+    position: absolute;
+    left: 0;
+    width: 100%;
+	height: auto;
+    z-index: 1099;
+	pointer-events: none;
+	
+}
+
+.rs-addon-polyfold div {
+	
+	position: absolute;
+	border-style: solid;
+    box-sizing: content-box;
+	
+}
+
+.rs-addon-poly-nav-level {z-index: 999}
+.rs-addon-poly-static-level {z-index: 99}
+
+.rs-addon-polyfold:not(.rs-addon-poly-center) div:first-child {left: 0}
+.rs-addon-polyfold:not(.rs-addon-poly-center) div:last-child {right: 0}
+
+.rs-addon-poly-center div:first-child {right: 50%}
+.rs-addon-poly-center div:last-child {left: 50%}
+
+.rs-addon-polyfold:not(.rs-addon-poly-top),
+.rs-addon-polyfold:not(.rs-addon-poly-top) div {bottom: 0}
+
+.rs-addon-poly-top {top: 0}
+.rs-addon-poly-top div {top: 0}

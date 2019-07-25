@@ -1,0 +1,106 @@
+/*
+Border-bottom Skin
+*/
+
+/* Menu items */
+.menuzord-menu > li > a{
+	padding: 26px 16px 22px;
+	border-bottom: solid 4px transparent;
+	-o-transition: border .3s linear;
+	-moz-transition: border .3s linear;
+	-webkit-transition: border .3s linear;
+	transition: border .3s linear;
+}
+
+/* Active/hover state (menu items) */
+.menuzord-menu > li.active > a,
+.menuzord-menu > li:hover > a{
+	color: #333;
+	border-bottom-color: #333;
+}
+
+/* Hover state (dropdown items) */
+.menuzord-menu ul.dropdown li:hover > a{
+	color: #333;
+}
+
+/* Color schemes */
+/* blue */
+.menuzord.blue .menuzord-menu > li.active > a, 
+.menuzord.blue .menuzord-menu > li:hover > a, 
+.menuzord.blue .menuzord-menu ul.dropdown li:hover > a{ 
+	color: #4A89DC; 
+}
+.menuzord.blue .menuzord-menu > li.active > a, 
+.menuzord.blue .menuzord-menu > li:hover > a{ 
+	border-bottom-color: #4A89DC; 
+}
+/* green */
+.menuzord.green .menuzord-menu > li.active > a, 
+.menuzord.green .menuzord-menu > li:hover > a, 
+.menuzord.green .menuzord-menu ul.dropdown li:hover > a{ 
+	color: #37BC9B; 
+}
+.menuzord.green .menuzord-menu > li.active > a, 
+.menuzord.green .menuzord-menu > li:hover > a{ 
+	border-bottom-color: #37BC9B; 
+}
+/* red */
+.menuzord.red .menuzord-menu > li.active > a, 
+.menuzord.red .menuzord-menu > li:hover > a, 
+.menuzord.red .menuzord-menu ul.dropdown li:hover > a{ 
+	color: #E9573F; 
+}
+.menuzord.red .menuzord-menu > li.active > a, 
+.menuzord.red .menuzord-menu > li:hover > a{ 
+	border-bottom-color: #E9573F; 
+}
+/* orange */
+.menuzord.orange .menuzord-menu > li.active > a, 
+.menuzord.orange .menuzord-menu > li:hover > a, 
+.menuzord.orange .menuzord-menu ul.dropdown li:hover > a{ 
+	color: #ff670f; 
+}
+.menuzord.orange .menuzord-menu > li.active > a, 
+.menuzord.orange .menuzord-menu > li:hover > a{ 
+	border-bottom-color: #ff670f; 
+}
+/* yellow */
+.menuzord.yellow .menuzord-menu > li.active > a, 
+.menuzord.yellow .menuzord-menu > li:hover > a, 
+.menuzord.yellow .menuzord-menu ul.dropdown li:hover > a{ 
+	color: #F6BB42; 
+}
+.menuzord.yellow .menuzord-menu > li.active > a, 
+.menuzord.yellow .menuzord-menu > li:hover > a{ 
+	border-bottom-color: #F6BB42; 
+}
+/* purple */
+.menuzord.purple .menuzord-menu > li.active > a, 
+.menuzord.purple .menuzord-menu > li:hover > a, 
+.menuzord.purple .menuzord-menu ul.dropdown li:hover > a{ 
+	color: #967ADC; 
+}
+.menuzord.purple .menuzord-menu > li.active > a, 
+.menuzord.purple .menuzord-menu > li:hover > a{ 
+	border-bottom-color: #967ADC; 
+}
+/* pink */
+.menuzord.pink .menuzord-menu > li.active > a, 
+.menuzord.pink .menuzord-menu > li:hover > a, 
+.menuzord.pink .menuzord-menu ul.dropdown li:hover > a{ 
+	color: #D770AD; 
+}
+.menuzord.pink .menuzord-menu > li.active > a, 
+.menuzord.pink .menuzord-menu > li:hover > a{ 
+	border-bottom-color: #D770AD; 
+}
+
+/* Mobile mode (Responsive mode) */
+@media (max-width: 900px){
+	/* Menu items */
+	.menuzord-responsive .menuzord-menu > li > a{
+		padding: 12px 20px !important;
+		border-bottom-width: 1px;
+	}
+}

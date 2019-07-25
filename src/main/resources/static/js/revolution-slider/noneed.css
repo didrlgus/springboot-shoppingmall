@@ -1,0 +1,99 @@
+
+
+/**********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+
+
+
+
+      YOU DONT NEED THIS CSS FILE FOR YOUR ENDPRODUCT !
+
+	USED ONLY FOR THE DEMOS AND TOOLS HERE IN THIS FOLDER
+
+				TO SHOW THE EXAMPLES.
+
+
+
+
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************/
+
+
+
+
+
+
+
+.example-table  {   background:#f5f7f9; padding:50px; border-top: 1px solid #e8ebee;
+                     border-bottom: 1px solid #e8ebee;}
+
+.filter             {   display:block; float:left; width:20%; text-align:right;}
+.example-list       {   
+display: inline-block;
+width: 80%;
+padding: 0px 0px 0px 50px;
+float: right;
+box-sizing: border-box;}
+
+
+.filter ul, .filter li {
+list-style:none;
+}
+
+
+.filter li{
+color: rgba(41,46,49,0.5);
+margin-right: 5px;
+cursor: pointer;
+padding: 0px 15px 0px 10px;
+line-height: 25px;
+font-size: 16px;
+font-weight: 700;
+font-family: "Roboto",sans-serif;
+display: inline-block;
+background: rgba(0, 0, 0, 0);
+margin-bottom: 5px;
+width: 100%;
+display: block;
+cursor: pointer;
+}
+
+.filter li:hover,
+.filter li.selected {  color:#000;  }
+
+
+.example-list .img-wrapper{
+display:block;
+vertical-align:top;             
+margin:0px 15px 15px 0px;
+float:left;
+position:relative;
+box-sizing:border-box;
+}
+
+
+.example-list img { display:block;vertical-align:top;width:100%;}
+
+
+.hover-cover    {   color: #6f7c82;
+font-weight: 400;
+font-family: 'Roboto', sans-serif;
+font-size: 16px;
+line-height: 26px; opacity:0; 
+visibility:hidden; position:absolute;top:5%;left:5%;width:90%;height:90%; background:#fff; padding:20px; box-sizing:border-box;  text-align:center;
+                                text-transform: uppercase;
+}

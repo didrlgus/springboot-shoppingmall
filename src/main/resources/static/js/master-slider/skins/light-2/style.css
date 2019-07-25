@@ -1,0 +1,189 @@
+/**
+ *  Master Slider
+ *  Light 2
+ */
+
+.ms-skin-light-2 .ms-slide .ms-slide-vpbtn,
+.ms-skin-light-2 .ms-video-btn{
+	width: 54px;
+	height: 54px;
+	background: url(light-skin-2.png) no-repeat -14px -150px;
+	top: 50%;
+	left: 50%;
+	margin: -27px 0 0 -27px;
+}
+
+.ms-skin-light-2 .ms-slide .ms-slide-vcbtn {
+	width: 27px;
+	height: 26px;
+	background: url(light-skin-2.png) no-repeat -24px -29px;
+	top: 30px;
+	right: 30px;
+}
+
+/* controls */
+
+.ms-skin-light-2 .ms-nav-next,
+.ms-skin-light-2 .ms-nav-prev {
+	width: 53px;
+	background: url(light-skin-2.png);
+	background-position: -79px -19px;
+	height: 61px;
+	cursor: pointer;
+	top: 50%;
+	left: 30px;
+	margin-top: -26px;
+	position: absolute;
+	z-index: 110;
+}
+.ms-skin-light-2 .ms-nav-next {
+	right: 30px;
+	left: auto;
+	background-position: -79px -97px;
+}
+
+.ms-skin-light-2 .ms-bullets.ms-dir-h {
+	position: absolute;
+	bottom: 20px;
+	right: 50%;
+	width: 100px;
+}
+
+.ms-skin-light-2 .ms-bullets.ms-dir-h .ms-bullets-count {
+	position: relative;
+	right: -50%;
+}
+
+.ms-skin-light-2 .ms-bullet {
+	width: 9px;
+	height: 9px;
+	background: black;
+	margin: 4px;
+	border: solid 1px rgb(58, 58, 58);
+}
+
+.ms-skin-light-2 .ms-bullet-selected {
+    background-color: white;
+}
+
+.ms-skin-light-2 .ms-timerbar {
+	background: black;
+	height: 2px;
+}
+
+.ms-skin-light-2 .ms-time-bar {
+	height: 1px;
+	margin-top: 1px;
+	background: #FFFFFF;
+}
+
+.ms-skin-light-2 .ms-tooltip{
+	position: absolute;
+	z-index: 210;
+	cursor: auto;
+}
+
+.ms-skin-light-2 .ms-tooltip-top .ms-tooltip-arrow,
+.ms-skin-light-2 .ms-tooltip-bottom .ms-tooltip-arrow{
+	border-left: solid 10px transparent;
+	border-right: solid 10px transparent;
+	position: absolute;
+	left: 50%;
+	margin-left: -10px;
+}
+
+.ms-skin-light-2 .ms-tooltip-top .ms-tooltip-arrow{
+	border-top: solid 10px;
+	border-top-color: silver;
+	border-top-color: rgba(240, 240, 240, 0.88);
+	bottom: -10px;
+}
+
+.ms-skin-light-2 .ms-tooltip-bottom .ms-tooltip-arrow {
+	border-bottom: solid 10px;
+	border-bottom-color: silver;
+	border-bottom-color: rgba(240, 240, 240, 0.88);
+	top: -10px;
+}
+
+.ms-skin-light-2 .ms-tooltip-right .ms-tooltip-arrow,
+.ms-skin-light-2 .ms-tooltip-left .ms-tooltip-arrow{
+	border-top: solid 10px transparent;
+	border-bottom: solid 10px transparent;
+	position: absolute;
+	top: 50%;
+	margin-top: -10px;
+}
+
+.ms-skin-light-2 .ms-tooltip-right .ms-tooltip-arrow{
+	border-right: solid 10px;
+	border-right-color: silver;
+	border-right-color: rgba(240, 240, 240, 0.88);
+	left: -10px;
+}
+
+.ms-skin-light-2 .ms-tooltip-left .ms-tooltip-arrow {
+	border-left: solid 10px;
+	border-left-color: silver;
+	border-left-color: rgba(240, 240, 240, 0.88);
+	right: -10px;
+}
+
+.ms-skin-light-2 .ms-tooltip-point {cursor: pointer;}
+.ms-skin-light-2 .ms-tooltip-point .ms-point-center {
+	width: 12px;
+	height: 12px; 
+	border-radius: 15px;
+	border: solid 2px #BBB;
+	background: white;
+	margin: -8px 0 0 -8px;
+	position: absolute;
+	z-index: 105;
+}
+
+.ms-skin-light-2 .ms-tooltip-point .ms-point-border {
+	width: 22px;
+	height: 22px; 
+	background: black;
+	background:rgba(0, 0, 0, 0.36);
+	margin: -11px 0 0 -11px;
+	position: absolute;
+	border-radius: 15px;
+	
+	animation: point-anim 1.5s infinite ;
+	-moz-animation: point-anim 1.5s infinite;
+	-webkit-animation: point-anim 1.5s infinite;
+	-o-animation: point-anim 1.5s infinite;
+}
+
+.ms-skin-light-2  .ms-tooltip {
+	max-width:200px;
+}
+
+.ms-skin-light-2 .ms-tooltip-cont {
+	padding: 10px;
+	background: silver;
+	background: rgba(240, 240, 240, 0.88);
+	text-shadow: 0 1px 0px white;
+	box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.04);
+}
+
+/* retina */
+@media 
+only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (   min--moz-device-pixel-ratio: 2),
+only screen and (     -o-min-device-pixel-ratio: 2/1),
+only screen and (        min-device-pixel-ratio: 2),
+only screen and (                min-resolution: 192dpi),
+only screen and (                min-resolution: 2dppx) {
+	
+	.ms-skin-light-2 .ms-slide .ms-slide-vpbtn,
+	.ms-skin-light-2 .ms-video-btn,
+	.ms-skin-light-2 .ms-slide .ms-slide-vcbtn,
+	.ms-skin-light-2 .ms-nav-next,
+	.ms-skin-light-2 .ms-nav-prev{
+		background-image:url(light-skin-2-retina.png);
+		background-size: 152px 225px;
+	}
+	
+}

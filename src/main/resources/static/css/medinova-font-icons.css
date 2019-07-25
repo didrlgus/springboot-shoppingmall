@@ -1,0 +1,668 @@
+@font-face {
+	font-family: 'medical-icons';
+	src:url('../fonts/medical-icons.eot?hr0153');
+	src:url('../fonts/medical-icons.eot?hr0153#iefix') format('embedded-opentype'),
+		url('../fonts/medical-icons.ttf?hr0153') format('truetype'),
+		url('../fonts/medical-icons.woff?hr0153') format('woff'),
+		url('../fonts/medical-icons.svg?hr0153#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'medical-icons';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-ambulance9:before {
+	content: "\e000";
+}
+.icon-balls:before {
+	content: "\e001";
+}
+.icon-bandaid:before {
+	content: "\e002";
+}
+.icon-chromosome:before {
+	content: "\e003";
+}
+.icon-drops1:before {
+	content: "\e004";
+}
+.icon-male100:before {
+	content: "\e005";
+}
+.icon-medical14:before {
+	content: "\e006";
+}
+.icon-medicine13:before {
+	content: "\e007";
+}
+.icon-medicine14:before {
+	content: "\e008";
+}
+.icon-medicine15:before {
+	content: "\e009";
+}
+.icon-medicine16:before {
+	content: "\e00a";
+}
+.icon-medicine17:before {
+	content: "\e00b";
+}
+.icon-pill:before {
+	content: "\e00c";
+}
+.icon-syringe6:before {
+	content: "\e00d";
+}
+.icon-teeth1:before {
+	content: "\e00e";
+}
+.icon-thermometer23:before {
+	content: "\e00f";
+}
+.icon-ambulance14:before {
+	content: "\e010";
+}
+.icon-baby137:before {
+	content: "\e011";
+}
+.icon-bandage:before {
+	content: "\e012";
+}
+.icon-biohazard2:before {
+	content: "\e013";
+}
+.icon-biology:before {
+	content: "\e014";
+}
+.icon-blood10:before {
+	content: "\e015";
+}
+.icon-blood11:before {
+	content: "\e016";
+}
+.icon-blood12:before {
+	content: "\e017";
+}
+.icon-blood13:before {
+	content: "\e018";
+}
+.icon-blood8:before {
+	content: "\e019";
+}
+.icon-blood9:before {
+	content: "\e01a";
+}
+.icon-brain9:before {
+	content: "\e01b";
+}
+.icon-broken28:before {
+	content: "\e01c";
+}
+.icon-broken29:before {
+	content: "\e01d";
+}
+.icon-brush18:before {
+	content: "\e01e";
+}
+.icon-caduceus3:before {
+	content: "\e01f";
+}
+.icon-cells:before {
+	content: "\e020";
+}
+.icon-chemistry10:before {
+	content: "\e021";
+}
+.icon-crutches:before {
+	content: "\e022";
+}
+.icon-crutch:before {
+	content: "\e023";
+}
+.icon-dentist17:before {
+	content: "\e024";
+}
+.icon-dosage:before {
+	content: "\e025";
+}
+.icon-drug3:before {
+	content: "\e026";
+}
+.icon-drugs4:before {
+	content: "\e027";
+}
+.icon-emergency7:before {
+	content: "\e028";
+}
+.icon-eye90:before {
+	content: "\e029";
+}
+.icon-family21:before {
+	content: "\e02a";
+}
+.icon-female206:before {
+	content: "\e02b";
+}
+.icon-first32:before {
+	content: "\e02c";
+}
+.icon-handicap2:before {
+	content: "\e02d";
+}
+.icon-heart254:before {
+	content: "\e02e";
+}
+.icon-heart255:before {
+	content: "\e02f";
+}
+.icon-heart256:before {
+	content: "\e030";
+}
+.icon-hospital14:before {
+	content: "\e031";
+}
+.icon-hospital15:before {
+	content: "\e032";
+}
+.icon-hospital16:before {
+	content: "\e033";
+}
+.icon-hospital17:before {
+	content: "\e034";
+}
+.icon-hospital18:before {
+	content: "\e035";
+}
+.icon-human88:before {
+	content: "\e036";
+}
+.icon-human89:before {
+	content: "\e037";
+}
+.icon-human90:before {
+	content: "\e038";
+}
+.icon-hurted:before {
+	content: "\e039";
+}
+.icon-illness:before {
+	content: "\e03a";
+}
+.icon-lifeline9:before {
+	content: "\e03b";
+}
+.icon-lungs4:before {
+	content: "\e03c";
+}
+.icon-male209:before {
+	content: "\e03d";
+}
+.icon-medical44:before {
+	content: "\e03e";
+}
+.icon-medical45:before {
+	content: "\e03f";
+}
+.icon-medical46:before {
+	content: "\e040";
+}
+.icon-medical47:before {
+	content: "\e041";
+}
+.icon-medical48:before {
+	content: "\e042";
+}
+.icon-medical49:before {
+	content: "\e043";
+}
+.icon-medical50:before {
+	content: "\e044";
+}
+.icon-medical51:before {
+	content: "\e045";
+}
+.icon-medical52:before {
+	content: "\e046";
+}
+.icon-medical53:before {
+	content: "\e047";
+}
+.icon-medical54:before {
+	content: "\e048";
+}
+.icon-medical55:before {
+	content: "\e049";
+}
+.icon-medicine30:before {
+	content: "\e04a";
+}
+.icon-medicine31:before {
+	content: "\e04b";
+}
+.icon-medicines4:before {
+	content: "\e04c";
+}
+.icon-men15:before {
+	content: "\e04d";
+}
+.icon-microscope13:before {
+	content: "\e04e";
+}
+.icon-mother19:before {
+	content: "\e04f";
+}
+.icon-mouth1:before {
+	content: "\e050";
+}
+.icon-negative12:before {
+	content: "\e051";
+}
+.icon-nurse6:before {
+	content: "\e052";
+}
+.icon-nurse7:before {
+	content: "\e053";
+}
+.icon-opened15:before {
+	content: "\e054";
+}
+.icon-oxygen2:before {
+	content: "\e055";
+}
+.icon-person278:before {
+	content: "\e056";
+}
+.icon-pharmacy7:before {
+	content: "\e057";
+}
+.icon-pharmacy8:before {
+	content: "\e058";
+}
+.icon-pharmacy9:before {
+	content: "\e059";
+}
+.icon-poison2:before {
+	content: "\e05a";
+}
+.icon-positive3:before {
+	content: "\e05b";
+}
+.icon-pregnancy:before {
+	content: "\e05c";
+}
+.icon-pulse1:before {
+	content: "\e05d";
+}
+.icon-rolled2:before {
+	content: "\e05e";
+}
+.icon-scale12:before {
+	content: "\e05f";
+}
+.icon-scale13:before {
+	content: "\e060";
+}
+.icon-scalpel:before {
+	content: "\e061";
+}
+.icon-screw6:before {
+	content: "\e062";
+}
+.icon-sperm1:before {
+	content: "\e063";
+}
+.icon-stethoscope10:before {
+	content: "\e064";
+}
+.icon-stomach2:before {
+	content: "\e065";
+}
+.icon-symbolic:before {
+	content: "\e066";
+}
+.icon-syringe19:before {
+	content: "\e067";
+}
+.icon-syrup:before {
+	content: "\e068";
+}
+.icon-tag38:before {
+	content: "\e069";
+}
+.icon-teeth2:before {
+	content: "\e06a";
+}
+.icon-thermometer31:before {
+	content: "\e06b";
+}
+.icon-three109:before {
+	content: "\e06c";
+}
+.icon-toxic6:before {
+	content: "\e06d";
+}
+.icon-unhealthy:before {
+	content: "\e06e";
+}
+.icon-united8:before {
+	content: "\e06f";
+}
+.icon-water42:before {
+	content: "\e070";
+}
+.icon-weight9:before {
+	content: "\e071";
+}
+.icon-women13:before {
+	content: "\e072";
+}
+.icon-xray2:before {
+	content: "\e073";
+}
+.icon-allergy:before {
+	content: "\e074";
+}
+.icon-ampoul:before {
+	content: "\e075";
+}
+.icon-asterisk1:before {
+	content: "\e076";
+}
+.icon-atom32:before {
+	content: "\e077";
+}
+.icon-bacteria4:before {
+	content: "\e078";
+}
+.icon-balance14:before {
+	content: "\e079";
+}
+.icon-bandaid2:before {
+	content: "\e07a";
+}
+.icon-bandage2:before {
+	content: "\e07b";
+}
+.icon-blood1:before {
+	content: "\e07c";
+}
+.icon-bone11:before {
+	content: "\e07d";
+}
+.icon-bones16:before {
+	content: "\e07e";
+}
+.icon-book287:before {
+	content: "\e07f";
+}
+.icon-bottle5:before {
+	content: "\e080";
+}
+.icon-bowls1:before {
+	content: "\e081";
+}
+.icon-cane7:before {
+	content: "\e082";
+}
+.icon-cardiogram1:before {
+	content: "\e083";
+}
+.icon-chemistry1:before {
+	content: "\e084";
+}
+.icon-clipboard9:before {
+	content: "\e085";
+}
+.icon-clipboards3:before {
+	content: "\e086";
+}
+.icon-cross28:before {
+	content: "\e087";
+}
+.icon-crutch4:before {
+	content: "\e088";
+}
+.icon-crutch5:before {
+	content: "\e089";
+}
+.icon-dentist:before {
+	content: "\e08a";
+}
+.icon-dentist1:before {
+	content: "\e08b";
+}
+.icon-diapers:before {
+	content: "\e08c";
+}
+.icon-disability5:before {
+	content: "\e08d";
+}
+.icon-dna20:before {
+	content: "\e08e";
+}
+.icon-dressing:before {
+	content: "\e08f";
+}
+.icon-drop37:before {
+	content: "\e090";
+}
+.icon-drop5:before {
+	content: "\e091";
+}
+.icon-droppers1:before {
+	content: "\e092";
+}
+.icon-drug7:before {
+	content: "\e093";
+}
+.icon-emergency:before {
+	content: "\e094";
+}
+.icon-eyes21:before {
+	content: "\e095";
+}
+.icon-fashion9:before {
+	content: "\e096";
+}
+.icon-flask2:before {
+	content: "\e097";
+}
+.icon-flasks4:before {
+	content: "\e098";
+}
+.icon-gender:before {
+	content: "\e099";
+}
+.icon-gynecology:before {
+	content: "\e09a";
+}
+.icon-hammers5:before {
+	content: "\e09b";
+}
+.icon-heart36:before {
+	content: "\e09c";
+}
+.icon-helicopter2:before {
+	content: "\e09d";
+}
+.icon-hospital35:before {
+	content: "\e09e";
+}
+.icon-hospital36:before {
+	content: "\e09f";
+}
+.icon-hospital37:before {
+	content: "\e0a0";
+}
+.icon-hospital38:before {
+	content: "\e0a1";
+}
+.icon-hospital39:before {
+	content: "\e0a2";
+}
+.icon-hospital40:before {
+	content: "\e0a3";
+}
+.icon-hospitals:before {
+	content: "\e0a4";
+}
+.icon-hospitals1:before {
+	content: "\e0a5";
+}
+.icon-hospitals2:before {
+	content: "\e0a6";
+}
+.icon-human3:before {
+	content: "\e0a7";
+}
+.icon-injection5:before {
+	content: "\e0a8";
+}
+.icon-lace1:before {
+	content: "\e0a9";
+}
+.icon-lamp6:before {
+	content: "\e0aa";
+}
+.icon-lung1:before {
+	content: "\e0ab";
+}
+.icon-lung2:before {
+	content: "\e0ac";
+}
+.icon-magnifyingglass38:before {
+	content: "\e0ad";
+}
+.icon-male7:before {
+	content: "\e0ae";
+}
+.icon-medicalicons:before {
+	content: "\e0af";
+}
+.icon-medicalkit:before {
+	content: "\e0b0";
+}
+.icon-medical109:before {
+	content: "\e0b1";
+}
+.icon-medical12:before {
+	content: "\e0b2";
+}
+.icon-medicine7:before {
+	content: "\e0b3";
+}
+.icon-medicines7:before {
+	content: "\e0b4";
+}
+.icon-molecule16:before {
+	content: "\e0b5";
+}
+.icon-monitor17:before {
+	content: "\e0b6";
+}
+.icon-nursert:before {
+	content: "\e0b7";
+}
+.icon-operation4:before {
+	content: "\e0b8";
+}
+.icon-pharmacy1:before {
+	content: "\e0b9";
+}
+.icon-pill16:before {
+	content: "\e0ba";
+}
+.icon-pills:before {
+	content: "\e0bb";
+}
+.icon-pot:before {
+	content: "\e0bc";
+}
+.icon-pregnant:before {
+	content: "\e0bd";
+}
+.icon-protein3:before {
+	content: "\e0be";
+}
+.icon-scalpel3:before {
+	content: "\e0bf";
+}
+.icon-science47:before {
+	content: "\e0c0";
+}
+.icon-scissors7:before {
+	content: "\e0c1";
+}
+.icon-skeleton7:before {
+	content: "\e0c2";
+}
+.icon-sperm7:before {
+	content: "\e0c3";
+}
+.icon-stethoscope:before {
+	content: "\e0c4";
+}
+.icon-stethoscopes:before {
+	content: "\e0c5";
+}
+.icon-stilts:before {
+	content: "\e0c6";
+}
+.icon-sunglasses11:before {
+	content: "\e0c7";
+}
+.icon-surgery:before {
+	content: "\e0c8";
+}
+.icon-tablet21:before {
+	content: "\e0c9";
+}
+.icon-tablets9:before {
+	content: "\e0ca";
+}
+.icon-telephonecall3:before {
+	content: "\e0cb";
+}
+.icon-testtube5:before {
+	content: "\e0cc";
+}
+.icon-testtube8:before {
+	content: "\e0cd";
+}
+.icon-textlines5:before {
+	content: "\e0ce";
+}
+.icon-thermometer15:before {
+	content: "\e0cf";
+}
+.icon-toothpaste2:before {
+	content: "\e0d0";
+}
+.icon-transport66:before {
+	content: "\e0d1";
+}
+.icon-urology:before {
+	content: "\e0d2";
+}
+.icon-weights5:before {
+	content: "\e0d3";
+}
+.icon-wheelchairs:before {
+	content: "\e0d4";
+}
+.icon-woman170:before {
+	content: "\e0d5";
+}
+

@@ -1,0 +1,283 @@
+/* --------------------------------------
+@Author: ThemeMascot
+@URL: http://themeforest.net/user/ThemeMascot
+----------------------------------------- */
+/*
+ * Dark.less
+ * -----------------------------------------------
+*/
+.dark {
+  /*Bacground Color*/
+  /*Bacground Transparent Color*/
+  /*Text Color*/
+  /*Layer Overlay*/
+  /*Custom Theme Styles*/
+  /* toggle accordion */
+  /*Blog Style*/
+  /* boxed-layout */
+  /* Feature Icon-box */
+  /* Opening Hourse */
+}
+body.dark {
+  background-color: #1e1e1e !important;
+}
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6,
+.dark .h1,
+.dark .h2,
+.dark .h3,
+.dark .h4,
+.dark .h5,
+.dark .h6 {
+  color: #b3b3b3;
+}
+.dark h1 a,
+.dark h2 a,
+.dark h3 a,
+.dark h4 a,
+.dark h5 a,
+.dark h6 a,
+.dark .h1 a,
+.dark .h2 a,
+.dark .h3 a,
+.dark .h4 a,
+.dark .h5 a,
+.dark .h6 a {
+  color: #b3b3b3;
+}
+.dark .divider-dark {
+  background-color: #252525 !important;
+}
+.dark .bg-white {
+  background-color: #333333 !important;
+}
+.dark .bg-silver-deep {
+  background-color: #222222 !important;
+}
+.dark .bg-deep {
+  background-color: #191919 !important;
+}
+.dark .bg-light {
+  background-color: #202020 !important;
+}
+.dark .bg-lighter {
+  background-color: #262626 !important;
+}
+.dark .bg-lightest {
+  background-color: #333333 !important;
+}
+.dark .bg-white-light {
+  background-color: #333333 !important;
+}
+.dark .bg-silver-light {
+  background-color: #333333 !important;
+}
+.dark .bg-deep-transparent {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+.dark .bg-light-transparent {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.dark .bg-lighter-transparent {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.dark .bg-lightest-transparent {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.dark .bg-very-lightest-transparent {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.dark .text-theme-colored {
+  color: #808080 !important;
+}
+.dark .text-black-333 {
+  color: #b3b3b3 !important;
+}
+.dark .text-white-light {
+  color: #4d4d4d !important;
+}
+.dark .layer-overlay.overlay-light::before {
+  background-color: rgba(33, 33, 33, 0.8);
+}
+.dark .layer-overlay.overlay-lighter::before {
+  background-color: rgba(33, 33, 33, 0.7);
+}
+.dark .layer-overlay.overlay-deep::before {
+  background-color: rgba(33, 33, 33, 0.9);
+}
+.dark hr {
+  border-color: #333333;
+}
+.dark .border-1px {
+  border: 1px solid #333333;
+}
+.dark .border-10px,
+.dark .blog-posts .post.style1 {
+  border-color: #191919 !important;
+}
+.dark .border-1px {
+  border-color: #333333 !important;
+}
+.dark .border-2px {
+  border-color: #333333 !important;
+}
+.dark .border-3px,
+.dark .title-border {
+  border-color: #333333 !important;
+}
+.dark .border-4px {
+  border-color: #333333 !important;
+}
+.dark .border-5px {
+  border-color: #333333 !important;
+}
+.dark .event {
+  border-color: #333333 !important;
+}
+.dark .team-carousel-1col .team-thum {
+  border-color: #191919 !important;
+}
+.dark .pricing-table.style1 .pricing-icon i {
+  border-color: #191919 !important;
+}
+.dark .service-icon-box a {
+  background-color: rgba(33, 33, 33, 0.6) !important;
+}
+.dark .owl-carousel.owl-nav-top .owl-controls .owl-nav .owl-prev,
+.dark .owl-carousel.owl-nav-top .owl-controls .owl-nav .owl-next {
+  background: #404040 !important;
+}
+.dark .bx-controls .bx-controls-direction > a {
+  background: #404040 !important;
+}
+.dark .funfact.bg-white {
+  background: #262626 !important;
+}
+.dark .funfact.style-1:hover .funfact-title {
+  color: #555555 !important;
+}
+.dark .separator::before,
+.dark .separator::after {
+  border-bottom: 1px solid #333333;
+}
+.dark .register-form .form-control {
+  background: rgba(0, 0, 0, 0.2);
+  border-color: #333333;
+}
+.dark .login-form {
+  border: 1px solid #333333;
+}
+.dark .form-control {
+  background: rgba(0, 0, 0, 0.2);
+  border-color: #333333;
+}
+.dark .login-form .form-control,
+.dark .register-form .form-control {
+  background: rgba(0, 0, 0, 0.2);
+  border-color: #555555;
+}
+.dark .login-form.login-form-transparent {
+  background-color: #222222;
+}
+.dark .tab-content {
+  border: 1px solid #333333;
+}
+.dark .services-tab .nav-tabs,
+.dark .services-tab .nav-tabs > li {
+  border-color: #191919 !important;
+}
+.dark .services-tab .nav-tabs > li > a {
+  background-color: #4d4d4d !important;
+}
+.dark .header-nav .header-nav-wrapper.scroll-to-fixed-fixed.scroll-to-fixed-fixed {
+  border-bottom-color: #404040;
+}
+.dark .nav-tabs > li > a:hover,
+.dark .nav-tabs > li > a:focus {
+  color: #808080;
+}
+.dark .nav-tabs > li > a:hover,
+.dark .nav-tabs > li.active a {
+  border-color: #333333;
+}
+.dark .nav-sidebar li {
+  background-color: #242424 !important;
+}
+.dark .panel-group .panel {
+  background-color: #262626 !important;
+}
+.dark .panel-group .panel .panel-title a {
+  background-color: rgba(33, 33, 33, 0.5) !important;
+}
+.dark .panel-group .panel .panel-title a:hover {
+  color: #f5f5f5 !important;
+}
+.dark .panel-group .panel .panel-title a.active {
+  background-color: rgba(28, 28, 28, 0.8) !important;
+  border-bottom-color: rgba(23, 23, 23, 0.8) !important;
+  color: #f5f5f5 !important;
+}
+.dark .panel-group .panel .panel-title a.active:after {
+  background-color: #333333 !important;
+}
+.dark .panel-group .panel .panel-content {
+  background-color: rgba(28, 28, 28, 0.8) !important;
+}
+.dark .panel-group.transparent .panel {
+  background-color: transparent !important;
+}
+.dark .panel-group.transparent .panel .panel-title a {
+  background-color: transparent !important;
+}
+.dark .panel-group.transparent .panel .panel-title a.active {
+  background-color: transparent!important;
+  border-bottom-color: transparent !important;
+}
+.dark .panel-group.transparent .panel .panel-title a.active:after {
+  background-color: transparent !important;
+}
+.dark .blog-posts .post {
+  background-color: #282828 !important;
+}
+.dark .fc-day-number {
+  color: #b3b3b3;
+}
+.dark .header-nav .header-nav-wrapper .menuzord {
+  background: transparent;
+}
+.dark.boxed-layout section {
+  background: #202020;
+}
+.dark .feature-icon-box {
+  border: 1px solid #333333;
+}
+.dark .opening-hours ul li {
+  border-bottom: 1px solid #333333;
+}
+.dark .course-details {
+  background-color: #333333;
+}
+.dark .course-meta li {
+  border-right: 1px solid #404040;
+}
+.dark .event-block .event-meta {
+  background: #333333 none repeat scroll 0 0;
+}
+.dark .team-members .team-details {
+  background: #404040 none repeat scroll 0 0;
+}
+.dark .post .entry-content {
+  border: 1px solid #333333;
+  transition: all 300ms ease-in-out 0s;
+}
+.dark .btn-default {
+  background-color: #333;
+  border-color: #333;
+  color: #888;
+}
+
+/*# sourceMappingURL=style-main-dark.css.map */

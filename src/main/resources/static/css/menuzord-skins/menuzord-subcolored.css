@@ -1,0 +1,134 @@
+/*
+Subcolored Skin
+*/
+
+/* Active/hover state (Menu items) */
+.menuzord-menu > li.active > a,
+.menuzord-menu > li:hover > a{
+	background: #333;
+	color: #fff;
+}
+
+/* Dropdown */
+.menuzord-menu ul.dropdown,
+.menuzord-menu ul.dropdown li ul.dropdown{
+	background: #333;
+}
+/* Dropdown items */
+.menuzord-menu ul.dropdown li a{
+	color: #fff;
+}
+
+/* Hover state (dropdown items) */
+.menuzord-menu ul.dropdown li:hover > a{
+	color: #fff;
+}
+
+/* Megamenu */
+.menuzord-menu > li > .megamenu{
+	background: #333;
+	border-top: none;
+}
+
+/* tabs */
+.menuzord-tabs-nav > li > a{
+	color: #fff;
+}
+.menuzord-tabs-nav li.active a,
+.menuzord-tabs-nav li:hover a{
+	background: #f0f0f0;
+	color: #666;
+}
+
+/* Color schemes */
+/* blue */
+.menuzord.blue .menuzord-menu > li.active > a, 
+.menuzord.blue .menuzord-menu > li:hover > a, 
+.menuzord.blue .menuzord-menu ul.dropdown,
+.menuzord.blue .menuzord-menu ul.dropdown li ul.dropdown,
+.menuzord.blue .menuzord-menu ul.dropdown li:hover > a,
+.menuzord.blue .menuzord-menu > li > .megamenu{
+	background: #5D9CEC; 
+	color: #fff;
+}
+/* green */
+.menuzord.green .menuzord-menu > li.active > a, 
+.menuzord.green .menuzord-menu > li:hover > a, 
+.menuzord.green .menuzord-menu ul.dropdown,
+.menuzord.green .menuzord-menu ul.dropdown li ul.dropdown,
+.menuzord.green .menuzord-menu ul.dropdown li:hover > a,
+.menuzord.green .menuzord-menu > li > .megamenu{
+	background: #48CFAD;
+	color: #fff;
+}
+/* red */
+.menuzord.red .menuzord-menu > li.active > a, 
+.menuzord.red .menuzord-menu > li:hover > a, 
+.menuzord.red .menuzord-menu ul.dropdown,
+.menuzord.red .menuzord-menu ul.dropdown li ul.dropdown,
+.menuzord.red .menuzord-menu ul.dropdown li:hover > a,
+.menuzord.red .menuzord-menu > li > .megamenu{
+	background: #FC6E51;
+	color: #fff;
+}
+/* orange */
+.menuzord.orange .menuzord-menu > li.active > a, 
+.menuzord.orange .menuzord-menu > li:hover > a, 
+.menuzord.orange .menuzord-menu ul.dropdown,
+.menuzord.orange .menuzord-menu ul.dropdown li ul.dropdown,
+.menuzord.orange .menuzord-menu ul.dropdown li:hover > a,
+.menuzord.orange .menuzord-menu > li > .megamenu{
+	background: #ff853f; 
+	color: #fff;
+}
+/* yellow */
+.menuzord.yellow .menuzord-menu > li.active > a, 
+.menuzord.yellow .menuzord-menu > li:hover > a, 
+.menuzord.yellow .menuzord-menu ul.dropdown,
+.menuzord.yellow .menuzord-menu ul.dropdown li ul.dropdown,
+.menuzord.yellow .menuzord-menu ul.dropdown li:hover > a,
+.menuzord.yellow .menuzord-menu > li > .megamenu{
+	background: #FFCE54;
+	color: #fff;
+}
+/* purple */
+.menuzord.purple .menuzord-menu > li.active > a, 
+.menuzord.purple .menuzord-menu > li:hover > a, 
+.menuzord.purple .menuzord-menu ul.dropdown,
+.menuzord.purple .menuzord-menu ul.dropdown li ul.dropdown,
+.menuzord.purple .menuzord-menu ul.dropdown li:hover > a,
+.menuzord.purple .menuzord-menu > li > .megamenu{
+	background: #AC92EC;
+	color: #fff;
+}
+/* pink */
+.menuzord.pink .menuzord-menu > li.active > a, 
+.menuzord.pink .menuzord-menu > li:hover > a, 
+.menuzord.pink .menuzord-menu ul.dropdown,
+.menuzord.pink .menuzord-menu ul.dropdown li ul.dropdown,
+.menuzord.pink .menuzord-menu ul.dropdown li:hover > a,
+.menuzord.pink .menuzord-menu > li > .megamenu{
+	background: #EC87C0;
+	color: #fff;
+}
+
+/* Mobile mode (Responsive mode) */
+@media (max-width: 900px){
+	/* Mneu items */
+	.menuzord-responsive .menuzord-menu > li > a{
+		padding: 12px 20px !important;
+	}
+	/* Dropdown indicators */
+	.menuzord-responsive .menuzord-menu li ul.dropdown li .indicator{
+		border: none;
+	}
+	/* Dropdown */
+	.menuzord-responsive .menuzord-menu ul.dropdown,
+	.menuzord-responsive .menuzord-menu ul.dropdown li ul.dropdown{
+		background: #333;
+	}
+	/* Dropdown items */
+	.menuzord-responsive .menuzord-menu ul.dropdown li a{
+		border: none;
+	}	
+}

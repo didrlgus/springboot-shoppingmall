@@ -1,0 +1,103 @@
+
+<!-- Color Switcher Starts | Only for demo purpose and not included in main file -->
+
+<!-- switcher html -->
+<link href="color-switcher/css/color-switcher.css" rel="stylesheet" type="text/css">
+<script src="color-switcher/js/color-switcher.js"></script>
+<div id="style-switcher">
+  <a href="#" class="switcher-toggle closed"> <span class="icon-switcher"><i class="pe-7s-config switcher-spining"></i></span></a>
+  <div class="style-switcher-wrap">
+    <h3 class="">Style Switcher</h3>
+    <h4 class="switcher-title">Theme Color Set:</h4>
+    <ul class="switcher-style-list" id="switcher-theme-custom-color">
+      <li class="active"><a title="Color Set 1" href="#" class="theme-skin-color-set1"><div class="color color1" data-color="#1F406D"></div><div class="color color2" data-color="#00BBD1"></div></a></li>
+      <li><a title="Color Set 2" href="#" class="theme-skin-color-set2"><div class="color color1" data-color="#143E4C"></div><div class="color color2" data-color="#48CFAD"></div></a></li>
+      <li><a title="Color Set 3" href="#" class="theme-skin-color-set3"><div class="color color1" data-color="#242C42"></div><div class="color color2" data-color="#e66d00"></div></a></li>
+      <li><a title="Color Set 4" href="#" class="theme-skin-color-set4"><div class="color color1" data-color="#212331"></div><div class="color color2" data-color="#FC6E51"></div></a></li>
+      <li><a title="Color Set 5" href="#" class="theme-skin-color-set5"><div class="color color1" data-color="#242C42"></div><div class="color color2" data-color="#7BC74D"></div></a></li>
+      <li><a title="Color Set 6" href="#" class="theme-skin-color-set6"><div class="color color1" data-color="#1b3053"></div><div class="color color2" data-color="#45c4e9"></div></a></li>
+      <li><a title="Color Set 7" href="#" class="theme-skin-color-set7"><div class="color color1" data-color="#002E5A"></div><div class="color color2" data-color="#FC9928"></div></a></li>
+      <li><a title="Color Set 8" href="#" class="theme-skin-color-set8"><div class="color color1" data-color="#202C45"></div><div class="color color2" data-color="#F2184F"></div></a></li>
+      <li><a title="Color Set 9" href="#" class="theme-skin-color-set9"><div class="color color1" data-color="#1E2640"></div><div class="color color2" data-color="#D89384"></div></a></li>
+    </ul>
+    <h4 class="switcher-title">Top Menu Color Skins:</h4>
+    <ul class="switcher-style-list" id="switcher-menu-custom-color">
+      <li><a title="default" href="#" class="menu-skin-default"></a></li>
+      <li><a title="blue" href="#" class="menu-skin-blue"></a></li>
+      <li><a title="green" href="#" class="menu-skin-green"></a></li>
+      <li><a title="red" href="#" class="menu-skin-red"></a></li>
+      <li><a title="orange" href="#" class="menu-skin-orange"></a></li>
+      <li><a title="yellow" href="#" class="menu-skin-yellow"></a></li>
+      <li><a title="purple" href="#" class="menu-skin-purple"></a></li>
+      <li><a title="pink" href="#" class="menu-skin-pink"></a></li>
+    </ul>
+    <h4 class="switcher-title">Top Menu Style:</h4>
+    <select class="switcher-select-form" name="switcher-menu-style" id="switcher-menu-style">
+      <option value="default">Default</option>
+      <option value="menuzord-border-top">Border Top</option>
+      <option value="menuzord-border-bottom">Border Bottom</option>
+      <option value="menuzord-border-boxed">Border Boxed</option>
+      <option value="menuzord-border-left">Border Left</option>
+      <option value="menuzord-border-top-bottom">Border Top Bottom</option>
+      <option value="menuzord-bottom-trace">Bottom Trace</option>
+      <option value="menuzord-boxed">Boxed</option>
+      <option value="menuzord-colored">Colored</option>
+      <option value="menuzord-dark">Dark</option>
+      <option value="menuzord-gradient">Gradient</option>
+      <option value="menuzord-rounded-boxed">Rounded Boxed</option>
+      <option value="menuzord-shadow">Shadow</option>
+      <option value="menuzord-strip">Strip</option>
+      <option value="menuzord-subcolored">Sub-Colored</option>
+      <option value="menuzord-top-bottom-boxed-border">Top Bottom Boxed Border</option>
+    </select>
+    <h4 class="switcher-title">Background Color:</h4>
+    <div id="switcher-bgcolor">
+      <a class="btn btn-primary btn-xs mt-0" data-bgcolor-type="light">Light</a>
+      <a class="btn btn-dark btn-xs mt-0" data-bgcolor-type="dark">Dark</a>
+    </div>
+    <h4 class="switcher-title">Direction:</h4>
+    <div id="switcher-rtl">
+      <a class="btn btn-primary btn-xs mt-0" data-direction-type="ltr">LTR</a>
+      <a class="btn btn-dark btn-xs mt-0" data-direction-type="rtl">RTL</a>
+    </div>
+    <h4 class="switcher-title">Layout Mode:</h4>
+    <div id="switcher-layout-mode">
+      <a class="btn btn-primary btn-xs mt-0" data-layout-mode="wide">Wide</a>
+      <a class="btn btn-dark btn-xs mt-0" data-layout-mode="boxed">Boxed</a>
+    </div>
+    <h4 class="switcher-title">Background Patterns:</h4>
+    <ul class="switcher-style-list" id="switcher-boxed-layout-bg-pattern">
+      <li><a title="Pattern 1" href="#" data-bg="images/pattern/p1.png"></a></li>
+      <li><a title="Pattern 2" href="#" data-bg="images/pattern/p2.png"></a></li>
+      <li><a title="Pattern 3" href="#" data-bg="images/pattern/p3.png"></a></li>
+      <li><a title="Pattern 4" href="#" data-bg="images/pattern/p4.png"></a></li>
+      <li><a title="Pattern 5" href="#" data-bg="images/pattern/p5.png"></a></li>
+      <li><a title="Pattern 6" href="#" data-bg="images/pattern/p6.png"></a></li>
+      <li><a title="Pattern 7" href="#" data-bg="images/pattern/p7.png"></a></li>
+      <li><a title="Pattern 8" href="#" data-bg="images/pattern/p8.png"></a></li>
+      <li><a title="Pattern 9" href="#" data-bg="images/pattern/p9.png"></a></li>
+      <li><a title="Pattern 10" href="#" data-bg="images/pattern/p10.png"></a></li>
+      <li><a title="Pattern 11" href="#" data-bg="images/pattern/p11.png"></a></li>
+      <li><a title="Pattern 12" href="#" data-bg="images/pattern/p12.png"></a></li>
+      <li><a title="Pattern 13" href="#" data-bg="images/pattern/p13.png"></a></li>
+      <li><a title="Pattern 14" href="#" data-bg="images/pattern/p14.png"></a></li>
+      <li><a title="Pattern 15" href="#" data-bg="images/pattern/p15.png"></a></li>
+    </ul>
+    <h4 class="switcher-title">Background Color (Boxed Layout):</h4>
+    <ul class="switcher-style-list" id="switcher-boxed-layout-bg-color">
+      <li><a title="black-111" href="#" class="bg-black-111"></a></li>
+      <li><a title="black-222" href="#" class="bg-black-222"></a></li>
+      <li><a title="black-333" href="#" class="bg-black-333"></a></li>
+      <li><a title="black-444" href="#" class="bg-black-444"></a></li>
+      <li><a title="black-555" href="#" class="bg-black-555"></a></li>
+      <li><a title="bg-gray-dimgray" href="#" class="bg-gray-dimgray"></a></li>
+      <li><a title="bg-gray-light" href="#" class="bg-gray-light"></a></li>
+      <li><a title="bg-gray" href="#" class="bg-gray"></a></li>
+      <li><a title="bg-gray-darkgray" href="#" class="bg-gray-darkgray"></a></li>
+      <li><a title="bg-gray-silver" href="#" class="bg-gray-silver"></a></li>
+      <li><a title="bg-gray-lightgray" href="#" class="bg-gray-lightgray"></a></li>
+      <li><a title="bg-gray-gainsboro" href="#" class="bg-gray-gainsboro"></a></li>
+    </ul>
+  </div>
+</div>
+<!-- Color Switcher Ends-->

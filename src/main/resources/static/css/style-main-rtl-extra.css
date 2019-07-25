@@ -1,0 +1,97 @@
+/* --------------------------------------
+@Author: ThemeMascot
+@URL: http://themeforest.net/user/ThemeMascot
+----------------------------------------- */
+/*
+ * rtl.less
+ * -----------------------------------------------
+*/
+html,
+body {
+  direction: rtl;
+}
+html[dir="rtl"] {
+  /*
+	.boxed-layout {
+		.header {
+			margin-left: 0;
+			margin-right: 0;
+		}
+	}
+	*/
+}
+html[dir="rtl"] .icon-box.left a {
+  margin-left: 0px;
+  margin-right: 0;
+}
+html[dir="rtl"] .attorney .content {
+  padding-right: 30px;
+}
+html[dir="rtl"] .section-title.title-border {
+  border-left: 0;
+  border-right: 4px solid #bf9e58;
+}
+html[dir="rtl"] .panel-group .panel-title a::after {
+  left: auto;
+}
+html[dir="rtl"] .blog-posts .post .entry-content .post-date.right {
+  right: auto;
+}
+html[dir="rtl"] .post .entry-meta.meta-absolute {
+  left: auto;
+}
+html[dir="rtl"] .checkbox input[type="checkbox"],
+html[dir="rtl"] .checkbox-inline input[type="checkbox"],
+html[dir="rtl"] .radio input[type="radio"],
+html[dir="rtl"] .radio-inline input[type="radio"] {
+  margin-right: -20px;
+}
+html[dir="rtl"] .checkbox-inline,
+html[dir="rtl"] .radio-inline {
+  padding-right: 20px;
+}
+html[dir="rtl"] .owl-controls .owl-prev {
+  left: 0;
+  right: auto;
+}
+html[dir="rtl"] .owl-controls .owl-next {
+  right: 0;
+  left: auto;
+}
+html[dir="rtl"] .owl-carousel.owl-nav-top .owl-controls .owl-nav .owl-prev {
+  right: auto;
+}
+html[dir="rtl"] .owl-carousel.owl-nav-top .owl-controls .owl-nav .owl-next {
+  right: auto;
+}
+html[dir="rtl"] .blog-posts .post.style1 .entry-header .entry-date.entry-date-absolute {
+  right: auto;
+}
+html[dir="rtl"] #flickr-feed img {
+  float: right;
+}
+html[dir="rtl"] .menuzord-menu {
+  float: right;
+}
+html[dir="rtl"] .menuzord-menu.menuzord-right {
+  float: left;
+}
+html[dir="rtl"] .menuzord-brand {
+  margin-right: 0;
+  margin-left: 30px;
+}
+html[dir="rtl"] .menuzord-menu > li {
+  float: right;
+}
+html[dir="rtl"] .search-form-wrapper form label {
+  left: 11px;
+  right: auto;
+}
+html[dir="rtl"] .search-form-wrapper form label::before {
+  left: 13px;
+  right: auto;
+}
+html[dir="rtl"] .line-bottom-theme-colored-2::after {
+  left: auto;
+  right: 0;
+}

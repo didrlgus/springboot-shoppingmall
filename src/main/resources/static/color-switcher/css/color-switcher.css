@@ -1,0 +1,289 @@
+/* =================================================================== */
+/* Styles Switcher
+====================================================================== */
+
+#style-switcher {
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 0 0 3px;
+		height: 100%;
+    left: 0;
+    padding: 15px 0 25px;
+    position: fixed;
+    top: 0px;
+    width: 270px;
+    z-index: 99999999;
+}
+#style-switcher .style-switcher-wrap {
+	height: 100%;
+	margin: 0;
+	overflow-y: auto;
+	padding: 15px;
+	position: relative;
+}
+#style-switcher .switcher-title {
+	color: #333;
+	font-size: 14px;
+	font-weight: 600;
+	margin-bottom: 8px;
+	margin-top: 15px;
+	text-align: left;
+}
+#style-switcher .switcher-toggle {
+	display: block;
+	height: 58px;
+	position: absolute;
+	right: -3px;
+	top: 50px;
+	width: 40px;
+	border-radius: 0 3px 3px 0;
+	padding-right: 5px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+}
+.icon-switcher {
+	background: #f8f8f8 none repeat scroll 0 0;
+	border: 1px solid #ddd;
+	font-size: 14px;
+	margin-left: 37px;
+	margin-top: 90px;
+	padding: 6px 12px;
+	position: absolute;
+}
+.icon-switcher i {
+    color: #333;
+    font-size: 32px;
+    margin-top: 3px;
+}
+.switcher-style-list {
+	list-style: none;
+	margin: 0px;
+	overflow: hidden;
+}
+.switcher-style-list li {
+	float: left;
+	margin: 2px;
+}
+.switcher-style-list li a {
+	background-size: cover;
+	cursor: pointer;
+	display: block;
+	height: 30px;
+	width: 40px;
+}
+#switcher-theme-custom-color.switcher-style-list li a {
+	width: 68px;
+	height: 40px;
+	border: 2px solid #444;
+	position: relative;
+}
+#switcher-theme-custom-color.switcher-style-list li a .color {
+	width: 50%;
+	height: 100%;
+	float: left;
+	background-color: #eee;
+}
+#switcher-theme-custom-color.switcher-style-list li.active a:after {
+	color: #ddd;
+	content: "\f00c";
+	font-family: fontawesome;
+    font-size: 16px;
+    left: 40%;
+    margin: 0 auto;
+    padding: 0;
+    position: absolute;
+    top: 15%;
+}
+.layout select {
+	width: 100%;
+	padding: 5px;
+	border: none;
+	margin: 0 0 0 -5px;
+	color: #666;
+	cursor: pointer;
+}
+#button-reset {
+	margin: 0 15px 15px 2px;
+	text-align: right;
+}
+#button-reset a {
+	color: #fff;
+	font-size: 14px;
+	padding: 8px 27px;
+	display: inline-block;
+	border: 0px;
+	font-family: Arial, sans-serif;
+	cursor: pointer;
+	margin-top: 15px;
+	text-align: center;
+	background:#333;
+}
+/*--------------------------------------*/
+/*------------ switcher spining---------*/
+/*--------------------------------------*/
+@-webkit-keyframes spinnerRotate
+{
+    from{-webkit-transform:rotate(0deg);}
+    to{-webkit-transform:rotate(360deg);}
+}
+@-moz-keyframes spinnerRotate
+{
+    from{-moz-transform:rotate(0deg);}
+    to{-moz-transform:rotate(360deg);}
+}
+@-ms-keyframes spinnerRotate
+{
+    from{-ms-transform:rotate(0deg);}
+    to{-ms-transform:rotate(360deg);}
+}
+.switcher-spining {
+    -webkit-animation-name: spinnerRotate;
+    -webkit-animation-duration: 5s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-name: spinnerRotate;
+    -moz-animation-duration: 5s;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: linear;
+    -ms-animation-name: spinnerRotate;
+    -ms-animation-duration: 5s;
+    -ms-animation-iteration-count: infinite;
+    -ms-animation-timing-function: linear;
+}
+/*-----------------------------------*/
+/*------------ theme-skin---------*/
+/*-----------------------------------*/
+
+.theme-skin-orange {
+	background: #E0984A;
+}
+.theme-skin-maroon {
+	background: #D02552;
+}
+.theme-skin-yellow {
+	background: #DED823;
+}
+.theme-skin-green {
+	background: #72A230;
+}
+.theme-skin-blue {
+	background: #0B4575;
+}
+.theme-skin-sky-blue {
+	background: #00b6dd;
+}
+.theme-skin-brown {
+	background: #8D6E63;
+}
+.theme-skin-deep-blue {
+	background: #13A0B2;
+}
+.theme-skin-blue-gary {
+	background: #546E7A;
+}
+.theme-skin-gray {
+	background: #757575;
+}
+
+.switcher-style-list li a.active {
+	box-shadow: 0 0 0 0px #555 inset
+}
+
+@media only screen and (max-width:1029px) {
+#style-switcher {
+}
+}
+.clean-check #r1 + label, .clean-check #r2 + label, .clean-check #r3 + label {
+	margin-left: 22px;
+}
+.clean-check #s1 + label, .clean-check #sd_right + label {
+	margin-left: 22px;
+}
+.layouts {
+	padding-bottom: 0px;
+}
+.switcher-title{
+	padding-top:0;
+	margin-bottom: 3px;
+	font-size: 11px;
+	color: #aaa;
+	font-family: 'Open Sans', sans-serif;
+	letter-spacing: 0;
+}
+
+
+/*-----------------------------------*/
+/*------------ theme-skin---------*/
+/*-----------------------------------*/
+
+.menu-skin-default {
+	background: #333;
+}
+.menu-skin-blue {
+	background: #5D9CEC;
+}
+.menu-skin-green {
+	background: #48CFAD;
+}
+.menu-skin-red {
+	background: #FC6E51;
+}
+.menu-skin-orange {
+	background: #ff853f;
+}
+.menu-skin-yellow {
+	background: #FFCE54;
+}
+.menu-skin-purple {
+	background: #AC92EC;
+}
+.menu-skin-pink {
+	background: #EC87C0;
+}
+
+/*-----------------------------------*/
+/*-------- switcher-menu-style ------*/
+/*-----------------------------------*/
+.switcher-select-form {
+	width: 89%;
+    height: 25px;	
+}
+
+/*-----------------------------------*/
+/*-------------- menu-position ------*/
+/*-----------------------------------*/
+
+.menu-position li{
+	float: left;
+	margin: 0 0 0 20px;
+	width: 40%;
+}
+.menu-position li a{
+	font-size: 13px;
+	font-family: Arial, sans-serif;
+	padding: 2px;
+	margin: 5px;
+}
+.menu-position li a.active {
+	border: 1px solid #333;
+}
+
+
+/*-----------------------------------*/
+/*-------------- container-height ------*/
+/*-----------------------------------*/
+
+.container-height li{
+	float: left;
+	margin: 0 0 0 20px;
+	width: 40%;
+}
+.container-height li a{
+	font-size: 13px;
+	font-family: Arial, sans-serif;
+	padding: 2px;
+	margin: 5px;
+}
+.container-height li a.active {
+	border: 1px solid #F7F7F7;
+}

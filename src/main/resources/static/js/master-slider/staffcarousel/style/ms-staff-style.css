@@ -1,0 +1,104 @@
+.master-slider{
+	-moz-transform:translate3d(0,0,1px);
+}
+.ms-staff-carousel{
+	max-width:880px;
+	overflow: hidden;
+	margin: 25px auto;
+	position: relative;
+}
+
+.ms-staff-carousel .ms-view{
+	overflow:visible;
+	background-color: transparent;
+}
+
+.ms-staff-carousel .ms-nav-prev,
+.ms-staff-carousel .ms-nav-next {
+    background: url(arrows.png) white no-repeat -7px -57px;
+    width: 35px;
+    height: 40px;
+    left: -35px;
+    margin-top: -17px;
+    box-shadow: 0px 1px 0px 0px rgb(190, 190, 190);
+    position: absolute;
+    top:50%;
+    cursor: pointer;
+}
+
+.ms-staff-carousel .ms-nav-next {
+	background-position: -6px -7px;
+	right:-35px;
+	left:auto;
+}
+
+.ms-staff-carousel .ms-staff-info{
+	font-family: 'Lato', sans-serif;
+	text-align: center;
+	max-width: 600px;
+	margin-top:30px;
+	min-height:300px;
+	color:#222222;
+}
+	.ms-staff-carousel .ms-staff-info h3{
+		font-weight: 300;
+		font-size: 22pt;
+		margin:0px;
+	}
+	
+	.ms-staff-carousel .ms-staff-info h4{
+		font-weight: 300;
+		color:#787878;
+		font-size: 15pt;
+		margin:3px;
+	}
+	
+	.ms-staff-carousel .ms-staff-info .email a{text-decoration: none; color:#3f95ab;}
+	.ms-staff-carousel .ms-staff-info.email,.ms-staff-info p {
+	    margin: 4px;
+	     font-size: 11pt;
+	}
+	
+	.ms-staff-carousel .ms-staff-info .ms-socials {
+	    list-style: none;
+	    display: inline-block;
+	    padding: 0;
+	    margin: 15px 0 0 0;
+	    text-shadow: none;
+	    zoom: 1;
+        *display: inline;
+	}
+	
+	.ms-staff-carousel .ms-staff-info .ms-socials li{
+		  float: left;
+	}
+	.ms-staff-carousel .ms-staff-info .ms-socials li a {
+	    text-indent: 9999px;
+	    width: 35px;
+	    height: 35px;
+	    background: url(sicons.png);
+	    margin: 0 2px;
+	    display: block;
+	}
+	
+	.ms-staff-carousel .ms-staff-info .ms-socials .ms-ico-tw a{background-position: 115px 0px;}
+	.ms-staff-carousel .ms-staff-info .ms-socials .ms-ico-gp a{background-position: 75px 0px;}
+	.ms-staff-carousel .ms-staff-info .ms-socials .ms-ico-yt a{background-position: 35px 0px;}
+
+.ms-staff-carousel.ms-round .ms-slide-bgcont {
+	border-radius: 5000px;
+	border: solid 8px rgb(230, 230, 230);
+	margin: 0 -8px;
+}
+
+.ms-staff-carousel.ms-round .ms-nav-prev,
+.ms-staff-carousel.ms-round .ms-nav-next {
+    background-color:transparent;
+    box-shadow : none;
+    left:-45px;
+ }
+ 
+.ms-staff-carousel.ms-round .ms-nav-next {
+    left:auto;
+    right:-45px
+}

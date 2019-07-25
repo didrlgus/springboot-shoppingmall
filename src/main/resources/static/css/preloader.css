@@ -1,0 +1,2937 @@
+/*
+@Author: ThemeMascot
+@URL: http://ThemeMascot.com
+
+*/
+
+/* Your Preloader css codes start here: */
+
+/*
+ * 2.0 -> Preloader
+ * -----------------------------------------------
+*/
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+	background-color: #fff;
+  z-index: 9999;
+}
+#spinner {
+  display: block;
+  height: 110px;
+  left: 50%;
+  margin: -55px;
+  position: relative;
+  top: 50%;
+  width: 110px;
+}
+#preloader #disable-preloader {
+  display: block;
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+}
+
+//*===== Preloader One =======*/
+
+/*=======Markup=====
+
+<div class="preloader-whirlpool">
+	<div class="whirlpool"></div>
+</div>
+
+ */
+.preloader-whirlpool{
+	position:relative;
+}	
+.preloader-whirlpool .whirlpool,
+.preloader-whirlpool .whirlpool::before,
+.preloader-whirlpool .whirlpool::after {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	border: 1px solid rgb(204,204,204);
+	border-left-color: rgb(0,0,0);
+	border-radius: 974px;
+		-o-border-radius: 974px;
+		-ms-border-radius: 974px;
+		-webkit-border-radius: 974px;
+		-moz-border-radius: 974px;
+}
+.preloader-whirlpool .whirlpool {
+	margin: -24px 0 0 -24px;
+	height: 49px;
+	width: 49px;
+	animation: cssload-rotate 1150ms linear infinite;
+		-o-animation: cssload-rotate 1150ms linear infinite;
+		-ms-animation: cssload-rotate 1150ms linear infinite;
+		-webkit-animation: cssload-rotate 1150ms linear infinite;
+		-moz-animation: cssload-rotate 1150ms linear infinite;
+}
+
+.preloader-whirlpool .whirlpool::before {
+	content: "";
+	margin: -22px 0 0 -22px;
+	height: 43px;
+	width: 43px;
+	animation: cssload-rotate 1150ms linear infinite;
+		-o-animation: cssload-rotate 1150ms linear infinite;
+		-ms-animation: cssload-rotate 1150ms linear infinite;
+		-webkit-animation: cssload-rotate 1150ms linear infinite;
+		-moz-animation: cssload-rotate 1150ms linear infinite;
+}
+.preloader-whirlpool .whirlpool::after {
+	content: "";
+	margin: -28px 0 0 -28px;
+	height: 55px;
+	width: 55px;
+	animation: cssload-rotate 2300ms linear infinite;
+		-o-animation: cssload-rotate 2300ms linear infinite;
+		-ms-animation: cssload-rotate 2300ms linear infinite;
+		-webkit-animation: cssload-rotate 2300ms linear infinite;
+		-moz-animation: cssload-rotate 2300ms linear infinite;
+}
+@keyframes cssload-rotate {
+	100% {
+		transform: rotate(360deg);
+	}
+}
+@-o-keyframes cssload-rotate {
+	100% {
+		-o-transform: rotate(360deg);
+	}
+}
+@-ms-keyframes cssload-rotate {
+	100% {
+		-ms-transform: rotate(360deg);
+	}
+}
+@-webkit-keyframes cssload-rotate {
+	100% {
+		-webkit-transform: rotate(360deg);
+	}
+}
+@-moz-keyframes cssload-rotate {
+	100% {
+		-moz-transform: rotate(360deg);
+	}
+}
+
+/*===== Preloader Two =======*/
+
+/*=======Markup=====
+
+<div class="preloader-floating-circles">
+	<div class="f_circleG" id="frotateG_01"></div>
+	<div class="f_circleG" id="frotateG_02"></div>
+	<div class="f_circleG" id="frotateG_03"></div>
+	<div class="f_circleG" id="frotateG_04"></div>
+	<div class="f_circleG" id="frotateG_05"></div>
+	<div class="f_circleG" id="frotateG_06"></div>
+	<div class="f_circleG" id="frotateG_07"></div>
+	<div class="f_circleG" id="frotateG_08"></div>
+</div>
+
+ */
+.preloader-floating-circles {
+	position:relative;
+	width:80px;
+	height:80px;
+	margin:auto;
+	transform:scale(0.6);
+		-o-transform:scale(0.6);
+		-ms-transform:scale(0.6);
+		-webkit-transform:scale(0.6);
+		-moz-transform:scale(0.6);
+}
+.preloader-floating-circles .f_circleG{
+	position:absolute;
+	background-color:rgb(255,255,255);
+	height:14px;
+	width:14px;
+	border-radius:7px;
+		-o-border-radius:7px;
+		-ms-border-radius:7px;
+		-webkit-border-radius:7px;
+		-moz-border-radius:7px;
+	animation-name:f_fadeG;
+		-o-animation-name:f_fadeG;
+		-ms-animation-name:f_fadeG;
+		-webkit-animation-name:f_fadeG;
+		-moz-animation-name:f_fadeG;
+	animation-duration:0.672s;
+		-o-animation-duration:0.672s;
+		-ms-animation-duration:0.672s;
+		-webkit-animation-duration:0.672s;
+		-moz-animation-duration:0.672s;
+	animation-iteration-count:infinite;
+		-o-animation-iteration-count:infinite;
+		-ms-animation-iteration-count:infinite;
+		-webkit-animation-iteration-count:infinite;
+		-moz-animation-iteration-count:infinite;
+	animation-direction:normal;
+		-o-animation-direction:normal;
+		-ms-animation-direction:normal;
+		-webkit-animation-direction:normal;
+		-moz-animation-direction:normal;
+}
+.preloader-floating-circles #frotateG_01{
+	left:0;
+	top:32px;
+	animation-delay:0.2495s;
+		-o-animation-delay:0.2495s;
+		-ms-animation-delay:0.2495s;
+		-webkit-animation-delay:0.2495s;
+		-moz-animation-delay:0.2495s;
+}
+.preloader-floating-circles #frotateG_02{
+	left:9px;
+	top:9px;
+	animation-delay:0.336s;
+		-o-animation-delay:0.336s;
+		-ms-animation-delay:0.336s;
+		-webkit-animation-delay:0.336s;
+		-moz-animation-delay:0.336s;
+}
+.preloader-floating-circles #frotateG_03{
+	left:32px;
+	top:0;
+	animation-delay:0.4225s;
+		-o-animation-delay:0.4225s;
+		-ms-animation-delay:0.4225s;
+		-webkit-animation-delay:0.4225s;
+		-moz-animation-delay:0.4225s;
+}
+.preloader-floating-circles #frotateG_04{
+	right:9px;
+	top:9px;
+	animation-delay:0.509s;
+		-o-animation-delay:0.509s;
+		-ms-animation-delay:0.509s;
+		-webkit-animation-delay:0.509s;
+		-moz-animation-delay:0.509s;
+}
+.preloader-floating-circles #frotateG_05{
+	right:0;
+	top:32px;
+	animation-delay:0.5955s;
+		-o-animation-delay:0.5955s;
+		-ms-animation-delay:0.5955s;
+		-webkit-animation-delay:0.5955s;
+		-moz-animation-delay:0.5955s;
+}
+.preloader-floating-circles #frotateG_06{
+	right:9px;
+	bottom:9px;
+	animation-delay:0.672s;
+		-o-animation-delay:0.672s;
+		-ms-animation-delay:0.672s;
+		-webkit-animation-delay:0.672s;
+		-moz-animation-delay:0.672s;
+}
+.preloader-floating-circles #frotateG_07{
+	left:32px;
+	bottom:0;
+	animation-delay:0.7585s;
+		-o-animation-delay:0.7585s;
+		-ms-animation-delay:0.7585s;
+		-webkit-animation-delay:0.7585s;
+		-moz-animation-delay:0.7585s;
+}
+.preloader-floating-circles #frotateG_08{
+	left:9px;
+	bottom:9px;
+	animation-delay:0.845s;
+		-o-animation-delay:0.845s;
+		-ms-animation-delay:0.845s;
+		-webkit-animation-delay:0.845s;
+		-moz-animation-delay:0.845s;
+}
+@keyframes f_fadeG{
+	0%{
+		background-color:rgb(0,0,0);
+	}
+
+	100%{
+		background-color:rgb(255,255,255);
+	}
+}
+@-o-keyframes f_fadeG{
+	0%{
+		background-color:rgb(0,0,0);
+	}
+
+	100%{
+		background-color:rgb(255,255,255);
+	}
+}
+@-ms-keyframes f_fadeG{
+	0%{
+		background-color:rgb(0,0,0);
+	}
+
+	100%{
+		background-color:rgb(255,255,255);
+	}
+}
+@-webkit-keyframes f_fadeG{
+	0%{
+		background-color:rgb(0,0,0);
+	}
+
+	100%{
+		background-color:rgb(255,255,255);
+	}
+}
+@-moz-keyframes f_fadeG{
+	0%{
+		background-color:rgb(0,0,0);
+	}
+
+	100%{
+		background-color:rgb(255,255,255);
+	}
+}
+
+/*===== Preloader Three =======*/
+
+/*=======Markup=====
+
+<div class="preloader-eight-spinning">
+	<div class="cssload-lt"></div>
+	<div class="cssload-rt"></div>
+	<div class="cssload-lb"></div>
+	<div class="cssload-rb"></div>
+</div>
+
+ */
+.preloader-eight-spinning {
+	width: 72px;
+	margin: 0px auto;
+	font-size: 0;
+	position: relative;
+	transform-origin: 50% 50%;
+		-o-transform-origin: 50% 50%;
+		-ms-transform-origin: 50% 50%;
+		-webkit-transform-origin: 50% 50%;
+		-moz-transform-origin: 50% 50%;
+	animation: cssload-clockwise 6.9s linear infinite;
+		-o-animation: cssload-clockwise 6.9s linear infinite;
+		-ms-animation: cssload-clockwise 6.9s linear infinite;
+		-webkit-animation: cssload-clockwise 6.9s linear infinite;
+		-moz-animation: cssload-clockwise 6.9s linear infinite;
+}
+.preloader-eight-spinning:before {
+	position: absolute;
+	content: '';
+	top: 0;
+	left: 0;
+	width: 39px;
+	height: 39px;
+	border: 6px solid rgb(229,229,229);
+	border-radius: 100%;
+		-o-border-radius: 100%;
+		-ms-border-radius: 100%;
+		-webkit-border-radius: 100%;
+		-moz-border-radius: 100%;
+	box-sizing: border-box;
+		-o-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+}
+.preloader-eight-spinning:after {
+	position: absolute;
+	content: '';
+	z-index: -1;
+	top: 0;
+	right: 0;
+	width: 39px;
+	height: 39px;
+	border: 6px solid rgb(229,229,229);
+	border-radius: 100%;
+		-o-border-radius: 100%;
+		-ms-border-radius: 100%;
+		-webkit-border-radius: 100%;
+		-moz-border-radius: 100%;
+	box-sizing: border-box;
+		-o-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+}
+
+.preloader-eight-spinning .cssload-lt, .preloader-eight-spinning .cssload-rt, .preloader-eight-spinning .cssload-lb, .preloader-eight-spinning .cssload-rb {
+	position: relative;
+	display: inline-block;
+	overflow: hidden;
+	width: 39px;
+	height: 19px;
+	opacity: 1;
+}
+.preloader-eight-spinning .cssload-lt:before, .preloader-eight-spinning .cssload-rt:before, 
+.preloader-eight-spinning .cssload-lb:before, .preloader-eight-spinning .cssload-rb:before {
+	position: absolute;
+	content: '';
+	width: 39px;
+	height: 39px;
+	border-top: 6px solid rgb(87,67,87);
+	border-right: 6px solid transparent;
+	border-bottom: 6px solid transparent;
+	border-left: 6px solid transparent;
+	border-radius: 100%;
+		-o-border-radius: 100%;
+		-ms-border-radius: 100%;
+		-webkit-border-radius: 100%;
+		-moz-border-radius: 100%;
+	box-sizing: border-box;
+		-o-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+
+.preloader-eight-spinning .cssload-lt {
+	margin-right: -6px;
+	animation: cssload-lt 2.3s linear -2300ms infinite;
+		-o-animation: cssload-lt 2.3s linear -2300ms infinite;
+		-ms-animation: cssload-lt 2.3s linear -2300ms infinite;
+		-webkit-animation: cssload-lt 2.3s linear -2300ms infinite;
+		-moz-animation: cssload-lt 2.3s linear -2300ms infinite;
+}
+.preloader-eight-spinning .cssload-lt:before {
+	top: 0;
+	left: 0;
+	animation: cssload-not-clockwise 1.15s linear infinite;
+		-o-animation: cssload-not-clockwise 1.15s linear infinite;
+		-ms-animation: cssload-not-clockwise 1.15s linear infinite;
+		-webkit-animation: cssload-not-clockwise 1.15s linear infinite;
+		-moz-animation: cssload-not-clockwise 1.15s linear infinite;
+}
+
+.preloader-eight-spinning .cssload-rt {
+	animation: cssload-lt 2.3s linear -1150ms infinite;
+		-o-animation: cssload-lt 2.3s linear -1150ms infinite;
+		-ms-animation: cssload-lt 2.3s linear -1150ms infinite;
+		-webkit-animation: cssload-lt 2.3s linear -1150ms infinite;
+		-moz-animation: cssload-lt 2.3s linear -1150ms infinite;
+}
+.preloader-eight-spinning .cssload-rt:before {
+	top: 0;
+	right: 0;
+	animation: cssload-clockwise 1.15s linear infinite;
+		-o-animation: cssload-clockwise 1.15s linear infinite;
+		-ms-animation: cssload-clockwise 1.15s linear infinite;
+		-webkit-animation: cssload-clockwise 1.15s linear infinite;
+		-moz-animation: cssload-clockwise 1.15s linear infinite;
+}
+
+.preloader-eight-spinning .cssload-lb {
+	margin-right: -6px;
+	animation: cssload-lt 2.3s linear -1725ms infinite;
+		-o-animation: cssload-lt 2.3s linear -1725ms infinite;
+		-ms-animation: cssload-lt 2.3s linear -1725ms infinite;
+		-webkit-animation: cssload-lt 2.3s linear -1725ms infinite;
+		-moz-animation: cssload-lt 2.3s linear -1725ms infinite;
+}
+.preloader-eight-spinning .cssload-lb:before {
+	bottom: 0;
+	left: 0;
+	animation: cssload-not-clockwise 1.15s linear infinite;
+		-o-animation: cssload-not-clockwise 1.15s linear infinite;
+		-ms-animation: cssload-not-clockwise 1.15s linear infinite;
+		-webkit-animation: cssload-not-clockwise 1.15s linear infinite;
+		-moz-animation: cssload-not-clockwise 1.15s linear infinite;
+}
+
+.preloader-eight-spinning .cssload-rb {
+	animation: cssload-lt 2.3s linear -575ms infinite;
+		-o-animation: cssload-lt 2.3s linear -575ms infinite;
+		-ms-animation: cssload-lt 2.3s linear -575ms infinite;
+		-webkit-animation: cssload-lt 2.3s linear -575ms infinite;
+		-moz-animation: cssload-lt 2.3s linear -575ms infinite;
+}
+.preloader-eight-spinning .cssload-rb:before {
+	bottom: 0;
+	right: 0;
+	animation: cssload-clockwise 1.15s linear infinite;
+		-o-animation: cssload-clockwise 1.15s linear infinite;
+		-ms-animation: cssload-clockwise 1.15s linear infinite;
+		-webkit-animation: cssload-clockwise 1.15s linear infinite;
+		-moz-animation: cssload-clockwise 1.15s linear infinite;
+}
+
+@keyframes cssload-clockwise {
+	0% {
+		transform: rotate(-45deg);
+	}
+	100% {
+		transform: rotate(315deg);
+	}
+}
+
+@-o-keyframes cssload-clockwise {
+	0% {
+		-o-transform: rotate(-45deg);
+	}
+	100% {
+		-o-transform: rotate(315deg);
+	}
+}
+
+@-ms-keyframes cssload-clockwise {
+	0% {
+		-ms-transform: rotate(-45deg);
+	}
+	100% {
+		-ms-transform: rotate(315deg);
+	}
+}
+
+@-webkit-keyframes cssload-clockwise {
+	0% {
+		-webkit-transform: rotate(-45deg);
+	}
+	100% {
+		-webkit-transform: rotate(315deg);
+	}
+}
+
+@-moz-keyframes cssload-clockwise {
+	0% {
+		-moz-transform: rotate(-45deg);
+	}
+	100% {
+		-moz-transform: rotate(315deg);
+	}
+}
+@keyframes cssload-not-clockwise {
+	0% {
+		transform: rotate(45deg);
+	}
+	100% {
+		transform: rotate(-315deg);
+	}
+}
+@-o-keyframes cssload-not-clockwise {
+	0% {
+		-o-transform: rotate(45deg);
+	}
+	100% {
+		-o-transform: rotate(-315deg);
+	}
+}
+@-ms-keyframes cssload-not-clockwise {
+	0% {
+		-ms-transform: rotate(45deg);
+	}
+	100% {
+		-ms-transform: rotate(-315deg);
+	}
+}
+@-webkit-keyframes cssload-not-clockwise {
+	0% {
+		-webkit-transform: rotate(45deg);
+	}
+	100% {
+		-webkit-transform: rotate(-315deg);
+	}
+}
+
+@-moz-keyframes cssload-not-clockwise {
+	0% {
+		-moz-transform: rotate(45deg);
+	}
+	100% {
+		-moz-transform: rotate(-315deg);
+	}
+}
+@keyframes cssload-lt {
+	0% {
+		opacity: 1;
+	}
+	25% {
+		opacity: 1;
+	}
+	26% {
+		opacity: 0;
+	}
+	75% {
+		opacity: 0;
+	}
+	76% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+@-o-keyframes cssload-lt {
+	0% {
+		opacity: 1;
+	}
+	25% {
+		opacity: 1;
+	}
+	26% {
+		opacity: 0;
+	}
+	75% {
+		opacity: 0;
+	}
+	76% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+@-ms-keyframes cssload-lt {
+	0% {
+		opacity: 1;
+	}
+	25% {
+		opacity: 1;
+	}
+	26% {
+		opacity: 0;
+	}
+	75% {
+		opacity: 0;
+	}
+	76% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+@-webkit-keyframes cssload-lt {
+	0% {
+		opacity: 1;
+	}
+	25% {
+		opacity: 1;
+	}
+	26% {
+		opacity: 0;
+	}
+	75% {
+		opacity: 0;
+	}
+	76% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+@-moz-keyframes cssload-lt {
+	0% {
+		opacity: 1;
+	}
+	25% {
+		opacity: 1;
+	}
+	26% {
+		opacity: 0;
+	}
+	75% {
+		opacity: 0;
+	}
+	76% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+/*===== Preloader Four =======*/
+
+/*=======Markup=====
+
+<div class="preloader-double-torus"></div>
+
+ */
+.preloader-double-torus {
+	width: 49px;
+	height: 49px;
+	margin: 0 auto;
+	border: 4px double;
+	border-radius: 50%;
+	border-color: transparent rgba(0,0,0,0.9) rgba(0,0,0,0.9);
+	animation: cssload-spin 960ms infinite linear;
+		-o-animation: cssload-spin 960ms infinite linear;
+		-ms-animation: cssload-spin 960ms infinite linear;
+		-webkit-animation: cssload-spin 960ms infinite linear;
+		-moz-animation: cssload-spin 960ms infinite linear;
+}
+
+@keyframes cssload-spin {
+	100%{ transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+@-o-keyframes cssload-spin {
+	100%{ -o-transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+@-ms-keyframes cssload-spin {
+	100%{ -ms-transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+@-webkit-keyframes cssload-spin {
+	100%{ -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+@-moz-keyframes cssload-spin {
+	100%{ -moz-transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+/*===== Preloader Five =======*/
+
+/*=======Markup=====
+
+<div class="preloader-tube-tunnel"></div>
+
+ */
+.preloader-tube-tunnel {
+	width: 49px;
+	height: 49px;
+	margin: 0 auto;
+	border: 4px solid;
+	border-radius: 50%;
+	border-color: rgb(0,0,0);
+	animation: cssload-scale 1035ms infinite linear;
+		-o-animation: cssload-scale 1035ms infinite linear;
+		-ms-animation: cssload-scale 1035ms infinite linear;
+		-webkit-animation: cssload-scale 1035ms infinite linear;
+		-moz-animation: cssload-scale 1035ms infinite linear;
+}
+@keyframes cssload-scale {
+	0% { transform: scale(0); transform: scale(0); }
+	90% { transform: scale(0.7); transform: scale(0.7); }
+	100% { transform: scale(1); transform: scale(1); }
+}
+
+@-o-keyframes cssload-scale {
+	0% { -o-transform: scale(0); transform: scale(0); }
+	90% { -o-transform: scale(0.7); transform: scale(0.7); }
+	100% { -o-transform: scale(1); transform: scale(1); }
+}
+
+@-ms-keyframes cssload-scale {
+	0% { -ms-transform: scale(0); transform: scale(0); }
+	90% { -ms-transform: scale(0.7); transform: scale(0.7); }
+	100% { -ms-transform: scale(1); transform: scale(1); }
+}
+
+@-webkit-keyframes cssload-scale {
+	0% { -webkit-transform: scale(0); transform: scale(0); }
+	90% { -webkit-transform: scale(0.7); transform: scale(0.7); }
+	100% { -webkit-transform: scale(1); transform: scale(1); }
+}
+
+@-moz-keyframes cssload-scale {
+	0% { -moz-transform: scale(0); transform: scale(0); }
+	90% { -moz-transform: scale(0.7); transform: scale(0.7); }
+	100% { -moz-transform: scale(1); transform: scale(1); }
+}
+
+/*===== Preloader Six =======*/
+
+/*=======Markup=====
+
+<div class="preloader-speeding-wheel"></div>
+
+ */
+.preloader-speeding-wheel {
+	width: 49px;
+	height: 49px;
+	margin: 0 auto;
+	border: 3px solid rgb(0,0,0);
+	border-radius: 50%;
+	border-left-color: transparent;
+	border-right-color: transparent;
+	animation: cssload-spin 575ms infinite linear;
+		-o-animation: cssload-spin 575ms infinite linear;
+		-ms-animation: cssload-spin 575ms infinite linear;
+		-webkit-animation: cssload-spin 575ms infinite linear;
+		-moz-animation: cssload-spin 575ms infinite linear;
+}
+@keyframes cssload-spin {
+	100%{ transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+@-o-keyframes cssload-spin {
+	100%{ -o-transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+@-ms-keyframes cssload-spin {
+	100%{ -ms-transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+@-webkit-keyframes cssload-spin {
+	100%{ -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+@-moz-keyframes cssload-spin {
+	100%{ -moz-transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+/*===== Preloader Seven =======*/
+
+/*=======Markup=====
+
+<div class="preloader-loading-wrapper">
+	<div class="cssload-loading"><i></i><i></i></div>
+</div>
+
+ */
+ .preloader-loading-wrapper{
+	display: block;
+	margin:0px auto;
+	width:97px;
+}
+.preloader-loading-wrapper .cssload-loading i{
+	width: 49px;
+	height: 49px;
+	display: inline-block;
+	background: rgb(255,89,84);
+	border-radius: 50%;
+}
+.preloader-loading-wrapper .cssload-loading i:nth-child(1){
+	animation:cssload-loading-ani1 1.15s ease-in-out infinite;
+		-o-animation:cssload-loading-ani1 1.15s ease-in-out infinite;
+		-ms-animation:cssload-loading-ani1 1.15s ease-in-out infinite;
+		-webkit-animation:cssload-loading-ani1 1.15s ease-in-out infinite;
+		-moz-animation:cssload-loading-ani1 1.15s ease-in-out infinite;
+
+}
+.preloader-loading-wrapper .cssload-loading i:nth-child(2){
+	background: rgb(0,168,206);
+	margin-left: -10px;
+	animation:cssload-loading-ani1 1.15s ease-in-out 0.58s infinite;
+		-o-animation:cssload-loading-ani1 1.15s ease-in-out 0.58s infinite;
+		-ms-animation:cssload-loading-ani1 1.15s ease-in-out 0.58s infinite;
+		-webkit-animation:cssload-loading-ani1 1.15s ease-in-out 0.58s infinite;
+		-moz-animation:cssload-loading-ani1 1.15s ease-in-out 0.58s infinite;
+}
+
+@keyframes cssload-loading-ani1{
+	70%{
+		transform:scale(0.5);
+	}
+}
+
+@-o-keyframes cssload-loading-ani1{
+	70%{
+		-o-transform:scale(0.5);
+	}
+}
+
+@-ms-keyframes cssload-loading-ani1{
+	70%{
+		-ms-transform:scale(0.5);
+	}
+}
+
+@-webkit-keyframes cssload-loading-ani1{
+	70%{
+		-webkit-transform:scale(0.5);
+	}
+}
+
+@-moz-keyframes cssload-loading-ani1{
+	70%{
+		-moz-transform:scale(0.5);
+	}
+}
+
+/*===== Preloader Eight =======*/
+
+/*=======Markup=====
+
+<div class="preloader-dot-loading">
+	<div class="cssload-loading"><i></i><i></i><i></i><i></i></div>
+</div>
+
+ */
+ .preloader-dot-loading {
+	display: block;
+	margin:0px auto;
+	width:97px;
+}
+
+.preloader-dot-loading .cssload-loading i{
+	width: 19px;
+	height: 19px;
+	display: inline-block;
+	border-radius: 50%;
+	background: rgb(42,43,38);
+}
+.preloader-dot-loading .cssload-loading i:first-child{
+	opacity: 0;
+	animation:cssload-loading-ani2 0.58s linear infinite;
+		-o-animation:cssload-loading-ani2 0.58s linear infinite;
+		-ms-animation:cssload-loading-ani2 0.58s linear infinite;
+		-webkit-animation:cssload-loading-ani2 0.58s linear infinite;
+		-moz-animation:cssload-loading-ani2 0.58s linear infinite;
+	transform:translate(-19px);
+		-o-transform:translate(-19px);
+		-ms-transform:translate(-19px);
+		-webkit-transform:translate(-19px);
+		-moz-transform:translate(-19px);
+}
+.preloader-dot-loading .cssload-loading i:nth-child(2),
+.preloader-dot-loading .cssload-loading i:nth-child(3){
+	animation:cssload-loading-ani3 0.58s linear infinite;
+		-o-animation:cssload-loading-ani3 0.58s linear infinite;
+		-ms-animation:cssload-loading-ani3 0.58s linear infinite;
+		-webkit-animation:cssload-loading-ani3 0.58s linear infinite;
+		-moz-animation:cssload-loading-ani3 0.58s linear infinite;
+}
+.preloader-dot-loading .cssload-loading i:last-child{
+	animation:cssload-loading-ani1 0.58s linear infinite;
+		-o-animation:cssload-loading-ani1 0.58s linear infinite;
+		-ms-animation:cssload-loading-ani1 0.58s linear infinite;
+		-webkit-animation:cssload-loading-ani1 0.58s linear infinite;
+		-moz-animation:cssload-loading-ani1 0.58s linear infinite;
+}
+@keyframes cssload-loading-ani1{
+	100%{
+		transform:translate(39px);
+		opacity: 0;
+	}
+}
+
+@-o-keyframes cssload-loading-ani1{
+	100%{
+		-o-transform:translate(39px);
+		opacity: 0;
+	}
+}
+@-ms-keyframes cssload-loading-ani1{
+	100%{
+		-ms-transform:translate(39px);
+		opacity: 0;
+	}
+}
+
+@-webkit-keyframes cssload-loading-ani1{
+	100%{
+		-webkit-transform:translate(39px);
+		opacity: 0;
+	}
+}
+
+@-moz-keyframes cssload-loading-ani1{
+	100%{
+		-moz-transform:translate(39px);
+		opacity: 0;
+	}
+}
+
+@keyframes cssload-loading-ani2{
+	100%{
+		transform:translate(19px);
+		opacity: 1;
+	}
+}
+
+@-o-keyframes cssload-loading-ani2{
+	100%{
+		-o-transform:translate(19px);
+		opacity: 1;
+	}
+}
+
+@-ms-keyframes cssload-loading-ani2{
+	100%{
+		-ms-transform:translate(19px);
+		opacity: 1;
+	}
+}
+
+@-webkit-keyframes cssload-loading-ani2{
+	100%{
+		-webkit-transform:translate(19px);
+		opacity: 1;
+	}
+}
+
+@-moz-keyframes cssload-loading-ani2{
+	100%{
+		-moz-transform:translate(19px);
+		opacity: 1;
+	}
+}
+
+@keyframes cssload-loading-ani3{
+	100%{
+		transform:translate(19px);
+	}
+}
+
+@-o-keyframes cssload-loading-ani3{
+	100%{
+		-o-transform:translate(19px);
+	}
+}
+
+@-ms-keyframes cssload-loading-ani3{
+	100%{
+		-ms-transform:translate(19px);
+	}
+}
+
+@-webkit-keyframes cssload-loading-ani3{
+	100%{
+		-webkit-transform:translate(19px);
+	}
+}
+
+@-moz-keyframes cssload-loading-ani3{
+	100%{
+		-moz-transform:translate(19px);
+	}
+}
+/*===== Preloader Nine =======*/
+
+/*=======Markup=====
+
+<div class="preloader-fountainTextG">
+	<div id="fountainTextG_1" class="fountainTextG">L</div>
+	<div id="fountainTextG_2" class="fountainTextG">o</div>
+	<div id="fountainTextG_3" class="fountainTextG">a</div>
+	<div id="fountainTextG_4" class="fountainTextG">d</div>
+	<div id="fountainTextG_5" class="fountainTextG">i</div>
+	<div id="fountainTextG_6" class="fountainTextG">n</div>
+	<div id="fountainTextG_7" class="fountainTextG">g</div>
+</div>
+
+*/
+.preloader-fountainTextG{
+	width:300px;
+	margin:auto;
+}
+
+.preloader-fountainTextG .fountainTextG{
+	color:rgb(0,0,0);
+	font-family:Arial;
+	font-size:31px;
+	text-decoration:none;
+	font-weight:normal;
+	font-style:normal;
+	float:left;
+	animation-name:bounce_fountainTextG;
+		-o-animation-name:bounce_fountainTextG;
+		-ms-animation-name:bounce_fountainTextG;
+		-webkit-animation-name:bounce_fountainTextG;
+		-moz-animation-name:bounce_fountainTextG;
+	animation-duration:2.09s;
+		-o-animation-duration:2.09s;
+		-ms-animation-duration:2.09s;
+		-webkit-animation-duration:2.09s;
+		-moz-animation-duration:2.09s;
+	animation-iteration-count:infinite;
+		-o-animation-iteration-count:infinite;
+		-ms-animation-iteration-count:infinite;
+		-webkit-animation-iteration-count:infinite;
+		-moz-animation-iteration-count:infinite;
+	animation-direction:normal;
+		-o-animation-direction:normal;
+		-ms-animation-direction:normal;
+		-webkit-animation-direction:normal;
+		-moz-animation-direction:normal;
+	transform:scale(.5);
+		-o-transform:scale(.5);
+		-ms-transform:scale(.5);
+		-webkit-transform:scale(.5);
+		-moz-transform:scale(.5);
+}.preloader-fountainTextG #fountainTextG_1{
+	animation-delay:0.75s;
+		-o-animation-delay:0.75s;
+		-ms-animation-delay:0.75s;
+		-webkit-animation-delay:0.75s;
+		-moz-animation-delay:0.75s;
+}
+.preloader-fountainTextG #fountainTextG_2{
+	animation-delay:0.9s;
+		-o-animation-delay:0.9s;
+		-ms-animation-delay:0.9s;
+		-webkit-animation-delay:0.9s;
+		-moz-animation-delay:0.9s;
+}
+.preloader-fountainTextG #fountainTextG_3{
+	animation-delay:1.05s;
+		-o-animation-delay:1.05s;
+		-ms-animation-delay:1.05s;
+		-webkit-animation-delay:1.05s;
+		-moz-animation-delay:1.05s;
+}
+.preloader-fountainTextG #fountainTextG_4{
+	animation-delay:1.2s;
+		-o-animation-delay:1.2s;
+		-ms-animation-delay:1.2s;
+		-webkit-animation-delay:1.2s;
+		-moz-animation-delay:1.2s;
+}
+.preloader-fountainTextG #fountainTextG_5{
+	animation-delay:1.35s;
+		-o-animation-delay:1.35s;
+		-ms-animation-delay:1.35s;
+		-webkit-animation-delay:1.35s;
+		-moz-animation-delay:1.35s;
+}
+.preloader-fountainTextG #fountainTextG_6{
+	animation-delay:1.5s;
+		-o-animation-delay:1.5s;
+		-ms-animation-delay:1.5s;
+		-webkit-animation-delay:1.5s;
+		-moz-animation-delay:1.5s;
+}
+.preloader-fountainTextG #fountainTextG_7{
+	animation-delay:1.64s;
+		-o-animation-delay:1.64s;
+		-ms-animation-delay:1.64s;
+		-webkit-animation-delay:1.64s;
+		-moz-animation-delay:1.64s;
+}
+@keyframes bounce_fountainTextG{
+	0%{
+		transform:scale(1);
+		color:rgb(0,0,0);
+	}
+
+	100%{
+		transform:scale(.5);
+		color:rgb(255,255,255);
+	}
+}
+
+@-o-keyframes bounce_fountainTextG{
+	0%{
+		-o-transform:scale(1);
+		color:rgb(0,0,0);
+	}
+
+	100%{
+		-o-transform:scale(.5);
+		color:rgb(255,255,255);
+	}
+}
+
+@-ms-keyframes bounce_fountainTextG{
+	0%{
+		-ms-transform:scale(1);
+		color:rgb(0,0,0);
+	}
+
+	100%{
+		-ms-transform:scale(.5);
+		color:rgb(255,255,255);
+	}
+}
+
+@-webkit-keyframes bounce_fountainTextG{
+	0%{
+		-webkit-transform:scale(1);
+		color:rgb(0,0,0);
+	}
+
+	100%{
+		-webkit-transform:scale(.5);
+		color:rgb(255,255,255);
+	}
+}
+
+@-moz-keyframes bounce_fountainTextG{
+	0%{
+		-moz-transform:scale(1);
+		color:rgb(0,0,0);
+	}
+
+	100%{
+		-moz-transform:scale(.5);
+		color:rgb(255,255,255);
+	}
+}
+/*===== Preloader Ten =======*/
+
+/*=======Markup=====
+
+<div class="preloader-circle-loading-wrapper">
+	<div class="cssload-loader"></div>
+</div>
+
+ */
+ .preloader-circle-loading-wrapper {
+	margin: 0px auto;
+	display: block;
+	width: 97px;
+}
+.preloader-circle-loading-wrapper .cssload-loader {
+	width: 49px;
+	height: 49px;
+	border-radius: 50%;
+	margin: 0;
+	display: inline-block;
+	position: relative;
+	vertical-align: middle;
+}
+.preloader-circle-loading-wrapper .cssload-loader {
+	width: 49px;
+	height: 49px;
+	border-radius: 50%;
+	margin: 0;
+	display: inline-block;
+	position: relative;
+	vertical-align: middle;
+	background-color: rgb(211,211,211);
+}
+.preloader-circle-loading-wrapper .cssload-loader,
+.preloader-circle-loading-wrapper .cssload-loader:before,
+.preloader-circle-loading-wrapper .cssload-loader:after {
+	animation: 1.15s infinite ease-in-out;
+		-o-animation: 1.15s infinite ease-in-out;
+		-ms-animation: 1.15s infinite ease-in-out;
+		-webkit-animation: 1.15s infinite ease-in-out;
+		-moz-animation: 1.15s infinite ease-in-out;
+}
+.preloader-circle-loading-wrapper .cssload-loader:before,
+.preloader-circle-loading-wrapper .cssload-loader:after {
+	width: 100%; 
+	height: 100%;
+	border-radius: 50%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.preloader-circle-loading-wrapper .cssload-loader:before,
+.preloader-circle-loading-wrapper .cssload-loader:after {
+		content: "";
+}
+.preloader-circle-loading-wrapper .cssload-loader:before {
+	content: '';
+	border: 10px solid white;
+	top: 0px;
+	left: 0px;
+	animation-name: cssload-animation;
+		-o-animation-name: cssload-animation;
+		-ms-animation-name: cssload-animation;
+		-webkit-animation-name: cssload-animation;
+		-moz-animation-name: cssload-animation;
+}
+@keyframes cssload-animation {
+	0% { transform: scale(0); }
+	100% { transform: scale(1); }
+}
+
+@-o-keyframes cssload-animation {
+	0% { -o-transform: scale(0); }
+	100% { -o-transform: scale(1); }
+}
+
+@-ms-keyframes cssload-animation {
+	0% { -ms-transform: scale(0); }
+	100% { -ms-transform: scale(1); }
+}
+
+@-webkit-keyframes cssload-animation {
+	0% { -webkit-transform: scale(0); }
+	100% { -webkit-transform: scale(1); }
+}
+
+@-moz-keyframes cssload-animation {
+	0% { -moz-transform: scale(0); }
+	100% { -moz-transform: scale(1); }
+}
+
+/*===== Preloader Eleven =======*/
+
+/*=======Markup=====
+
+<div class="preloader-dot-circle-rotator"></div>
+
+*/
+.preloader-dot-circle-rotator{
+	position: relative;
+	width: 12px;
+	height: 12px;
+	left: 46%;
+	left: calc(50% - 6px);
+		left: -o-calc(50% - 6px);
+		left: -ms-calc(50% - 6px);
+		left: -webkit-calc(50% - 6px);
+		left: -moz-calc(50% - 6px);
+	
+	border-radius: 12px;
+	background-color: rgb(0,0,0);
+	transform-origin:	50% 50%;
+		-o-transform-origin:	50% 50%;
+		-ms-transform-origin:	50% 50%;
+		-webkit-transform-origin:	50% 50%;
+		-moz-transform-origin:	50% 50%;
+	animation: cssload-loader 1.15s ease-in-out infinite;
+		-o-animation: cssload-loader 1.15s ease-in-out infinite;
+		-ms-animation: cssload-loader 1.15s ease-in-out infinite;
+		-webkit-animation: cssload-loader 1.15s ease-in-out infinite;
+		-moz-animation: cssload-loader 1.15s ease-in-out infinite;
+}
+
+.preloader-dot-circle-rotator:before{
+	content: "";
+	position: absolute;
+	background-color: rgb(0,0,0);
+	top: 0px;
+	left: -24px;
+	height: 12px;
+	width: 12px;
+	border-radius: 12px;
+}
+
+.preloader-dot-circle-rotator:after{
+	content: "";
+	position: absolute;
+	background-color: rgb(0,0,0);
+	top: 0px;
+	left: 24px;
+	height: 12px;
+	width: 12px;
+	border-radius: 12px;
+}
+
+@keyframes cssload-loader{
+		0%{transform:rotate(0deg);}
+		50%{transform:rotate(180deg);}
+		100%{transform:rotate(180deg);}
+}
+
+@-o-keyframes cssload-loader{
+		0%{-o-transform:rotate(0deg);}
+		50%{-o-transform:rotate(180deg);}
+		100%{-o-transform:rotate(180deg);}
+}
+
+@-ms-keyframes cssload-loader{
+		0%{-ms-transform:rotate(0deg);}
+		50%{-ms-transform:rotate(180deg);}
+		100%{-ms-transform:rotate(180deg);}
+}
+
+@-webkit-keyframes cssload-loader{
+		0%{-webkit-transform:rotate(0deg);}
+		50%{-webkit-transform:rotate(180deg);}
+		100%{-webkit-transform:rotate(180deg);}
+}
+
+@-moz-keyframes cssload-loader{
+		0%{-moz-transform:rotate(0deg);}
+		50%{-moz-transform:rotate(180deg);}
+		100%{-moz-transform:rotate(180deg);}
+}
+
+/*===== Preloader Twelve =======*/
+
+/*=======Markup=====
+
+<div class="preloader-bubblingG">
+	<span id="bubblingG_1">
+	</span>
+	<span id="bubblingG_2">
+	</span>
+	<span id="bubblingG_3">
+	</span>
+</div>
+*/
+.preloader-bubblingG {
+	text-align: center;
+	width:78px;
+	height:49px;
+	margin: auto;
+}
+.preloader-bubblingG span {
+	display: inline-block;
+	vertical-align: middle;
+	width: 10px;
+	height: 10px;
+	margin: 24px auto;
+	background: rgb(0,0,0);
+	border-radius: 49px;
+		-o-border-radius: 49px;
+		-ms-border-radius: 49px;
+		-webkit-border-radius: 49px;
+		-moz-border-radius: 49px;
+	animation: bubblingG 1.5s infinite alternate;
+		-o-animation: bubblingG 1.5s infinite alternate;
+		-ms-animation: bubblingG 1.5s infinite alternate;
+		-webkit-animation: bubblingG 1.5s infinite alternate;
+		-moz-animation: bubblingG 1.5s infinite alternate;
+}
+.preloader-bubblingG #bubblingG_1 {
+	animation-delay: 0s;
+		-o-animation-delay: 0s;
+		-ms-animation-delay: 0s;
+		-webkit-animation-delay: 0s;
+		-moz-animation-delay: 0s;
+}
+
+.preloader-bubblingG #bubblingG_2 {
+	animation-delay: 0.45s;
+		-o-animation-delay: 0.45s;
+		-ms-animation-delay: 0.45s;
+		-webkit-animation-delay: 0.45s;
+		-moz-animation-delay: 0.45s;
+}
+.preloader-bubblingG #bubblingG_3 {
+	animation-delay: 0.9s;
+		-o-animation-delay: 0.9s;
+		-ms-animation-delay: 0.9s;
+		-webkit-animation-delay: 0.9s;
+		-moz-animation-delay: 0.9s;
+}
+@keyframes bubblingG {
+	0% {
+		width: 10px;
+		height: 10px;
+		background-color:rgb(0,0,0);
+		transform: translateY(0);
+	}
+
+	100% {
+		width: 23px;
+		height: 23px;
+		background-color:rgb(255,255,255);
+		transform: translateY(-20px);
+	}
+}
+
+@-o-keyframes bubblingG {
+	0% {
+		width: 10px;
+		height: 10px;
+		background-color:rgb(0,0,0);
+		-o-transform: translateY(0);
+	}
+
+	100% {
+		width: 23px;
+		height: 23px;
+		background-color:rgb(255,255,255);
+		-o-transform: translateY(-20px);
+	}
+}
+
+@-ms-keyframes bubblingG {
+	0% {
+		width: 10px;
+		height: 10px;
+		background-color:rgb(0,0,0);
+		-ms-transform: translateY(0);
+	}
+
+	100% {
+		width: 23px;
+		height: 23px;
+		background-color:rgb(255,255,255);
+		-ms-transform: translateY(-20px);
+	}
+}
+
+@-webkit-keyframes bubblingG {
+	0% {
+		width: 10px;
+		height: 10px;
+		background-color:rgb(0,0,0);
+		-webkit-transform: translateY(0);
+	}
+
+	100% {
+		width: 23px;
+		height: 23px;
+		background-color:rgb(255,255,255);
+		-webkit-transform: translateY(-20px);
+	}
+}
+
+@-moz-keyframes bubblingG {
+	0% {
+		width: 10px;
+		height: 10px;
+		background-color:rgb(0,0,0);
+		-moz-transform: translateY(0);
+	}
+
+	100% {
+		width: 23px;
+		height: 23px;
+		background-color:rgb(255,255,255);
+		-moz-transform: translateY(-20px);
+	}
+}
+
+/*===== Preloader Thirteen =======*/
+
+/*=======Markup=====
+
+<div class="preloader-coffee"></div>
+*/
+.preloader-coffee {
+	text-align:left;
+	height: 49px;
+	width: 39px;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	position: absolute;
+	left: 50%;
+	z-index: 999;
+	background: linear-gradient(to bottom left, rgb(247,148,30), rgb(194,108,7));
+		background: -o-linear-gradient(to bottom left, rgb(247,148,30), rgb(194,108,7));
+		background: -ms-linear-gradient(to bottom left, rgb(247,148,30), rgb(194,108,7));
+		background: -webkit-linear-gradient(to bottom left, rgb(247,148,30), rgb(194,108,7));
+		background: -moz-linear-gradient(to bottom left, rgb(247,148,30), rgb(194,108,7));
+}
+.preloader-coffee:before {
+	position: absolute;
+	content: "";
+	right: -15px;
+	top: 5px;
+	height: 24px;
+	width: 10px;
+	background: transparent;
+	border: 5px solid rgb(247,148,30);
+	border-left: 5px solid transparent;
+	border-bottom: 5px solid rgb(231,129,8);
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	z-index: 1;
+}
+.preloader-coffee:after {
+	position: absolute;
+	content: "";
+	width: 5px;
+	height: 29px;
+	background: rgb(225,225,225);
+	border-radius: 4px;
+	top: -29px;
+	box-shadow: 34px 0px 0 rgb(225,225,225), 17.5px -15px 0 rgb(225,225,225);
+	opacity: 1;
+	animation: cssload-steam 3.45s ease infinite;
+		-o-animation: cssload-steam 3.45s ease infinite;
+		-ms-animation: cssload-steam 3.45s ease infinite;
+		-webkit-animation: cssload-steam 3.45s ease infinite;
+		-moz-animation: cssload-steam 3.45s ease infinite;
+}
+
+
+
+@keyframes cssload-steam {
+	100% {
+		top: -39px;
+		background: rgb(238,238,238);
+		box-shadow: 34px 0px 0 rgb(238,238,238), 17.5px -15px 0 rgb(238,238,238);
+		opacity: 0.25;
+	}
+}
+
+@-o-keyframes cssload-steam {
+	100% {
+		top: -39px;
+		background: rgb(238,238,238);
+		box-shadow: 34px 0px 0 rgb(238,238,238), 17.5px -15px 0 rgb(238,238,238);
+		opacity: 0.25;
+	}
+}
+
+@-ms-keyframes cssload-steam {
+	100% {
+		top: -39px;
+		background: rgb(238,238,238);
+		box-shadow: 34px 0px 0 rgb(238,238,238), 17.5px -15px 0 rgb(238,238,238);
+		opacity: 0.25;
+	}
+}
+
+@-webkit-keyframes cssload-steam {
+	100% {
+		top: -39px;
+		background: rgb(238,238,238);
+		box-shadow: 34px 0px 0 rgb(238,238,238), 17.5px -15px 0 rgb(238,238,238);
+		opacity: 0.25;
+	}
+}
+
+@-moz-keyframes cssload-steam {
+	100% {
+		top: -39px;
+		background: rgb(238,238,238);
+		box-shadow: 34px 0px 0 rgb(238,238,238), 17.5px -15px 0 rgb(238,238,238);
+		opacity: 0.25;
+	}
+}
+
+/*===== Preloader Fourteen =======*/
+
+/*=======Markup=====
+
+<div class="preloader-orbit-loading">
+	<div class="cssload-inner cssload-one"></div>
+	<div class="cssload-inner cssload-two"></div>
+	<div class="cssload-inner cssload-three"></div>
+</div>
+*/
+.preloader-orbit-loading {
+	position: relative;
+	left: calc(50% - 31px);
+	width: 62px;
+	height: 62px;
+	border-radius: 50%;
+		-o-border-radius: 50%;
+		-ms-border-radius: 50%;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+	perspective: 780px;
+}
+
+.preloader-orbit-loading .cssload-inner {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+		-o-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+	border-radius: 50%;
+		-o-border-radius: 50%;
+		-ms-border-radius: 50%;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;	
+}
+
+.preloader-orbit-loading .cssload-inner.cssload-one {
+	left: 0%;
+	top: 0%;
+	animation: cssload-rotate-one 1.15s linear infinite;
+		-o-animation: cssload-rotate-one 1.15s linear infinite;
+		-ms-animation: cssload-rotate-one 1.15s linear infinite;
+		-webkit-animation: cssload-rotate-one 1.15s linear infinite;
+		-moz-animation: cssload-rotate-one 1.15s linear infinite;
+	border-bottom: 3px solid rgb(0,0,0);
+}
+
+.preloader-orbit-loading .cssload-inner.cssload-two {
+	right: 0%;
+	top: 0%;
+	animation: cssload-rotate-two 1.15s linear infinite;
+		-o-animation: cssload-rotate-two 1.15s linear infinite;
+		-ms-animation: cssload-rotate-two 1.15s linear infinite;
+		-webkit-animation: cssload-rotate-two 1.15s linear infinite;
+		-moz-animation: cssload-rotate-two 1.15s linear infinite;
+	border-right: 3px solid rgb(0,0,0);
+}
+
+.preloader-orbit-loading .cssload-inner.cssload-three {
+	right: 0%;
+	bottom: 0%;
+	animation: cssload-rotate-three 1.15s linear infinite;
+		-o-animation: cssload-rotate-three 1.15s linear infinite;
+		-ms-animation: cssload-rotate-three 1.15s linear infinite;
+		-webkit-animation: cssload-rotate-three 1.15s linear infinite;
+		-moz-animation: cssload-rotate-three 1.15s linear infinite;
+	border-top: 3px solid rgb(0,0,0);
+}
+@keyframes cssload-rotate-one {
+	0% {
+		transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+	}
+	100% {
+		transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+	}
+}
+
+@-o-keyframes cssload-rotate-one {
+	0% {
+		-o-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+	}
+	100% {
+		-o-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+	}
+}
+
+@-ms-keyframes cssload-rotate-one {
+	0% {
+		-ms-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+	}
+	100% {
+		-ms-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+	}
+}
+
+@-webkit-keyframes cssload-rotate-one {
+	0% {
+		-webkit-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+	}
+	100% {
+		-webkit-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+	}
+}
+
+@-moz-keyframes cssload-rotate-one {
+	0% {
+		-moz-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+	}
+	100% {
+		-moz-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+	}
+}
+
+@keyframes cssload-rotate-two {
+	0% {
+		transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+	}
+	100% {
+		transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+	}
+}
+
+@-o-keyframes cssload-rotate-two {
+	0% {
+		-o-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+	}
+	100% {
+		-o-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+	}
+}
+
+@-ms-keyframes cssload-rotate-two {
+	0% {
+		-ms-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+	}
+	100% {
+		-ms-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+	}
+}
+
+@-webkit-keyframes cssload-rotate-two {
+	0% {
+		-webkit-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+	}
+	100% {
+		-webkit-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+	}
+}
+
+@-moz-keyframes cssload-rotate-two {
+	0% {
+		-moz-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+	}
+	100% {
+		-moz-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+	}
+}
+
+@keyframes cssload-rotate-three {
+	0% {
+		transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+	}
+	100% {
+		transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+	}
+}
+
+@-o-keyframes cssload-rotate-three {
+	0% {
+		-o-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+	}
+	100% {
+		-o-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+	}
+}
+
+@-ms-keyframes cssload-rotate-three {
+	0% {
+		-ms-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+	}
+	100% {
+		-ms-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+	}
+}
+
+@-webkit-keyframes cssload-rotate-three {
+	0% {
+		-webkit-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+	}
+	100% {
+		-webkit-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+	}
+}
+
+@-moz-keyframes cssload-rotate-three {
+	0% {
+		-moz-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+	}
+	100% {
+		-moz-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+	}
+}
+
+/*===== Preloader Fifteen =======*/
+
+/*=======Markup=====
+
+<div class="preloader-battery">
+	<div class="cssload-liquid"></div>
+</div>
+*/
+.preloader-battery {
+	display: block;
+	margin:0px auto;
+	position: relative;
+	width: 2.25rem;
+	height: 4.5rem;
+	box-shadow: 0 0 0 0.2rem rgb(66,92,119);
+		-o-box-shadow: 0 0 0 0.2rem rgb(66,92,119);
+		-ms-box-shadow: 0 0 0 0.2rem rgb(66,92,119);
+		-webkit-box-shadow: 0 0 0 0.2rem rgb(66,92,119);
+		-moz-box-shadow: 0 0 0 0.2rem rgb(66,92,119);
+	border-radius: 0.09rem;
+		-o-border-radius: 0.09rem;
+		-ms-border-radius: 0.09rem;
+		-webkit-border-radius: 0.09rem;
+		-moz-border-radius: 0.09rem;
+	background: white;
+}
+.preloader-battery:before {
+	content: '';
+	position: absolute;
+	left: 0.5625rem;
+	right: 0.5625rem;
+	top: -0.3375rem;
+	height: 0.3375rem;
+	width: 1.125rem;
+	background: rgb(66,92,119);
+	border-radius: 0.18rem;
+		-o-border-radius: 0.18rem;
+		-ms-border-radius: 0.18rem;
+		-webkit-border-radius: 0.18rem;
+		-moz-border-radius: 0.18rem;
+}
+.preloader-battery:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	border-right: 2.25rem solid transparent;
+	border-bottom: 4.05rem solid rgba(255,255,255,0.32);
+}
+
+.preloader-battery .cssload-liquid {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 2.25rem;
+	background: rgb(113,251,133);
+	animation: load 2.59s infinite;
+		-o-animation: load 2.59s infinite;
+		-ms-animation: load 2.59s infinite;
+		-webkit-animation: load 2.59s infinite;
+		-moz-animation: load 2.59s infinite;
+}
+.preloader-battery .cssload-liquid:after, .preloader-battery .cssload-liquid:before {
+	content: '';
+	position: absolute;
+	top: -0.5rem;
+	height: 1.125rem;
+	width: 1.4625rem;
+	background: rgb(113,251,133);
+	opacity: 0;
+	border-radius: 50%;
+		-o-border-radius: 50%;
+		-ms-border-radius: 50%;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+}
+.preloader-battery .cssload-liquid:after {
+	right: 0;
+	animation: cssload-liquid-1 2.59s infinite;
+		-o-animation: cssload-liquid-1 2.59s infinite;
+		-ms-animation: cssload-liquid-1 2.59s infinite;
+		-webkit-animation: cssload-liquid-1 2.59s infinite;
+		-moz-animation: cssload-liquid-1 2.59s infinite;
+}
+.preloader-battery .cssload-liquid:before {
+	left: 0;
+	animation: cssload-liquid-2 2.59s infinite;
+		-o-animation: cssload-liquid-2 2.59s infinite;
+		-ms-animation: cssload-liquid-2 2.59s infinite;
+		-webkit-animation: cssload-liquid-2 2.59s infinite;
+		-moz-animation: cssload-liquid-2 2.59s infinite;
+}
+
+@keyframes load {
+	0% {
+		top: 4.5rem;
+	}
+	70% {
+		top: 1.125rem;
+	}
+	90% {
+		top: 0;
+	}
+	95% {
+		top: 0;
+	}
+	100% {
+		top: 4.5rem;
+	}
+}
+
+@-o-keyframes load {
+	0% {
+		top: 4.5rem;
+	}
+	70% {
+		top: 1.125rem;
+	}
+	90% {
+		top: 0;
+	}
+	95% {
+		top: 0;
+	}
+	100% {
+		top: 4.5rem;
+	}
+}
+
+@-ms-keyframes load {
+	0% {
+		top: 4.5rem;
+	}
+	70% {
+		top: 1.125rem;
+	}
+	90% {
+		top: 0;
+	}
+	95% {
+		top: 0;
+	}
+	100% {
+		top: 4.5rem;
+	}
+}
+
+@-webkit-keyframes load {
+	0% {
+		top: 4.5rem;
+	}
+	70% {
+		top: 1.125rem;
+	}
+	90% {
+		top: 0;
+	}
+	95% {
+		top: 0;
+	}
+	100% {
+		top: 4.5rem;
+	}
+}
+
+@-moz-keyframes load {
+	0% {
+		top: 4.5rem;
+	}
+	70% {
+		top: 1.125rem;
+	}
+	90% {
+		top: 0;
+	}
+	95% {
+		top: 0;
+	}
+	100% {
+		top: 4.5rem;
+	}
+}
+
+@keyframes cssload-liquid-1 {
+	0% {
+		height: 0;
+		opacity: 0;
+		top: -0.5rem;
+	}
+	22% {
+		height: 0.28125rem;
+		top: 0.375rem;
+		opacity: 1;
+	}
+	25% {
+		top: -0.25rem;
+	}
+	35% {
+		height: 1.125rem;
+		top: -0.5rem;
+	}
+	55% {
+		height: 0.28125rem;
+		top: -0.125rem;
+	}
+	60% {
+		height: 0.61875rem;
+		opacity: 1;
+		top: -0.275rem;
+	}
+	96% {
+		height: 0.84375rem;
+		opacity: 0;
+		top: 0.5rem;
+	}
+	100% {
+		height: 0;
+		opacity: 0;
+	}
+}
+
+@-o-keyframes cssload-liquid-1 {
+	0% {
+		height: 0;
+		opacity: 0;
+		top: -0.5rem;
+	}
+	22% {
+		height: 0.28125rem;
+		top: 0.375rem;
+		opacity: 1;
+	}
+	25% {
+		top: -0.25rem;
+	}
+	35% {
+		height: 1.125rem;
+		top: -0.5rem;
+	}
+	55% {
+		height: 0.28125rem;
+		top: -0.125rem;
+	}
+	60% {
+		height: 0.61875rem;
+		opacity: 1;
+		top: -0.275rem;
+	}
+	96% {
+		height: 0.84375rem;
+		opacity: 0;
+		top: 0.5rem;
+	}
+	100% {
+		height: 0;
+		opacity: 0;
+	}
+}
+
+@-ms-keyframes cssload-liquid-1 {
+	0% {
+		height: 0;
+		opacity: 0;
+		top: -0.5rem;
+	}
+	22% {
+		height: 0.28125rem;
+		top: 0.375rem;
+		opacity: 1;
+	}
+	25% {
+		top: -0.25rem;
+	}
+	35% {
+		height: 1.125rem;
+		top: -0.5rem;
+	}
+	55% {
+		height: 0.28125rem;
+		top: -0.125rem;
+	}
+	60% {
+		height: 0.61875rem;
+		opacity: 1;
+		top: -0.275rem;
+	}
+	96% {
+		height: 0.84375rem;
+		opacity: 0;
+		top: 0.5rem;
+	}
+	100% {
+		height: 0;
+		opacity: 0;
+	}
+}
+
+@-webkit-keyframes cssload-liquid-1 {
+	0% {
+		height: 0;
+		opacity: 0;
+		top: -0.5rem;
+	}
+	22% {
+		height: 0.28125rem;
+		top: 0.375rem;
+		opacity: 1;
+	}
+	25% {
+		top: -0.25rem;
+	}
+	35% {
+		height: 1.125rem;
+		top: -0.5rem;
+	}
+	55% {
+		height: 0.28125rem;
+		top: -0.125rem;
+	}
+	60% {
+		height: 0.61875rem;
+		opacity: 1;
+		top: -0.275rem;
+	}
+	96% {
+		height: 0.84375rem;
+		opacity: 0;
+		top: 0.5rem;
+	}
+	100% {
+		height: 0;
+		opacity: 0;
+	}
+}
+
+@-moz-keyframes cssload-liquid-1 {
+	0% {
+		height: 0;
+		opacity: 0;
+		top: -0.5rem;
+	}
+	22% {
+		height: 0.28125rem;
+		top: 0.375rem;
+		opacity: 1;
+	}
+	25% {
+		top: -0.25rem;
+	}
+	35% {
+		height: 1.125rem;
+		top: -0.5rem;
+	}
+	55% {
+		height: 0.28125rem;
+		top: -0.125rem;
+	}
+	60% {
+		height: 0.61875rem;
+		opacity: 1;
+		top: -0.275rem;
+	}
+	96% {
+		height: 0.84375rem;
+		opacity: 0;
+		top: 0.5rem;
+	}
+	100% {
+		height: 0;
+		opacity: 0;
+	}
+}
+
+@keyframes cssload-liquid-2 {
+	0% {
+		height: 0;
+		opacity: 0;
+		top: -0.5rem;
+	}
+	17.5% {
+		height: 0.28125rem;
+		top: 0.2rem;
+		opacity: 1;
+	}
+	20% {
+		top: -0.25rem;
+	}
+	25% {
+		height: 1.40625rem;
+		top: -0.625rem;
+	}
+	45% {
+		height: 0.28125rem;
+		top: -0.125rem;
+	}
+	60% {
+		height: 1.40625rem;
+		opacity: 1;
+		top: -0.5rem;
+	}
+	96% {
+		height: 0.84375rem;
+		opacity: 0;
+		top: 0.5rem;
+	}
+	100% {
+		height: 0;
+		opacity: 0;
+	}
+}
+
+@-o-keyframes cssload-liquid-2 {
+	0% {
+		height: 0;
+		opacity: 0;
+		top: -0.5rem;
+	}
+	17.5% {
+		height: 0.28125rem;
+		top: 0.2rem;
+		opacity: 1;
+	}
+	20% {
+		top: -0.25rem;
+	}
+	25% {
+		height: 1.40625rem;
+		top: -0.625rem;
+	}
+	45% {
+		height: 0.28125rem;
+		top: -0.125rem;
+	}
+	60% {
+		height: 1.40625rem;
+		opacity: 1;
+		top: -0.5rem;
+	}
+	96% {
+		height: 0.84375rem;
+		opacity: 0;
+		top: 0.5rem;
+	}
+	100% {
+		height: 0;
+		opacity: 0;
+	}
+}
+
+@-ms-keyframes cssload-liquid-2 {
+	0% {
+		height: 0;
+		opacity: 0;
+		top: -0.5rem;
+	}
+	17.5% {
+		height: 0.28125rem;
+		top: 0.2rem;
+		opacity: 1;
+	}
+	20% {
+		top: -0.25rem;
+	}
+	25% {
+		height: 1.40625rem;
+		top: -0.625rem;
+	}
+	45% {
+		height: 0.28125rem;
+		top: -0.125rem;
+	}
+	60% {
+		height: 1.40625rem;
+		opacity: 1;
+		top: -0.5rem;
+	}
+	96% {
+		height: 0.84375rem;
+		opacity: 0;
+		top: 0.5rem;
+	}
+	100% {
+		height: 0;
+		opacity: 0;
+	}
+}
+
+@-webkit-keyframes cssload-liquid-2 {
+	0% {
+		height: 0;
+		opacity: 0;
+		top: -0.5rem;
+	}
+	17.5% {
+		height: 0.28125rem;
+		top: 0.2rem;
+		opacity: 1;
+	}
+	20% {
+		top: -0.25rem;
+	}
+	25% {
+		height: 1.40625rem;
+		top: -0.625rem;
+	}
+	45% {
+		height: 0.28125rem;
+		top: -0.125rem;
+	}
+	60% {
+		height: 1.40625rem;
+		opacity: 1;
+		top: -0.5rem;
+	}
+	96% {
+		height: 0.84375rem;
+		opacity: 0;
+		top: 0.5rem;
+	}
+	100% {
+		height: 0;
+		opacity: 0;
+	}
+}
+
+@-moz-keyframes cssload-liquid-2 {
+	0% {
+		height: 0;
+		opacity: 0;
+		top: -0.5rem;
+	}
+	17.5% {
+		height: 0.28125rem;
+		top: 0.2rem;
+		opacity: 1;
+	}
+	20% {
+		top: -0.25rem;
+	}
+	25% {
+		height: 1.40625rem;
+		top: -0.625rem;
+	}
+	45% {
+		height: 0.28125rem;
+		top: -0.125rem;
+	}
+	60% {
+		height: 1.40625rem;
+		opacity: 1;
+		top: -0.5rem;
+	}
+	96% {
+		height: 0.84375rem;
+		opacity: 0;
+		top: 0.5rem;
+	}
+	100% {
+		height: 0;
+		opacity: 0;
+	}
+}
+/*===== Preloader Sixteen =======*/
+
+/*=======Markup=====
+
+<div class="preloader-equalizer">
+	<ul>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+</div>
+*/
+
+.preloader-equalizer {
+	position: absolute;
+	margin: 50px auto;
+	left: 0;
+	right: 0;
+	width: 88px;
+}
+.preloader-equalizer ul {
+	margin: 0;
+	list-style: none;
+	width: 88px;
+	height: 63px;
+	position: relative;
+	padding: 0;
+	height: 10px;
+}
+.preloader-equalizer ul li {
+	position: absolute;
+	width: 2px;
+	height: 0;
+	background-color: rgb(0,0,0);
+	bottom: 0;
+}
+.preloader-equalizer li:nth-child(1) {
+	left: 0;
+	animation: cssload-sequence1 1.15s ease infinite 0;
+		-o-animation: cssload-sequence1 1.15s ease infinite 0;
+		-ms-animation: cssload-sequence1 1.15s ease infinite 0;
+		-webkit-animation: cssload-sequence1 1.15s ease infinite 0;
+		-moz-animation: cssload-sequence1 1.15s ease infinite 0;
+}
+.preloader-equalizer li:nth-child(2) {
+	left: 15px;
+	animation: cssload-sequence2 1.15s ease infinite 0.12s;
+		-o-animation: cssload-sequence2 1.15s ease infinite 0.12s;
+		-ms-animation: cssload-sequence2 1.15s ease infinite 0.12s;
+		-webkit-animation: cssload-sequence2 1.15s ease infinite 0.12s;
+		-moz-animation: cssload-sequence2 1.15s ease infinite 0.12s;
+}
+.preloader-equalizer li:nth-child(3) {
+	left: 29px;
+	animation: cssload-sequence1 1.15s ease-in-out infinite 0.23s;
+		-o-animation: cssload-sequence1 1.15s ease-in-out infinite 0.23s;
+		-ms-animation: cssload-sequence1 1.15s ease-in-out infinite 0.23s;
+		-webkit-animation: cssload-sequence1 1.15s ease-in-out infinite 0.23s;
+		-moz-animation: cssload-sequence1 1.15s ease-in-out infinite 0.23s;
+}
+.preloader-equalizer li:nth-child(4) {
+	left: 44px;
+	animation: cssload-sequence2 1.15s ease-in infinite 0.35s;
+		-o-animation: cssload-sequence2 1.15s ease-in infinite 0.35s;
+		-ms-animation: cssload-sequence2 1.15s ease-in infinite 0.35s;
+		-webkit-animation: cssload-sequence2 1.15s ease-in infinite 0.35s;
+		-moz-animation: cssload-sequence2 1.15s ease-in infinite 0.35s;
+}
+.preloader-equalizer li:nth-child(5) {
+	left: 58px;
+	animation: cssload-sequence1 1.15s ease-in-out infinite 0.46s;
+		-o-animation: cssload-sequence1 1.15s ease-in-out infinite 0.46s;
+		-ms-animation: cssload-sequence1 1.15s ease-in-out infinite 0.46s;
+		-webkit-animation: cssload-sequence1 1.15s ease-in-out infinite 0.46s;
+		-moz-animation: cssload-sequence1 1.15s ease-in-out infinite 0.46s;
+}
+.preloader-equalizer li:nth-child(6) {
+	left: 73px;
+	animation: cssload-sequence2 1.15s ease infinite 0.58s;
+		-o-animation: cssload-sequence2 1.15s ease infinite 0.58s;
+		-ms-animation: cssload-sequence2 1.15s ease infinite 0.58s;
+		-webkit-animation: cssload-sequence2 1.15s ease infinite 0.58s;
+		-moz-animation: cssload-sequence2 1.15s ease infinite 0.58s;
+}
+
+@keyframes cssload-sequence1 {
+	0% {
+		height: 10px;
+	}
+	50% {
+		height: 49px;
+	}
+	100% {
+		height: 10px;
+	}
+}
+
+@-o-keyframes cssload-sequence1 {
+	0% {
+		height: 10px;
+	}
+	50% {
+		height: 49px;
+	}
+	100% {
+		height: 10px;
+	}
+}
+
+@-ms-keyframes cssload-sequence1 {
+	0% {
+		height: 10px;
+	}
+	50% {
+		height: 49px;
+	}
+	100% {
+		height: 10px;
+	}
+}
+
+@-webkit-keyframes cssload-sequence1 {
+	0% {
+		height: 10px;
+	}
+	50% {
+		height: 49px;
+	}
+	100% {
+		height: 10px;
+	}
+}
+
+@-moz-keyframes cssload-sequence1 {
+	0% {
+		height: 10px;
+	}
+	50% {
+		height: 49px;
+	}
+	100% {
+		height: 10px;
+	}
+}
+
+@keyframes cssload-sequence2 {
+	0% {
+		height: 19px;
+	}
+	50% {
+		height: 63px;
+	}
+	100% {
+		height: 19px;
+	}
+}
+
+@-o-keyframes cssload-sequence2 {
+	0% {
+		height: 19px;
+	}
+	50% {
+		height: 63px;
+	}
+	100% {
+		height: 19px;
+	}
+}
+
+@-ms-keyframes cssload-sequence2 {
+	0% {
+		height: 19px;
+	}
+	50% {
+		height: 63px;
+	}
+	100% {
+		height: 19px;
+	}
+}
+
+@-webkit-keyframes cssload-sequence2 {
+	0% {
+		height: 19px;
+	}
+	50% {
+		height: 63px;
+	}
+	100% {
+		height: 19px;
+	}
+}
+
+@-moz-keyframes cssload-sequence2 {
+	0% {
+		height: 19px;
+	}
+	50% {
+		height: 63px;
+	}
+	100% {
+		height: 19px;
+	}
+}
+
+/*===== Preloader Seventeen =======*/
+
+/*=======Markup=====
+
+<div class="preloader-square-swapping">
+	<div class="cssload-square-part cssload-square-green"></div>
+	<div class="cssload-square-part cssload-square-pink"></div>
+	<div class="cssload-square-blend"></div>
+</div>
+*/
+.preloader-square-swapping {
+	margin: 30px auto;
+	width: 19px;
+	height: 19px;
+	transform: rotate(-45deg);
+		-o-transform: rotate(-45deg);
+		-ms-transform: rotate(-45deg);
+		-webkit-transform: rotate(-45deg);
+		-moz-transform: rotate(-45deg);
+}
+
+.preloader-square-swapping .cssload-square-part {
+	position: absolute;
+	width: 19px;
+	height: 19px;
+	z-index: 1;
+	animation: cssload-part-anim 0.92s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite alternate;
+		-o-animation: cssload-part-anim 0.92s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite alternate;
+		-ms-animation: cssload-part-anim 0.92s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite alternate;
+		-webkit-animation: cssload-part-anim 0.92s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite alternate;
+		-moz-animation: cssload-part-anim 0.92s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite alternate;
+}
+
+.preloader-square-swapping .cssload-square-green {
+	background: rgb(84,250,212);
+	right: 0;
+	bottom: 0;
+	animation-direction: alternate-reverse;
+		-o-animation-direction: alternate-reverse;
+		-ms-animation-direction: alternate-reverse;
+		-webkit-animation-direction: alternate-reverse;
+		-moz-animation-direction: alternate-reverse;
+}
+
+.preloader-square-swapping .cssload-square-pink {
+	background: rgb(233,111,146);
+	left: 0;
+	top: 0;
+}
+
+.preloader-square-swapping .cssload-square-blend {
+	background: rgb(117,81,125);
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 2;
+	animation: blend-anim 0.92s ease-in infinite;
+		-o-animation: blend-anim 0.92s ease-in infinite;
+		-ms-animation: blend-anim 0.92s ease-in infinite;
+		-webkit-animation: blend-anim 0.92s ease-in infinite;
+		-moz-animation: blend-anim 0.92s ease-in infinite;
+}
+
+@keyframes blend-anim {
+	0% {
+		transform: scale(0.01, 0.01) rotateY(0);
+		animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+	}
+	50% {
+		transform: scale(1, 1) rotateY(0);
+		animation-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
+	}
+	100% {
+		transform: scale(0.01, 0.01) rotateY(0);
+	}
+}
+
+@-o-keyframes blend-anim {
+	0% {
+		-o-transform: scale(0.01, 0.01) rotateY(0);
+		-o-animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+	}
+	50% {
+		-o-transform: scale(1, 1) rotateY(0);
+		-o-animation-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
+	}
+	100% {
+		-o-transform: scale(0.01, 0.01) rotateY(0);
+	}
+}
+
+@-ms-keyframes blend-anim {
+	0% {
+		-ms-transform: scale(0.01, 0.01) rotateY(0);
+		-ms-animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+	}
+	50% {
+		-ms-transform: scale(1, 1) rotateY(0);
+		-ms-animation-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
+	}
+	100% {
+		-ms-transform: scale(0.01, 0.01) rotateY(0);
+	}
+}
+
+@-webkit-keyframes blend-anim {
+	0% {
+		-webkit-transform: scale(0.01, 0.01) rotateY(0);
+		-webkit-animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+	}
+	50% {
+		-webkit-transform: scale(1, 1) rotateY(0);
+		-webkit-animation-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
+	}
+	100% {
+		-webkit-transform: scale(0.01, 0.01) rotateY(0);
+	}
+}
+
+@-moz-keyframes blend-anim {
+	0% {
+		-moz-transform: scale(0.01, 0.01) rotateY(0);
+		-moz-animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+	}
+	50% {
+		-moz-transform: scale(1, 1) rotateY(0);
+		-moz-animation-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
+	}
+	100% {
+		-moz-transform: scale(0.01, 0.01) rotateY(0);
+	}
+}
+
+@keyframes cssload-part-anim {
+	0% {
+		transform: translate3d(-10px, -10px, 0);
+	}
+	100% {
+		transform: translate3d(10px, 10px, 0);
+	}
+}
+
+@-o-keyframes cssload-part-anim {
+	0% {
+		-o-transform: translate3d(-10px, -10px, 0);
+	}
+	100% {
+		-o-transform: translate3d(10px, 10px, 0);
+	}
+}
+
+@-ms-keyframes cssload-part-anim {
+	0% {
+		-ms-transform: translate3d(-10px, -10px, 0);
+	}
+	100% {
+		-ms-transform: translate3d(10px, 10px, 0);
+	}
+}
+
+@-webkit-keyframes cssload-part-anim {
+	0% {
+		-webkit-transform: translate3d(-10px, -10px, 0);
+	}
+	100% {
+		-webkit-transform: translate3d(10px, 10px, 0);
+	}
+}
+
+@-moz-keyframes cssload-part-anim {
+	0% {
+		-moz-transform: translate3d(-10px, -10px, 0);
+	}
+	100% {
+		-moz-transform: translate3d(10px, 10px, 0);
+	}
+}
+
+/*===== Preloader Eighteen =======*/
+
+/*=======Markup=====
+
+<div class="preloader-jackhammer">
+	<ul class="cssload-flex-container">
+		<li>
+			<span class="cssload-loading"></span>
+		</li>
+	</div>
+</div>
+*/
+.preloader-jackhammer * {
+	box-sizing: border-box;
+		-o-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+}
+.preloader-jackhammer {
+	margin: 0 auto;
+	max-width: 545px;
+}
+
+.preloader-jackhammer ul li{
+	list-style: none;
+}
+
+.preloader-jackhammer .cssload-flex-container {
+	display: flex;
+		display: -o-flex;
+		display: -ms-flex;
+		display: -webkit-flex;
+		display: -moz-flex;
+	flex-direction: row;
+		-o-flex-direction: row;
+		-ms-flex-direction: row;
+		-webkit-flex-direction: row;
+		-moz-flex-direction: row;
+	flex-wrap: wrap;
+		-o-flex-wrap: wrap;
+		-ms-flex-wrap: wrap;
+		-webkit-flex-wrap: wrap;
+		-moz-flex-wrap: wrap;
+	justify-content: space-around;
+}
+.preloader-jackhammer .cssload-flex-container li {
+	padding: 10px;
+	height: 97px;
+	width: 97px;
+	margin: 0;
+	position: relative;
+	text-align: center;
+}
+
+.preloader-jackhammer .cssload-loading, .preloader-jackhammer .cssload-loading:after, .preloader-jackhammer .cssload-loading:before {
+	display: inline-block;
+	position: relative;
+	width: 5px;
+	height: 49px;
+	background: rgb(0,0,0);
+	margin-top: 5px;
+	border-radius: 975px;
+		-o-border-radius: 975px;
+		-ms-border-radius: 975px;
+		-webkit-border-radius: 975px;
+		-moz-border-radius: 975px;
+	animation: cssload-upDown2 1.15s ease infinite;
+		-o-animation: cssload-upDown2 1.15s ease infinite;
+		-ms-animation: cssload-upDown2 1.15s ease infinite;
+		-webkit-animation: cssload-upDown2 1.15s ease infinite;
+		-moz-animation: cssload-upDown2 1.15s ease infinite;
+	animation-direction: alternate;
+		-o-animation-direction: alternate;
+		-ms-animation-direction: alternate;
+		-webkit-animation-direction: alternate;
+		-moz-animation-direction: alternate;
+	animation-delay: 0.29s;
+		-o-animation-delay: 0.29s;
+		-ms-animation-delay: 0.29s;
+		-webkit-animation-delay: 0.29s;
+		-moz-animation-delay: 0.29s;
+}
+.preloader-jackhammer .cssload-loading:after, .preloader-jackhammer .cssload-loading:before {
+	position: absolute;
+	content: '';
+	animation: cssload-upDown 1.15s ease infinite;
+		-o-animation: cssload-upDown 1.15s ease infinite;
+		-ms-animation: cssload-upDown 1.15s ease infinite;
+		-webkit-animation: cssload-upDown 1.15s ease infinite;
+		-moz-animation: cssload-upDown 1.15s ease infinite;
+	animation-direction: alternate;
+		-o-animation-direction: alternate;
+		-ms-animation-direction: alternate;
+		-webkit-animation-direction: alternate;
+		-moz-animation-direction: alternate;
+}
+.preloader-jackhammer .cssload-loading:before {
+	left: -10px;
+}
+.preloader-jackhammer .cssload-loading:after {
+	left: 10px;
+	animation-delay: 0.58s;
+		-o-animation-delay: 0.58s;
+		-ms-animation-delay: 0.58s;
+		-webkit-animation-delay: 0.58s;
+		-moz-animation-delay: 0.58s;
+}
+@keyframes cssload-upDown {
+	from {
+		transform: translateY(19px);
+	}
+	to {
+		transform: translateY(-19px);
+	}
+}
+
+@-o-keyframes cssload-upDown {
+	from {
+		-o-transform: translateY(19px);
+	}
+	to {
+		-o-transform: translateY(-19px);
+	}
+}
+
+@-ms-keyframes cssload-upDown {
+	from {
+		-ms-transform: translateY(19px);
+	}
+	to {
+		-ms-transform: translateY(-19px);
+	}
+}
+
+@-webkit-keyframes cssload-upDown {
+	from {
+		-webkit-transform: translateY(19px);
+	}
+	to {
+		-webkit-transform: translateY(-19px);
+	}
+}
+
+@-moz-keyframes cssload-upDown {
+	from {
+		-moz-transform: translateY(19px);
+	}
+	to {
+		-moz-transform: translateY(-19px);
+	}
+}
+
+@keyframes cssload-upDown2 {
+	from {
+		transform: translateY(29px);
+	}
+	to {
+		transform: translateY(-19px);
+	}
+}
+
+@-o-keyframes cssload-upDown2 {
+	from {
+		-o-transform: translateY(29px);
+	}
+	to {
+		-o-transform: translateY(-19px);
+	}
+}
+
+@-ms-keyframes cssload-upDown2 {
+	from {
+		-ms-transform: translateY(29px);
+	}
+	to {
+		-ms-transform: translateY(-19px);
+	}
+}
+
+@-webkit-keyframes cssload-upDown2 {
+	from {
+		-webkit-transform: translateY(29px);
+	}
+	to {
+		-webkit-transform: translateY(-19px);
+	}
+}
+
+@-moz-keyframes cssload-upDown2 {
+	from {
+		-moz-transform: translateY(29px);
+	}
+	to {
+		-moz-transform: translateY(-19px);
+	}
+}
+
+/* -------- Preloader animation ---------- */
+

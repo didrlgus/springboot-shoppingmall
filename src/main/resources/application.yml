@@ -1,0 +1,22 @@
+spring:
+  profiles:
+    active: local
+
+---
+spring:
+  profiles: local
+
+
+---
+spring.profiles: set1
+spring.profiles.include: real-db, real-social-set1
+
+server:
+  port: 8081
+
+---
+spring.profiles: set2
+spring.profiles.include: real-db, real-social-set2
+
+server:
+  port: 8082

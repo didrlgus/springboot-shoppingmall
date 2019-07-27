@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+    <head th:replace="fragments/default-head :: headFragment"></head>
+
+    <body>
+        <div id="wrapper" class="clearfix">
+            <div id="preloader">
+                <div id="spinner">
+                    <div class="col-md-2">
+                        <div class="preloader-loading-wrapper">
+                            <div class="cssload-loading">
+                                <i></i>
+                                <i></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div layout:fragment="content"></div>
+
+            <a class="scrollToTop" href="#"><i class="fa fa-angle-up"></i></a>
+        </div>
+
+        <!-- Footer Scripts -->
+        <!-- JS | Custom script for all pages -->
+        <script src="js/custom.js"></script>
+    </body>
+</html>

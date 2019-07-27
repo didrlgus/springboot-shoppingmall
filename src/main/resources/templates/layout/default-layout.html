@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:replace="fragments/default-head :: headFragment"></head>
+<body>
+    <div id="wrapper" class="clearfix">
+
+        <!-- preloader -->
+        <div id="preloader">
+            <div id="spinner">
+                <div class="col-md-2">
+                    <div class="preloader-battery">
+                        <div class="cssload-liquid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <header th:replace="fragments/default-header :: headerFragment"></header>
+
+        <div layout:fragment="content"></div>
+
+        <footer th:replace="fragments/default-footer :: footerFragment"></footer>
+
+        <a class="scrollToTop" href="#"><i class="fa fa-angle-up"></i></a>
+
+        <!-- custom javascript  -->
+        <th:block layout:fragment="script"></th:block>
+    </div>
+
+    <!-- Footer Scripts -->
+    <!-- JS | Custom script for all pages -->
+    <script src="js/custom.js"></script>
+
+    <!-- SLIDER REVOLUTION 5.0 EXTENSIONS
+          (Load Extensions only on Local File Systems !
+           The following part can be removed on Server for On Demand Loading) -->
+    <script type="text/javascript" src="js/revolution-slider/js/extensions/revolution.extension.actions.min.js"></script>
+    <script type="text/javascript" src="js/revolution-slider/js/extensions/revolution.extension.carousel.min.js"></script>
+    <script type="text/javascript" src="js/revolution-slider/js/extensions/revolution.extension.kenburn.min.js"></script>
+    <script type="text/javascript" src="js/revolution-slider/js/extensions/revolution.extension.layeranimation.min.js"></script>
+    <script type="text/javascript" src="js/revolution-slider/js/extensions/revolution.extension.migration.min.js"></script>
+    <script type="text/javascript" src="js/revolution-slider/js/extensions/revolution.extension.navigation.min.js"></script>
+    <script type="text/javascript" src="js/revolution-slider/js/extensions/revolution.extension.parallax.min.js"></script>
+    <script type="text/javascript" src="js/revolution-slider/js/extensions/revolution.extension.slideanims.min.js"></script>
+    <script type="text/javascript" src="js/revolution-slider/js/extensions/revolution.extension.video.min.js"></script>
+</body>
+</html>

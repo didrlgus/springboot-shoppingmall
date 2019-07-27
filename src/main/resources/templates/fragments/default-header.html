@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <header id="header" class="header modern-header modern-header-theme-colored" th:fragment="headerFragment">
+        <script th:inline="javascript">
+
+            $(function() {
+                var pageName = [[${pageName}]];
+
+                $("list-inline li").each(function() {
+                    $(this).removeClass("active");
+                })
+
+                $("#" + pageName).addClass("active");
+            })
+
+        </script>
+
+        <div class="header-top bg-theme-colored sm-text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="widget text-white">
+                            <i class="fa fa-clock-o text-theme-colored2"></i> Opening Hours:  Mon - Tues : 6.00 am - 10.00 pm, Sunday Closed
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="widget">
+                            <ul class="list-inline  text-right flip sm-text-center">
+                                <li sec:authorize="isAnonymous()" class="m-0 pl-10">
+                                    <a href="/login" class="text-white"><i class="fa fa-user-o mr-5 text-theme-colored2"></i> Login / Register</a>
+                                </li>
+                                <!--<li sec:authorize="isRememberMe() && isAuthenticated()" class="m-0 pl-10">
+                                    <a th:text="${session.user.getName()} + 님" th:href="|/profiles/${session.user.getId()}|" class="text-white"></a>
+                                    &lt;!&ndash;<a sec:authentication="name" href="/profiles" class="text-white"> 님</a>&ndash;&gt;
+                                </li>
+                                <li sec:authorize="isAuthenticated() && !isRememberMe()" class="m-0 pl-10">
+                                    <a th:text="${session.user.getName()} + 님" th:href="|/profiles/${session.user.getId()}|" class="text-white"></a>
+                                </li>-->
+                                <li sec:authorize="isAuthenticated()" class="m-0 pl-10">
+                                    <a th:text="${session.user.getName()} + 님" href="/profiles" class="text-white"></a>
+                                </li>
+                                <li sec:authorize="isAuthenticated()" class="m-0 pl-10">
+                                    <a href="/logout" class="text-white"><i class="fa fa-user-o mr-5 text-theme-colored2"></i> Logout </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-middle p-0 bg-light xs-text-center">
+            <div class="container pt-30 pb-30">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4 col-md-3">
+                        <div class="widget sm-text-center">
+                            <i class="fa fa-envelope text-theme-colored2 font-32 mt-5 mr-sm-0 sm-display-block pull-left flip sm-pull-none"></i>
+                            <a href="#" class="font-12 text-gray text-uppercase">Mail Us Today</a>
+                            <h5 class="font-13 text-black m-0"> info@yourdomain.com</h5>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-6">
+                        <div class="widget text-center">
+                            <a class="" href="index-mp-layout1.html"><img src="images/logo-wide.png" alt=""></a>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-3">
+                        <div class="widget sm-text-center">
+                            <i class="fa fa-building-o text-theme-colored2 font-32 mt-5 mr-sm-0 sm-display-block pull-left flip sm-pull-none"></i>
+                            <a href="#" class="font-12 text-gray text-uppercase">Company Location</a>
+                            <p class="font-13 text-black m-0"> 성남시 분당구 정자로</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-nav">
+            <div class="header-nav-wrapper navbar-scrolltofixed">
+                <div class="container">
+                    <nav id="menuzord" class="menuzord green">
+                        <ul class="menuzord-menu">
+                            <li id="main" class="home"><a href="/"><i class="fa fa-home font-28"></i></a></li>
+                            <li><a href="#home">전체카테고리</a>
+                                <ul class="dropdown">
+                                    <th:block th:if="${#lists.size(catList_L)} > 0" th:each="catList_L : ${catList}">
+                                        <li th:if="${catList_L.getCatLv() eq 1}"><a href="#" th:text="${catList_L.getCatNm()}"></a>
+                                            <ul class="dropdown">
+                                                <th:block th:if="${#lists.size(catList_S)} > 0" th:each="catList_S : ${catList}">
+                                                    <li th:if="${(catList_S.getCatLv() eq 2) and (catList_L.getCatCd() eq catList_S.getUpprCatCd())}">
+                                                        <a th:href="@{|${catList_S.getCnntUrl()}?catCd=${catList_S.getCatCd()}|}" th:text="${catList_S.getCatNm()}"></a>
+                                                    </li>
+                                                </th:block>
+                                            </ul>
+                                        </li>
+                                    </th:block>
+                                </ul>
+                            </li>
+                            <li id="productList"><a href="/productList?catCd=ALL">상품목록</a></li>
+                            <li id="newCollection" th:if="${pageName == 'main'}"><a href="#newcollection" >신규상품</a></li>
+                            <li id="newProduction" th:unless="${pageName == 'main'}"><a href="/newProduction" >신규상품</a></li>
+                            <li id="bestCollection" th:if="${pageName == 'main'}"><a href="#best" >베스트</a></li>
+                            <li id="bestProduction" th:unless="${pageName == 'main'}"><a href="/bestProduction" >베스트</a></li>
+                            <li id="profiles"><a href="/profiles">개인정보</a></li>
+                            <li id="cart"><a href="/cart">장바구니</a></li>
+                            <li class="active pull-right"><a href="tel:+(012) 345 6789" class="font-20 line-height-1"><i class="pe-7s-call mr-10 font-28"></i> +010 1111 2222</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+</html>

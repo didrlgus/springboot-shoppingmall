@@ -1,0 +1,69 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default-layout}">
+
+    <div class="main-content" layout:fragment="content">
+        <script>
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var token  = $("meta[name='_csrf']").attr("content");
+        </script>
+        <script th:inline="javascript">
+
+            $(function() {
+                console.log([[${catCd}]]);
+            })
+
+        </script>
+
+        <section class="">
+            <div class="container mt-30 mb-30 p-30">
+                <div class="section-content">
+                    <div class="row multi-row-clearfix">
+                        <div class="col-md-10 col-md-offset-1">
+                            <div class="products">
+                                <th:block th:if="${#lists.size(productList)} > 0" th:each="productList : ${productList.content}">
+                                    <div class="col-sm-6 col-md-4 col-lg-4 mb-30">
+                                        <div class="product pb-0">
+                                            <span class="tag-sale">Sale!</span>
+                                            <div class="product-thumb">
+                                                <img alt="" th:src="${productList.getTitleImg()}" class="img-responsive img-fullwidth">
+                                                <div class="overlay">
+                                                    <div class="btn-add-to-cart-wrapper">
+                                                        <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="#">Add To Cart</a>
+                                                    </div>
+                                                    <div class="btn-product-view-details">
+                                                        <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" th:href="@{/productDetails(id=${productList.getId()})}">Product detail</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="product-details text-center bg-lighter pt-15 pb-10">
+                                                <a th:href="@{/productDetails(id=${productList.getId()})}"><h5 class="product-title mt-0" th:text="${productList.getProductNm()}"></h5></a>
+                                                <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 67%;">3.50</span></div>
+                                                <div class="price"><del><span class="amount">$110.00</span></del><ins><span class="amount" th:text="|${productList.getPrice()}원|"></span></ins></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th:block>
+                                <div class="col-md-12">
+                                    <nav>
+                                        <th:block th:if="${pagingDto.getTotPage() != 0}">
+                                            <ul class="pagination theme-colored mt-0">
+                                                <li th:if="${pagingDto.getScaleStartPage() != 1}"> <a th:href="@{/productList(page=${pagingDto.getPrevPage()}, catCd=${catCd})}" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a> </li>
+                                                <li th:each="i : ${#numbers.sequence(pagingDto.getScaleStartPage(),pagingDto.getScaleEndPage())}" th:class="${pagingDto.page eq i} ? active : ''">
+                                                    <a th:href="@{/productList(page=${i}, catCd=${catCd})}" th:text="${i}"></a>
+                                                </li>
+                                                <li th:if="${pagingDto.getScaleEndPage() != pagingDto.getTotPage()}"> <a th:href="@{/productList(page=${pagingDto.getNextPage()}, catCd=${catCd})}" aria-label="Next"> <span aria-hidden="true">&raquo;</span> </a> </li>
+                                            </ul>
+                                        </th:block>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- end main-content -->
+    </div>
+
+</html>

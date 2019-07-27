@@ -3,8 +3,29 @@ spring:
     active: local
 
 ---
+spring.profiles: local
+spring.profiles.include: local-social
+
 spring:
-  profiles: local
+  datasource:
+    driverClassName: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3307/shoppingmall
+    username: root
+    password: root
+  jpa:
+    database: mysql
+    properties:
+      show-sql: true
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
 
 
 ---

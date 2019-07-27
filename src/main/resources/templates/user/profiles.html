@@ -1,0 +1,411 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default-layout}">
+
+    <div class="main-content" layout:fragment="content">
+        <script>
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var token  = $("meta[name='_csrf']").attr("content");
+        </script>
+        <script sec:authorize="hasAuthority('ROLE_USER')" th:inline="javascript">
+            var profilesObj = {
+
+                inputObj : {},
+
+                init    : function() {
+                    var that = this;
+
+                    $(".changeable-input").each(function() {
+                        that.inputObj[$(this).attr("name")] = $(this).val();
+                    })
+                },
+
+                modifyBtnFnCb   : function () {
+                    var modifiedInputObj = {},
+                        properties       = [];
+
+                    $(".changeable-input").each(function() {
+                        modifiedInputObj[$(this).attr("name")] = $(this).val();
+                        properties.push($(this).attr("name"));
+                    })
+
+                    var newInputObj = {};
+
+                    properties.forEach(function (value) {
+
+                        if (profilesObj.inputObj[value] !== modifiedInputObj[value]) {
+                            newInputObj[value] = modifiedInputObj[value];
+                        }
+                    })
+
+                    if ($.isEmptyObject(newInputObj)) {
+                        alert("수정한 곳이 없습니다!");
+                    } else {
+                        $.ajax({
+                            type: "PUT",
+                            url: "/me/" + [[${session.user.getId()}]],
+                            contentType: "application/json",
+                            data : JSON.stringify(modifiedInputObj),
+                            beforeSend	: function(xhr) {
+                                xhr.setRequestHeader(header, token);
+                            },
+                            success: function (data) {
+                                alert(data);
+
+                                location.reload();
+                            },
+                            error: function (error) {
+                                alert(error.responseText);
+                            }
+                        })
+                    }
+                },
+                deleteBtnFnCb   : function () {
+
+                    var confirmChk = confirm("정말로 탈퇴하시겠습니까?");
+
+                    if (confirmChk) {
+                        $.ajax({
+                            type : "DELETE",
+                            url  : "/me/" + [[${session.user.getId()}]],
+                            contentType: "application/json",
+                            beforeSend	: function(xhr) {
+                                xhr.setRequestHeader(header, token);
+                            },
+                            success : function(data) {
+                                alert(data);
+
+                                location.href = "/logout";
+                            },
+                            error   : function(error) {
+                                alert(error);
+                            }
+                        })
+                    }
+                },
+                modifyPwdBtnFnCb : function() {
+
+                    var emptyCnt = 0;
+
+                    // 공백 체크
+                    $(".password-modify-input").each(function() {
+                        var $this = $(this),
+                            removeBlankData = $this.val().replace(Regex.blank, ""),     // 빈칸 (스페이스바) 입력 시 공백지움
+                            dataName = $this.data("name");
+
+                        $this.val(removeBlankData);
+
+                        // 공백일 경우 if
+                        if ($this.val() === "") {
+
+                            alert(dataName + "은/는 필수 입력 값입니다.");
+
+                            $this.focus();
+
+                            emptyCnt++;
+
+                            // each문 종료
+                            return false;
+                        }
+                    })
+
+                    // 공백 없을 경우
+                    if (emptyCnt === 0) {
+
+                        var oldPassword = $("input[name='oldPassword']").val(),
+                            newPassword = $("input[name='newPassword']").val();
+
+                        if (newPassword !== $("input[name='rePassword']").val()) {
+                            alert("비밀번호가 서로 일치하지 않습니다.");
+
+                            return;
+                        }
+
+                        $.ajax({
+                            type : "PUT",
+                            url  : "/me/" + [[${session.user.getId()}]] + "/password",
+                            contentType: "application/json",
+                            data : JSON.stringify({"oldPassword" : oldPassword, "newPassword" : newPassword}),
+                            beforeSend	: function(xhr) {
+                                xhr.setRequestHeader(header, token);
+                            },
+                            success : function(data) {
+                                alert(data);
+
+                                location.reload();
+                            },
+                            error : function(e) {
+                                alert(e.responseText);
+
+                                $("input[name='oldPassword']").focus();
+                            }
+                        })
+                    }
+                }
+            }
+
+            $(function() {
+
+                profilesObj.init();
+
+                // 수정버튼 클릭 이벤트
+                $(".btn-modify").on("click", profilesObj.modifyBtnFnCb)
+
+                // 탈퇴버튼 클릭 이벤트
+                $(".btn-delete").on("click", profilesObj.deleteBtnFnCb)
+
+                // 비밀번호 수정 버튼 클릭 이벤트
+                $(".btn-password-modify").on("click", profilesObj.modifyPwdBtnFnCb)
+            })
+        </script>
+
+        <script sec:authorize="hasAnyAuthority('ROLE_SOCIAL')" th:inline="javascript">
+
+            var socialProfilesObj = {
+
+                socialInputObj : {},
+
+                init    : function() {
+                    var that = this;
+
+                    $(".social-input").each(function() {
+                        that.socialInputObj[$(this).attr("name")] = $(this).val();
+                    })
+                },
+
+                socialModifyBtnCbFn : function() {
+                    var modifiedSocialInputObj = {},
+                        properties             = [];
+
+                    $(".social-input").each(function() {
+                        modifiedSocialInputObj[$(this).attr("name")] = $(this).val();
+                        properties.push($(this).attr("name"));
+                    })
+
+                    var newInputObj = {};
+
+                    properties.forEach(function (value) {
+
+                        if (socialProfilesObj.socialInputObj[value] !== modifiedSocialInputObj[value]) {
+                            newInputObj[value] = modifiedSocialInputObj[value];
+                        }
+                    })
+
+                    if ($.isEmptyObject(newInputObj)) {
+                        alert("수정한 곳이 없습니다.");
+                    } else {
+                        $.ajax({
+                            type : "PUT",
+                            url  : "/oauth/me/" + [[${session.user.getId()}]],
+                            data : JSON.stringify(modifiedSocialInputObj),
+                            contentType : "application/json",
+                            beforeSend	: function(xhr) {
+                                xhr.setRequestHeader(header, token);
+                            },
+                            success : function(data) {
+                                alert(data);
+
+                                location.reload();
+                            },
+                            error   : function (e) {
+                                alert(e);
+                            }
+                        })
+                    }
+                }
+            }
+
+            $(function() {
+
+                socialProfilesObj.init();
+
+                $(".btn-social-modify").on("click", socialProfilesObj.socialModifyBtnCbFn);
+            })
+        </script>
+
+        <!-- Section: Normal User -->
+        <section sec:authorize="hasAuthority('ROLE_USER')" class="normal-profiles">
+            <div class="container">
+                <div class="section-content">
+                    <div class="row">
+                        <div class="col-sx-12 col-sm-4 col-md-4">
+                            <div class="doctor-thumb">
+                                <img src="http://placehold.it/400x470" alt="">
+                            </div>
+                            <div class="info p-20 bg-black-333">
+                                <!--<h4 class="text-uppercase text-white">Jacob Smith</h4>
+                                <p class="text-gray-silver">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore atque officiis maxime suscipit expedita obcaecati nulla in ducimus.</p>
+                                <ul class="list angle-double-right m-0">
+                                    <li class="mt-0 text-gray-silver"><strong class="text-gray-lighter">Email</strong><br> smith@yourdomain.com</li>
+                                    <li class="text-gray-silver"><strong class="text-gray-lighter">Web</strong><br> www.yourdomain.com</li>
+                                </ul>
+                                <ul class="styled-icons icon-gray icon-circled icon-sm mt-15 mb-15">
+                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-skype"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                </ul>-->
+                                <a class="btn btn-info btn-flat mt-10 mb-sm-30" href="#">Change Profile</a>
+                                <a class="btn btn-danger btn-flat mt-10 mb-sm-30" href="/logout">Logout</a>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-8 col-md-8">
+                            <form name="editprofile-form">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                                <div class="icon-box mb-0 p-0">
+                                    <a href="#" class="icon icon-bordered icon-rounded icon-sm pull-left mb-0 mr-10">
+                                        <i class="fa fa-user"></i>
+                                    </a>
+                                    <h4 class="text-gray pt-10 mt-0 mb-30">User Profile</h4>
+                                </div>
+                                <hr>
+                                <p>* 표시가 있는 칸은 필수 입력 값입니다.</p>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label>Identifier*</label>
+                                        <input name="identifier" class="form-control" th:value="${session.user.getIdentifier()}" type="text" readonly>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Name*</label>
+                                        <input name="name" class="form-control changeable-input" th:value="${session.user.getName()}" type="text">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Email*</label>
+                                        <input name="email" class="form-control changeable-input" th:value="${session.user.getEmail()}" type="text">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label>Road Address</label>
+                                        <input name="roadAddr" class="form-control changeable-input" th:value="${session.user.getRoadAddr()}" type="text">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Building Name</label>
+                                        <input name="buildingName" class="form-control changeable-input" th:value="${session.user.getBuildingName()}" type="text">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Detail Address</label>
+                                        <input name="detailAddr" class="form-control changeable-input" th:value="${session.user.getDetailAddr()}" type="text">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <button th:type="button" class="btn btn-success" th:onclick="registAddrObj.searchAddrFn()">우편번호 검색</button>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <button class="btn btn-success btn-modify" type="button">수정</button>
+                                        <button class="btn btn-danger btn-delete" type="button">탈퇴</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <hr class="mt-70 mb-70">
+
+                            <form name="password-modify-form" th:action="@{/password}">
+                                <div class="icon-box mb-0 p-0">
+                                    <a href="#" class="icon icon-bordered icon-rounded icon-sm pull-left mb-0 mr-10">
+                                        <i class="fa fa-key"></i>
+                                    </a>
+                                    <h4 class="text-gray pt-10 mt-0 mb-30">Change Password</h4>
+                                </div>
+                                <hr>
+                                <p class="text-gray">비밀번호는 영문/숫자/특수문자 조합 8자리~15자리</p>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label>Old Password</label>
+                                        <input name="oldPassword" data-name="기존 비밀번호" class="form-control password-modify-input" type="password">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label>New Password</label>
+                                        <input name="newPassword" data-name="새 비밀번호" class="form-control password-modify-input" type="password">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Re-enter Password</label>
+                                        <input name="rePassword" data-name="비밀번호 확인" class="form-control password-modify-input" type="password">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-success btn-password-modify" type="button">수정</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Social User -->
+        <section sec:authorize="hasAuthority('ROLE_SOCIAL')" class="social-profiles">
+            <div class="container">
+                <div class="section-content">
+                    <div class="row">
+                        <div class="col-sx-12 col-sm-4 col-md-4">
+                            <div class="doctor-thumb">
+                                <img th:if="${session.user.getProfileImage() == 'null'}" src="http://placehold.it/400x470" alt="">
+                                <img th:unless="${session.user.getProfileImage() == 'null'}" th:src="${session.user.getProfileImage()}" alt="">
+                            </div>
+                            <div class="info p-20 bg-black-333">
+                                <a class="btn btn-danger btn-flat mt-10 mb-sm-30" href="/logout">Logout</a>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-8 col-md-8">
+                            <form name="editprofile-form" method="post">
+                                <div class="icon-box mb-0 p-0">
+                                    <a href="#" class="icon icon-bordered icon-rounded icon-sm pull-left mb-0 mr-10">
+                                        <i class="fa fa-user"></i>
+                                    </a>
+                                    <h4 class="text-gray pt-10 mt-0 mb-30">Social User Profile</h4>
+                                </div>
+                                <hr>
+                               <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label>Name</label>
+                                        <input name="name" class="form-control" th:value="${session.user.getName()}" type="text" disabled>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label>Email</label>
+                                        <input name="email" class="form-control" th:value="${session.user.getEmail()}" type="email" disabled>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label>Social Type</label>
+                                        <input name="socialType" class="form-control" th:value="${session.user.getSocialType()} + ' ' + '유저'" type="text" disabled>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label>Road Address</label>
+                                        <input name="roadAddr" class="form-control social-input" th:value="${session.user.getRoadAddr()}" type="text">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Building Name</label>
+                                        <input name="buildingName" class="form-control social-input" th:value="${session.user.getBuildingName()}" type="text">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Detail Address</label>
+                                        <input name="detailAddr" class="form-control social-input" th:value="${session.user.getDetailAddr()}" type="text">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <button th:type="button" class="btn btn-success" th:onclick="registAddrObj.searchAddrFn()">우편번호 검색</button>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <button class="btn btn-success btn-social-modify" type="button">프로필 수정</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</html>

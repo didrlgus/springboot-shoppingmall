@@ -1,0 +1,711 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default-layout}">
+
+    <div class="main-content" layout:fragment="content">
+        <script>
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var token  = $("meta[name='_csrf']").attr("content");
+        </script>
+        <script th:inline="javascript">
+            var paramArr = [[${param.id}]],
+                productId = paramArr[0],
+                questionId = 0;
+
+            var productDetails = {
+
+                init : function() {
+                    // 상품 상세 페이지 처음 로딩 시 호출
+                    $.ajax({
+                        type : "GET",
+                        url  : "/product/" + productId,
+                        contentType: "application/json",
+                        beforeSend	: function(xhr) {
+                            xhr.setRequestHeader(header, token);
+                        },
+                        success: function (data) {
+                            $(".zoom-gallery a").attr("href", data.titleImg).attr("title", data.productNm);
+                            $(".zoom-gallery img").attr("src", data.titleImg);
+                            $(".product-name").text(data.productNm);
+                            $(".real-price").text(data.price + "원");
+                            $(".limit-count").text(data.limitCount + "개");
+                            $(".purchase-count").text(data.purchaseCount + "개");
+
+                            productDetails.normalUserQuestionListFn();
+                            productDetails.socialUserQuestionListFn();
+                        }
+                    })
+                },
+                normalUserQuestionListFn    :  function(obj) {
+                    var page = obj ? $(obj).data("page") : 1;
+
+                    var $questionPagination = $(".question-pagination");
+
+                    $.ajax({
+                        type : "get",
+                        url  : "/product/" + productId + "/question/" + page,
+                        contentType: "application/json",
+                        beforeSend	: function(xhr) {
+                            xhr.setRequestHeader(header, token);
+                        },
+                        success     : function(data) {
+                            var questionPaigingDto = data.questionPagingDto,
+                                questionList       = [],
+                                normalUserId = 0;
+
+                            // 문의 리스트, 페이지 비우기
+                            $("#questionList").empty();
+                            $questionPagination.empty();
+
+                            if (data.questionList.content) {
+                                questionList      = data.questionList.content;
+                            }
+
+                            // 문의 리스트, 페이지 그리기
+                            questionList.forEach(function (element) {
+                                var question =
+                                    "<li data-id='" + element.normalUser.id + "' data-question-id='" + element.id  + "' class='comment question'>" +
+                                    "<div class='media'>" +
+                                    "<a href='#' class='media-left'><img class='img-circle' alt='' src='https://placehold.it/75x75' width='75'></a>" +
+                                    "<div class='media-body'>" +
+                                    "<ul class='review_text list-inline'>" +
+                                    "<li>" +
+                                    "<h5 class='media-heading meta'><span class='author'><strong>" + element.normalUser.identifier + "</strong></span> / " + element.updatedDate + "</h5>" +
+                                    "</li>" +
+                                    "</ul>" +
+                                    element.message +
+                                    "</div>" +
+                                    "<button data-question-id='" + element.id + "' class='btn-answer pull-right btn btn-success'>답변 " + element.answerCount + "</button>" +
+                                    "</div>" +
+                                    "</li>"
+                                $("#questionList").append(question);
+                            })
+
+                            // 로그인이 되어있는지 session을 통해 파악
+                            if ([[${session.user}]]) {
+                                var userObj = [[${session.user}]];
+
+                                if (!userObj.socialType) {
+                                    normalUserId = userObj.id;
+                                }
+                            }
+
+                            // 로그인 시 해당 유저가 작성한 문의의 수정버튼 띄우기
+                            $("#questionList li.question").each(function(index) {
+                                var questionId = $(this).data("questionId");
+
+                                if ($(this).data("id") === normalUserId) {
+                                    $(this).find(".media").append("<button data-question-id='" + questionId
+                                        + "' class='btn-modify pull-right btn btn-default' data-toggle='modal' data-target='.bs-question-modify-modal-sm' onclick='productDetails.setQuestionIdFn(this)'>수정</button>");
+                                }
+
+                                $(this).find(".media").append("<hr>");
+                            })
+
+                            // 페이징 처리하기
+                            if (questionPaigingDto.scaleStartPage !== 1) {
+                                var prevLi =
+                                    "<li><a data-page='" + questionPaigingDto.prevPage + "' class='question-page' href='javascript:void(0);' onclick='productDetails.normalUserQuestionListFn(this)' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>";
+
+                                $questionPagination.append(prevLi);
+                            }
+
+                            for (var i = questionPaigingDto.scaleStartPage; i <= questionPaigingDto.scaleEndPage; i++) {
+                                var pageLi = "";
+
+                                if (questionPaigingDto.page === i) {
+                                    pageLi = "<li class='active'><a data-page='" + i + "' class='question-page' href='javascript:void(0);' onclick='productDetails.normalUserQuestionListFn(this)'>" + i + "</a></li>";
+                                } else {
+                                    pageLi = "<li class=''><a data-page='" + i + "' class='question-page' href='javascript:void(0);' onclick='productDetails.normalUserQuestionListFn(this)'>" + i + "</a></li>";
+                                }
+
+                                $questionPagination.append(pageLi);
+                            }
+
+                            if (questionPaigingDto.scaleEndPage !== questionPaigingDto.totPage) {
+                                var nextLi =
+                                    "<li><a data-page='" + questionPaigingDto.nextPage + "' class='question-page' href='javascript:void(0);' onclick='productDetails.normalUserQuestionListFn(this)' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>"
+
+                                $questionPagination.append(nextLi);
+                            }
+                        },
+                        error       : function(e) {
+                            console.log(e);
+                        }
+                    })
+                },
+                socialUserQuestionListFn    : function(obj) {
+                    var page = obj ? $(obj).data("page") : 1;
+
+                    var $SocialQuestionPagination = $(".social-question-pagination");
+
+                    $.ajax({
+                        type: "GET",
+                        url: "/product/" + productId + "/socialQuestion/" + page,
+                        contentType: "application/json",
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader(header, token);
+                        },
+                        success: function (data) {
+                            var socialQuestionPagingDto = data.socialQuestionPagingDto,
+                                SocialQuestionList       = [],
+                                socialUserId = 0;
+
+                            // 소셜유저 문의 리스트, 페이지 비우기
+                            $("#social-questionList").empty();
+                            $SocialQuestionPagination.empty();
+
+                            if (data.socialQuestionList.content) {
+                                SocialQuestionList      = data.socialQuestionList.content;
+                            }
+
+                            // 문의 리스트, 페이지 그리기
+                            SocialQuestionList.forEach(function (element) {
+                                var socialQuestion =
+                                    "<li data-social-id='" + element.socialUser.id + "' data-question-id='" + element.id + "' class='comment social-question'>" +
+                                    "<div class='media'>" +
+                                    "<a href='#' class='media-left'><img class='img-circle' alt='' src='https://placehold.it/75x75' width='75'></a>" +
+                                    "<div class='media-body'>" +
+                                    "<ul class='review_text list-inline'>" +
+                                    "<li>" +
+                                    "<h5 class='media-heading meta'><span class='author'><strong>" + element.socialUser.name + "(" + element.socialUser.socialType + " 유저)</strong></span> / " + element.updatedDate + "</h5>" +
+                                    "</li>" +
+                                    "</ul>" +
+                                    element.message +
+                                    "</div>" +
+                                    "<button data-social-question-id='" + element.id + "' class='btn-answer pull-right btn btn-success'>답변 " + element.answerCount + "</button>" +
+                                    "</div>" +
+                                    "</li>"
+                                $("#social-questionList").append(socialQuestion);
+                            })
+
+                            // 로그인이 되어있는지 session을 통해 파악
+                            if ([[${session.user}]]) {
+                                var userObj = [[${session.user}]];
+
+                                if (userObj.socialType) {
+                                    socialUserId = userObj.id;
+                                }
+                            }
+
+                            // 로그인 시 해당 유저가 작성한 문의의 수정버튼 띄우기
+                            $("#social-questionList li.social-question").each(function(index) {
+
+                                if ($(this).data("socialId") === socialUserId) {
+                                    $(this).find(".media").append("<button data-question-id='" + $(this).data("questionId")
+                                        + "' class='btn-modify pull-right btn btn-default' data-toggle='modal' data-target='.bs-question-modify-modal-sm' onclick='productDetails.setQuestionIdFn(this)'>수정</button>");
+                                }
+
+                                $(this).find(".media").append("<hr>");
+                            })
+
+                            // 페이징 처리하기
+                            if (socialQuestionPagingDto.scaleStartPage !== 1) {
+                                var prevLi =
+                                    "<li><a data-page='" + socialQuestionPagingDto.prevPage + "' class='question-page' href='javascript:void(0);' onclick='productDetails.socialUserQuestionListFn(this)' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>";
+
+                                $SocialQuestionPagination.append(prevLi);
+                            }
+
+                            for (var i = socialQuestionPagingDto.scaleStartPage; i <= socialQuestionPagingDto.scaleEndPage; i++) {
+                                var pageLi = "";
+
+                                if (socialQuestionPagingDto.page === i) {
+                                    pageLi = "<li class='active'><a data-page='" + i + "' class='question-page' href='javascript:void(0);' onclick='productDetails.socialUserQuestionListFn(this)'>" + i + "</a></li>";
+                                } else {
+                                    pageLi = "<li class=''><a data-page='" + i + "' class='question-page' href='javascript:void(0);' onclick='productDetails.socialUserQuestionListFn(this)'>" + i + "</a></li>";
+                                }
+
+                                $SocialQuestionPagination.append(pageLi);
+                            }
+
+                            if (socialQuestionPagingDto.scaleEndPage !== socialQuestionPagingDto.totPage) {
+                                var nextLi =
+                                    "<li><a data-page='" + socialQuestionPagingDto.nextPage + "' class='question-page' href='javascript:void(0);' onclick='productDetails.socialUserQuestionListFn(this)' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>"
+
+                                $SocialQuestionPagination.append(nextLi);
+                            }
+
+                        },
+                        error: function (e) {
+                            console.log(e);
+                        }
+                    })
+                },
+                remainingFn   : function() {
+                    // 댓글 사이즈 제한하기
+                    $(".remaining").each(function() {
+                        // count 정보 및 count 정보와 관련된 textarea/input 요소를 찾아내서 변수에 저장한다.
+                        var $count = $(".count", this);
+                        var $input = $(this).prev();
+                        // .text()가 문자열을 반환하기에 이 문자를 숫자로 만들기 위해 1을 곱한다.
+                        var maximumCount = $count.text() * 1;
+                        // update 함수는 keyup, paste, input 이벤트에서 호출한다.
+                        var update = function() {
+                            var before = $count.text() * 1;
+                            var now = maximumCount - $input.val().length;
+                            // 사용자가 입력한 값이 제한 값을 초과하는지를 검사한다.
+                            if (now < 0) {
+                                var str = $input.val();
+                                alert("글자 입력수가 초과하였습니다.");
+                                $input.val(str.substr(0, maximumCount));
+                                now = 0;
+                            }
+                            // 필요한 경우 DOM을 수정한다.
+                            if (before != now) {
+                                $count.text(now);
+                            }
+                        };
+                        // input, keyup, paste 이벤트와 update 함수를 바인드한다
+                        $input.bind("input keyup paste", function() {
+                            setTimeout(update, 0)
+                        });
+                        update();
+                    });
+                },
+                setQuestionIdFn      : function(obj) {
+                    questionId = $(obj).data("questionId");
+                }
+
+            }
+
+            var callback = {
+                makeQuestionEventCb : function () {
+
+                    var data = {
+                        "normalUserId" : $("input[name='nomalUserId']").val(),
+                        "productId"    : $("input[name='productId']").val(),
+                        "message"      : $("#questionArea").val()
+                    }
+
+                    $.ajax({
+                        type : "POST",
+                        url  : "/question",
+                        data : JSON.stringify(data),
+                        contentType: "application/json",
+                        beforeSend	: function(xhr) {
+                            xhr.setRequestHeader(header, token);
+                        },
+                        success : function (data) {
+                            alert(data);
+
+                            location.reload();
+                        },
+                        error   : function (e) {
+                            alert(e.responseText);
+                        }
+                    })
+                },
+                makeSocialQuestionEventCb   : function() {
+                    var data = {
+                        "socialUserId" : $("input[name='social-userId']").val(),
+                        "productId"    : $("input[name='social-productId']").val(),
+                        "socialType"   : $(this).data("type"),
+                        "message"      : $("#social-questionArea").val()
+                    }
+
+                    $.ajax({
+                        type : "POST",
+                        url  : "/question/social",
+                        data : JSON.stringify(data),
+                        contentType: "application/json",
+                        beforeSend	: function(xhr) {
+                            xhr.setRequestHeader(header, token);
+                        },
+                        success : function (data) {
+                            alert(data);
+
+                            location.reload();
+                        },
+                        error   : function (e) {
+                            alert(e.responseText);
+                        }
+                    })
+                },
+                modifyQuestionEventCb   : function() {
+                    var $this  = $(this),
+                        type   = $this.data("type"),
+                        data   = {};
+
+                    var url = type ? "/question/social/" + questionId : "/question/" + questionId;
+
+                    if (!type)
+                        data["message"] = $("#questionModifyArea").val();
+                    else
+                        data["message"] = $("#social-questionModifyArea").val();
+
+                    if ($this.data("method") === "PUT" && data.message === "") {
+                        alert("수정내용을 입력하세요.");
+                        return;
+                    }
+
+                    $.ajax({
+                        type : $this.data("method"),
+                        url  : url,
+                        data : JSON.stringify(data),
+                        contentType: "application/json",
+                        beforeSend	: function(xhr) {
+                            xhr.setRequestHeader(header, token);
+                        },
+                        success : function (data) {
+                            alert(data);
+
+                            location.reload();
+                        },
+                        error   : function (e) {
+                            alert(e.responseText);
+                        }
+                    })
+                }
+            }
+
+            $(function() {
+
+                // 상품상세 페이지 로딩
+                productDetails.init();
+
+                // 일반유저 문의 생성하기
+                $("#questionModalBtn").on("click", callback.makeQuestionEventCb);
+
+                // 소셜유저 문의 생성하기
+                $("#social-questionModalBtn").on("click", callback.makeSocialQuestionEventCb);
+
+                // 일반,소셜 유저 문의 수정,삭제 하기
+                $(".modal-btn").on("click", callback.modifyQuestionEventCb);
+
+                // 문의 메세지 길이 제한 함수
+                productDetails.remainingFn();
+            })
+        </script>
+
+        <!-- 상품 문의 모달창 -->
+        <div class="modal fade bs-question-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Question</h4>
+                    </div>
+                    <div sec:authorize="hasAuthority('ROLE_USER')" class="modal-body">
+                        <form id="questionFrm" name="question-form" class="question-form">
+                            <input type="hidden" name="nomalUserId" th:value="${session.user.getId()}">
+                            <input type="hidden" name="productId" th:value="${#httpServletRequest.getParameter('id')}">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    아이디<br>
+                                    <input type="text" th:value="${session.user.getIdentifier()}" disabled>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    질문내용<br>
+                                    <textarea rows="6" cols="37" name="message" form="questionFrm" id="questionArea"></textarea>
+                                    <div class="remaining">남은 글자수: <span class="count">200</span></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div sec:authorize="hasAuthority('ROLE_SOCIAL')" class="modal-body">
+                        <form id="social-questionFrm" name="question-form" class="question-form">
+                            <input type="hidden" name="social-userId" th:value="${session.user.getId()}">
+                            <input type="hidden" name="social-productId" th:value="${#httpServletRequest.getParameter('id')}">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    Name<br>
+                                    <input type="text" th:value="${session.user.getName()}" disabled>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    질문내용<br>
+                                    <textarea rows="6" cols="37" name="message" form="questionFrm" id="social-questionArea"></textarea>
+                                    <div class="remaining">남은 글자수: <span class="count">200</span></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button sec:authorize="hasAuthority('ROLE_USER')" type="button" id="questionModalBtn" class="btn btn-success btn-flat">문의하기</button>
+                        <button sec:authorize="hasAuthority('ROLE_SOCIAL')" th:data-type="${session.user.getSocialType()}" type="button" id="social-questionModalBtn" class="btn btn-success btn-flat">문의하기</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 문의 수정 모달창 -->
+        <div class="modal fade bs-question-modify-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="question-modify-modal">Modify</h4>
+                    </div>
+                    <div sec:authorize="hasAuthority('ROLE_USER')" class="modal-body">
+                        <form id="question-modifyFrm" name="question-form" class="question-form">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    아이디<br>
+                                    <input type="text" th:value="${session.user.getIdentifier()}" disabled>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    수정내용<br>
+                                    <textarea rows="6" cols="37" name="message" form="questionFrm" id="questionModifyArea" placeholder="수정내용을 작성하세요."></textarea>
+                                    <div class="remaining">남은 글자수: <span class="count">200</span></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div sec:authorize="hasAuthority('ROLE_SOCIAL')" class="modal-body">
+                        <form id="social-modifyFrm" name="question-form" class="question-form">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    Name<br>
+                                    <input type="text" th:value="${session.user.getName()}" disabled>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    질문내용<br>
+                                    <textarea rows="6" cols="37" name="message" form="questionFrm" id="social-questionModifyArea" placeholder="수정내용을 작성하세요."></textarea>
+                                    <div class="remaining">남은 글자수: <span class="count">200</span></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button sec:authorize="hasAuthority('ROLE_USER')" type="button"  data-method="PUT" class="modal-btn btn btn-success btn-flat">수정</button>
+                        <button sec:authorize="hasAuthority('ROLE_USER')" type="button"  data-method="DELETE" class="modal-btn btn btn-success btn-flat">삭제</button>
+                        <button sec:authorize="hasAuthority('ROLE_SOCIAL')" th:data-type="${session.user.getSocialType()}" type="button"  data-method="PUT" class="modal-btn btn btn-success btn-flat">수정</button>
+                        <button sec:authorize="hasAuthority('ROLE_SOCIAL')" th:data-type="${session.user.getSocialType()}" type="button"  data-method="DELETE" class="modal-btn btn btn-success btn-flat">삭제</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section>
+            <div class="container">
+                <div class="section-content">
+                    <div class="row">
+                        <div class="product">
+                            <div class="col-md-5">
+                                <div class="product-image">
+                                    <div class="zoom-gallery">
+                                        <a href="#" title="Title Here 1"><img src="#" alt=""></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="product-summary">
+                                    <h2 class="product-name product-title">Product Name</h2>
+                                    <div class="product_review">
+                                        <ul class="review_text list-inline">
+                                            <li>
+                                                <div title="Rated 4.50 out of 5" class="star-rating"><span style="width: 90%;">4.50</span></div>
+                                            </li>
+                                            <li><a href="#"><span>2</span>Reviews</a></li>
+                                            <li><a href="#">Add reviews</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="price"> <del><span class="amount">$165.00</span></del> <ins><span class="real-price amount">$160.00</span></ins> </div>
+                                    <div class="category"><strong>재고:</strong> <span class="limit-count">Product Name</span></div>
+                                    <div class="category"><strong>구매 수:</strong> <span class="purchase-count">Product Name</span></div>
+                                    <div class="cart-form-wrapper mt-30">
+                                        <form enctype="multipart/form-data" method="post" class="cart">
+                                            <input type="hidden" value="productID" name="add-to-cart">
+                                            <table class="table variations no-border">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="name"><strong>수량</strong></td>
+                                                    <td class="value">
+                                                        <div class="quantity buttons_added">
+                                                            <input type="button" class="minus" value="-">
+                                                            <input type="number" size="4" class="input-text qty text" title="Qty" value="1" name="quantity" min="1" step="1">
+                                                            <input type="button" class="plus" value="+">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <button class="single_add_to_cart_button btn btn-theme-colored" type="button">Add to cart</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="horizontal-tab product-tab">
+                                    <ul class="nav nav-tabs">
+                                        <li class="active normal-question-tab"><a href="#tab1" data-toggle="tab">Normal User Questions</a></li>
+                                        <li class="social-question-tab"><a href="#tab2" data-toggle="tab">Social User Questions</a></li>
+                                        <li><a href="#tab3" data-toggle="tab">Reviews</a></li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade in active" id="tab1">
+                                            <div class="questions">
+                                                <ol id="questionList" class="commentlist">
+                                                </ol>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <nav>
+                                                    <ul class="question-pagination pagination pagination-sm">
+
+                                                    </ul>
+                                                    <br>
+                                                    <button id="normal-btn" sec:authorize="hasAuthority('ROLE_USER')" data-toggle="modal" data-target=".bs-question-modal-sm" class="make-question-btn pull-right btn btn-success">문의하기</button>
+                                                </nav>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="tab2">
+                                            <div class="social-questions">
+                                                <ol id="social-questionList" class="commentlist">
+                                                </ol>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <nav>
+                                                    <ul class="social-question-pagination pagination pagination-sm">
+
+                                                    </ul>
+                                                    <br>
+                                                    <button id="social-btn" sec:authorize="hasAuthority('ROLE_SOCIAL')" data-toggle="modal" data-target=".bs-question-modal-sm" class="make-question-btn pull-right btn btn-success">문의하기</button>
+                                                </nav>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="tab3">
+                                            <div class="reviews">
+                                                <ol class="commentlist">
+                                                    <li class="comment">
+                                                        <div class="media"> <a href="#" class="media-left"><img class="img-circle" alt="" src="https://placehold.it/75x75" width="75"></a>
+                                                            <div class="media-body">
+                                                                <ul class="review_text list-inline">
+                                                                    <li>
+                                                                        <div title="Rated 5.00 out of 5" class="star-rating"><span style="width: 100%;">5.00</span></div>
+                                                                    </li>
+                                                                    <li>
+                                                                        <h5 class="media-heading meta"><span class="author">Tom Joe</span> – Mar 15, 2015:</h5>
+                                                                    </li>
+                                                                </ul>
+                                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec volutpat purus tempor sem molestie, sed blandit lacus posuere. Lorem ipsum dolor sit amet.</div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="comment">
+                                                        <div class="media"> <a href="#" class="media-left"><img class="img-circle" alt="" src="https://placehold.it/75x75" width="75"></a>
+                                                            <div class="media-body">
+                                                                <ul class="review_text list-inline">
+                                                                    <li>
+                                                                        <div title="Rated 4.00 out of 5" class="star-rating"><span style="width: 80%;">4.00</span></div>
+                                                                    </li>
+                                                                    <li>
+                                                                        <h5 class="media-heading meta"><span class="author">Mark Doe</span> – Jan 23, 2015:</h5>
+                                                                    </li>
+                                                                </ul>
+                                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec volutpat purus tempor sem molestie, sed blandit lacus posuere. Lorem ipsum dolor sit amet.</div>
+                                                        </div>
+                                                    </li>
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-30">
+                            <h3 class="line-bottom">Related Products</h3>
+                            <div class="row multi-row-clearfix">
+                                <div class="products related">
+                                    <div class="col-sm-6 col-md-3 col-lg-3 mb-30">
+                                        <div class="product pb-0">
+                                            <span class="tag-sale">Sale!</span>
+                                            <div class="product-thumb">
+                                                <img alt="" src="http://placehold.it/320x360" class="img-responsive img-fullwidth">
+                                                <div class="overlay">
+                                                    <div class="btn-add-to-cart-wrapper">
+                                                        <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="#">Add To Cart</a>
+                                                    </div>
+                                                    <div class="btn-product-view-details">
+                                                        <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="#">View detail</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="product-details text-center bg-lighter pt-15 pb-10">
+                                                <a href="#"><h5 class="product-title mt-0">Product Name</h5></a>
+                                                <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 80%;">3.50</span></div>
+                                                <div class="price"><del><span class="amount">$165.00</span></del><ins><span class="amount">$160.00</span></ins></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3 col-lg-3 mb-30">
+                                        <div class="product pb-0">
+                                            <span class="tag-sale">Sale!</span>
+                                            <div class="product-thumb">
+                                                <img alt="" src="http://placehold.it/320x360" class="img-responsive img-fullwidth">
+                                                <div class="overlay">
+                                                    <div class="btn-add-to-cart-wrapper">
+                                                        <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="#">Add To Cart</a>
+                                                    </div>
+                                                    <div class="btn-product-view-details">
+                                                        <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="#">View detail</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="product-details text-center bg-lighter pt-15 pb-10">
+                                                <a href="#"><h5 class="product-title mt-0">Product Name</h5></a>
+                                                <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 60%;">3.50</span></div>
+                                                <div class="price"><del><span class="amount">$70.00</span></del><ins><span class="amount">$55.00</span></ins></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3 col-lg-3 mb-30">
+                                        <div class="product pb-0">
+                                            <div class="product-thumb">
+                                                <img alt="" src="http://placehold.it/320x360" class="img-responsive img-fullwidth">
+                                                <div class="overlay">
+                                                    <div class="btn-add-to-cart-wrapper">
+                                                        <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="#">Add To Cart</a>
+                                                    </div>
+                                                    <div class="btn-product-view-details">
+                                                        <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="#">View detail</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="product-details text-center bg-lighter pt-15 pb-10">
+                                                <a href="#"><h5 class="product-title mt-0">Product Name</h5></a>
+                                                <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 75%;">3.50</span></div>
+                                                <div class="price"><ins><span class="amount">$185.00</span></ins></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md3 col-lg-3 mb-30">
+                                        <div class="product pb-0">
+                                            <div class="product-thumb">
+                                                <img alt="" src="http://placehold.it/320x360" class="img-responsive img-fullwidth">
+                                                <div class="overlay">
+                                                    <div class="btn-add-to-cart-wrapper">
+                                                        <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="#">Add To Cart</a>
+                                                    </div>
+                                                    <div class="btn-product-view-details">
+                                                        <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="#">View detail</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="product-details text-center bg-lighter pt-15 pb-10">
+                                                <a href="#"><h5 class="product-title mt-0">Product Name</h5></a>
+                                                <div class="star-rating" title="Rated 5.00 out of 5"><span style="width: 100%;">5.00</span></div>
+                                                <div class="price"><ins><span class="amount">$480.00</span></ins></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- end main-content -->
+    </div>
+
+</html>

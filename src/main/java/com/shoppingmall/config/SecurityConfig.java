@@ -3,6 +3,7 @@ package com.shoppingmall.config;
 import com.shoppingmall.handler.CustomLoginFailureHandler;
 import com.shoppingmall.handler.CustomLoginSuccessHandler;
 import com.shoppingmall.service.CustomUserDetailsService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
@@ -25,14 +26,13 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import javax.sql.DataSource;
 
+@AllArgsConstructor
 @Configuration
 @EnableWebSecurity
 @Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
     private CustomUserDetailsService customUserDetailsService;
-    @Autowired
     private DataSource dataSource;
 
     @Override
@@ -43,28 +43,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest().permitAll()
                 .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
-                .accessDeniedPage("/accessDenied")
+                    .exceptionHandling()
+                    .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
+                    .accessDeniedPage("/accessDenied")
                 .and()
-                .formLogin()
-                .loginProcessingUrl("/login")
-                .successHandler(successHandler())
-                .failureHandler(failureHandler())
+                    .formLogin()
+                    .loginProcessingUrl("/login")
+                    .successHandler(successHandler())
+                    .failureHandler(failureHandler())
                 .and()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
-                .deleteCookies("JSESSIONID")
-                .invalidateHttpSession(true)
+                    .logout()
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/")
+                    .deleteCookies("JSESSIONID")
+                    .invalidateHttpSession(true)
                 .and()
-                .headers().frameOptions().disable()
+                    .headers().frameOptions().disable()
                 .and()
-                .csrf()
-                .ignoringAntMatchers("/h2-console/**");
+                    .csrf()
+                    .ignoringAntMatchers("/h2-console/**")
+                .and()
+                    .sessionManagement()
+                    .maximumSessions(1)
+                    .expiredUrl("/duplicated-login")
+                    .sessionRegistry(sessionRegistry());
 
         http.rememberMe()
-                .key("slash")
+                .key("remember-me")
                 .userDetailsService(customUserDetailsService)
                 .tokenRepository(getJDBCRepository())
                 .tokenValiditySeconds(60*60*24);

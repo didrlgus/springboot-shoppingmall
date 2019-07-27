@@ -23,5 +23,4 @@ public class SpringbootWebserviceApplication {
                 .properties(APPLICATION_LOCATIONS)
                 .run(args);
     }
-
 }

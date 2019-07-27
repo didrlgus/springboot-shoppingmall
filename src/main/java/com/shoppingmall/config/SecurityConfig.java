@@ -2,6 +2,8 @@ package com.shoppingmall.config;
 
 import com.shoppingmall.handler.CustomLoginFailureHandler;
 import com.shoppingmall.handler.CustomLoginSuccessHandler;
+import com.shoppingmall.oauth.CustomOAuth2Provider;
+import com.shoppingmall.service.CustomUserDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +41,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
+
+    @Autowired
+    private DataSource dataSource;
 
     @Override
     public void configure(WebSecurity web) throws Exception
@@ -55,36 +62,100 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest().permitAll()
                 .and()
-                    .exceptionHandling()
-                    .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
-                    .accessDeniedPage("/accessDenied")
+                .exceptionHandling()
+                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
+                .accessDeniedPage("/accessDenied")
                 .and()
-                    .formLogin()
-                    .loginProcessingUrl("/login")
-                    .successHandler(successHandler())
-                    //.defaultSuccessUrl("/cart", true)
-                    .failureHandler(failureHandler())
+                .formLogin()
+                .loginProcessingUrl("/login")
+                .successHandler(successHandler())
+                //.defaultSuccessUrl("/cart", true)
+                .failureHandler(failureHandler())
                 .and()
-                    .oauth2Login()
-                    //.successHandler(successHandler())
-                    .defaultSuccessUrl("/oauth/loginSuccess", true)
-                    .failureUrl("/oauth/loginFailed")
+                .oauth2Login()
+                //.successHandler(successHandler())
+                .defaultSuccessUrl("/oauth/loginSuccess", true)
+                .failureUrl("/oauth/loginFailed")
                 .and()
-                    .logout()
-                    .logoutUrl("/logout")
-                    .logoutSuccessUrl("/")
-                    .deleteCookies("JSESSIONID")
-                    .invalidateHttpSession(true)
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+                .deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true)
                 .and()
-                    .headers().frameOptions().disable()
+                .headers().frameOptions().disable()
                 .and()
-                    .csrf()
-                    .ignoringAntMatchers("/h2-console/**")
+                .csrf()
+                .ignoringAntMatchers("/h2-console/**")
                 .and()
-                    .sessionManagement()
-                    .maximumSessions(1)
-                    .expiredUrl("/duplicated-login")
-                    .sessionRegistry(sessionRegistry());
+                .sessionManagement()
+                .maximumSessions(1)
+                .expiredUrl("/duplicated-login")
+                .sessionRegistry(sessionRegistry());
+
+        http.rememberMe()
+                .key("slash")
+                .userDetailsService(customUserDetailsService)
+                .tokenRepository(getJDBCRepository())
+                .tokenValiditySeconds(60*60*24);
+    }
+
+    // Registration 리스트 만들기
+    @Bean
+    public ClientRegistrationRepository clientRegistrationRepository(OAuth2ClientProperties oAuth2ClientProperties, @Value("${custom.oauth2.kakao.client-id}") String kakaoClientId) {
+        List<ClientRegistration> registrations = oAuth2ClientProperties.getRegistration().keySet().stream()
+                .map(client -> getRegistration(oAuth2ClientProperties, client))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        // kakao는 별도로 registration을 생성해서 리스트에 넣어줌
+        registrations.add(CustomOAuth2Provider.KAKAO.getBuilder("kakao")
+                .clientId(kakaoClientId)
+                .clientSecret("test")   //필요없는 값인데 null이면 실행이 안되도록 설정되어 있음 (임시값을 넣어줌)
+                .jwkSetUri("test")      //필요없는 값인데 null이면 실행이 안되도록 설정되어 있음 (임시값을 넣어줌)
+                .build());
+
+        return new InMemoryClientRegistrationRepository(registrations);
+    }
+
+    // 미리 제공된 Provider의 빌더에 yml로 넣어놓았던 clientId, clientSecret, scope를 세팅한 후 빌더로 만들어 반환
+    // client는 registrationId (google, github)
+    private ClientRegistration getRegistration(OAuth2ClientProperties clientProperties, String client) {
+        if ("google".equals(client)) {
+            OAuth2ClientProperties.Registration registration = clientProperties.getRegistration().get("google");
+            return CommonOAuth2Provider.GOOGLE.getBuilder(client)
+                    .clientId(registration.getClientId())
+                    .clientSecret(registration.getClientSecret())
+                    .scope("email", "profile")
+                    .build();
+        }
+        if ("github".equals(client)) {
+            OAuth2ClientProperties.Registration registration = clientProperties.getRegistration().get("github");
+            return CommonOAuth2Provider.GITHUB.getBuilder(client)
+                    .clientId(registration.getClientId())
+                    .clientSecret(registration.getClientSecret())
+                    .build();
+        }
+
+        return null;
+    }
+
+    private PersistentTokenRepository getJDBCRepository() {
+
+        JdbcTokenRepositoryImpl repo = new JdbcTokenRepositoryImpl();
+        repo.setDataSource(dataSource);
+
+        return repo;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Bean

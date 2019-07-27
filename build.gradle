@@ -32,6 +32,6 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     compile('org.springframework.security:spring-security-oauth2-client')
     compile('org.springframework.security:spring-security-oauth2-jose')
-    compile('org.springframework.boot:spring-boot-starter-security')
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.1.0.RELEASE'
     compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
 }

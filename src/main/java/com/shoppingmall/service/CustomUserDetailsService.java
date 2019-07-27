@@ -4,6 +4,7 @@ import com.shoppingmall.domain.NormalUser;
 import com.shoppingmall.domain.SecurityNormalUser;
 import com.shoppingmall.dto.NormalUserResponseDto;
 import com.shoppingmall.exception.DeleteUserException;
+import com.shoppingmall.exception.NotExistUserException;
 import com.shoppingmall.repository.NormalUserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,17 +31,18 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         Optional<NormalUser> normalUser = normalUserRepository.findByIdentifier(identifier);
 
+        if (!normalUser.isPresent()) {
+            throw new NotExistUserException("로그인에 실패하였습니다.");
+        }
+
         NormalUserResponseDto normalUserResponseDto;
 
-        if (normalUser.isPresent()) {
-
-            if (normalUser.get().getDeleteYn().equals('Y')) {
-                throw new DeleteUserException("이미 탈퇴된 유저입니다. 아이디를 다시 만들어주세요.");
-            }
-
-            normalUserResponseDto = normalUser.get().toResponseDto(normalUser.get());
-            request.getSession().setAttribute("user", normalUserResponseDto);
+        if (normalUser.get().getDeleteYn().equals('Y')) {
+            throw new DeleteUserException("이미 탈퇴된 유저입니다. 아이디를 다시 만들어주세요.");
         }
+
+        normalUserResponseDto = normalUser.get().toResponseDto(normalUser.get());
+        request.getSession().setAttribute("user", normalUserResponseDto);
 
         return Optional.of(normalUser)
                 .map(SecurityNormalUser::new).get();

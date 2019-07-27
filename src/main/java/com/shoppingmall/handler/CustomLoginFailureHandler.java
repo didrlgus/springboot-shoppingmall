@@ -17,10 +17,10 @@ public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
         request.setAttribute("username", request.getParameter("username"));
         request.setAttribute("password", request.getParameter("password"));
 
-        // 아이디 or 비밀번호 틀릴 경우
+        // 비밀번호 틀릴 경우
         if (exception.getMessage().equals("Bad credentials"))
             request.setAttribute("errorMsg", "로그인에 실패하였습니다!");
-        else    // 이미 탈퇴된 유저일 경우
+        else    // 아이디 틀릴 경우 or  이미 탈퇴된 유저일 경우
             request.setAttribute("errorMsg", exception.getMessage());
 
         request.getRequestDispatcher("/loginFailure").forward(request, response);

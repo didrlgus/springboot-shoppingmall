@@ -57,6 +57,14 @@ public class NormalUser {
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
+    @OneToMany(mappedBy = "normalUser", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Question> questions;
+
+    @OneToMany(mappedBy = "normalUser", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<QuestionAnswer> answers;
+
     public NormalUserResponseDto toResponseDto(NormalUser normalUser) {
 
         return NormalUserResponseDto.builder()

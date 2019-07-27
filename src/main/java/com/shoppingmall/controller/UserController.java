@@ -83,4 +83,10 @@ public class UserController {
 
         return "redirect:/";
     }
+
+    @PostMapping("/loginFailure")
+    public String loginFailure() throws Exception {
+
+        return "user/login-register";
+    }
 }

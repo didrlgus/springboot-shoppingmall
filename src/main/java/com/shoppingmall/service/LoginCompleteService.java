@@ -3,6 +3,7 @@ package com.shoppingmall.service;
 import com.shoppingmall.domain.SocialUser;
 import com.shoppingmall.dto.SocialUserResponseDto;
 import com.shoppingmall.repository.SocialUserRepository;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,13 +25,12 @@ import java.util.stream.Collectors;
 
 import static com.shoppingmall.domain.enums.SocialType.*;
 
+@AllArgsConstructor
 @Service
 @Slf4j
 public class LoginCompleteService {
 
-    @Autowired
     private SocialUserRepository socialUserRepository;
-    @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
 
     public void loginProc(OAuth2AuthenticationToken authentication) {

@@ -3,6 +3,7 @@ package com.shoppingmall.config;
 import com.shoppingmall.handler.CustomLoginSuccessHandler;
 import com.shoppingmall.oauth.CustomOAuth2Provider;
 import com.shoppingmall.service.CustomUserDetailsService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,15 +31,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Configuration
 @EnableWebSecurity
 @Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
     private CustomUserDetailsService customUserDetailsService;
-
-    @Autowired
     private DataSource dataSource;
 
     @Override

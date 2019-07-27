@@ -25,12 +25,13 @@ import java.util.stream.Collectors;
 
 import static com.shoppingmall.domain.enums.SocialType.*;
 
-@AllArgsConstructor
 @Service
 @Slf4j
 public class LoginCompleteService {
 
+    @Autowired
     private SocialUserRepository socialUserRepository;
+    @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
 
     public void loginProc(OAuth2AuthenticationToken authentication) {

@@ -2,15 +2,12 @@ package com.shoppingmall.config;
 
 import com.shoppingmall.handler.CustomLoginSuccessHandler;
 import com.shoppingmall.oauth.CustomOAuth2Provider;
-import com.shoppingmall.service.CustomUserDetailsService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -36,9 +33,6 @@ import java.util.stream.Collectors;
 @EnableWebSecurity
 @Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    private CustomUserDetailsService customUserDetailsService;
-    private DataSource dataSource;
 
     @Override
     public void configure(WebSecurity web) throws Exception
@@ -82,12 +76,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .ignoringAntMatchers("/h2-console/**");
 
-
-        http.rememberMe()
-                .key("slash")
-                .userDetailsService(customUserDetailsService)
-                .tokenRepository(getJDBCRepository())
-                .tokenValiditySeconds(60*60*24);
     }
 
     // Registration 리스트 만들기
@@ -128,24 +116,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         }
 
         return null;
-    }
-
-    private PersistentTokenRepository getJDBCRepository() {
-
-        JdbcTokenRepositoryImpl repo = new JdbcTokenRepositoryImpl();
-        repo.setDataSource(dataSource);
-
-        return repo;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Bean

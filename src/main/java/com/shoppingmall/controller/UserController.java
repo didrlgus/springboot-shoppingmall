@@ -1,8 +1,6 @@
 package com.shoppingmall.controller;
 
-import com.shoppingmall.dto.NormalUserRequestDto;
 import com.shoppingmall.service.LoginCompleteService;
-import com.shoppingmall.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -13,8 +11,6 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,12 +22,6 @@ import javax.servlet.http.HttpSession;
 public class UserController {
 
     private LoginCompleteService loginCompleteService;
-    private UserService userService;
-
-    /*@GetMapping("/user")
-    public void userInit() {
-        userService.saveUser();
-    }*/
 
     @GetMapping("/login")
     public String login(HttpServletRequest request) {
@@ -39,14 +29,6 @@ public class UserController {
         request.getSession().setAttribute("prevPage", referrer);
 
         return "user/login-register";
-    }
-
-    @PostMapping("/registration")
-    public String registration(@ModelAttribute NormalUserRequestDto userDto) {
-
-        userService.userRegistration(userDto);
-
-        return "redirect:/";
     }
 
     @GetMapping("/profiles")

@@ -1,17 +1,18 @@
 package com.shoppingmall.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.shoppingmall.dto.NormalUserResponseDto;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
+@Setter
 @Entity
 @Builder
 @NoArgsConstructor
@@ -36,11 +37,36 @@ public class NormalUser {
     private String email;
 
     @Column
+    private String roadAddr;
+
+    @Column
+    private String buildingName;
+
+    @Column
+    private String detailAddr;
+
+    @Column
     private String authorities;
+
+    @Column
+    private Character deleteYn;
 
     @CreatedDate
     private LocalDateTime createdDate;
 
     @LastModifiedDate
     private LocalDateTime modifiedDate;
+
+    public NormalUserResponseDto toResponseDto(NormalUser normalUser) {
+
+        return NormalUserResponseDto.builder()
+                .id(normalUser.getId())
+                .identifier(normalUser.getIdentifier())
+                .name(normalUser.getName())
+                .email(normalUser.getEmail())
+                .roadAddr(normalUser.getRoadAddr())
+                .buildingName(normalUser.getBuildingName())
+                .detailAddr(normalUser.getDetailAddr())
+                .build();
+    }
 }

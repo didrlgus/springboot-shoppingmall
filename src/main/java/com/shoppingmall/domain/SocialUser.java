@@ -1,6 +1,5 @@
 package com.shoppingmall.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shoppingmall.domain.enums.SocialType;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -9,7 +8,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter

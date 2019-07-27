@@ -1,21 +1,22 @@
 package com.shoppingmall.controller;
 
+import com.shoppingmall.dto.NormalUserRequestDto;
 import com.shoppingmall.service.NormalUserService;
-import com.shoppingmall.service.SocialLoginCompleteService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Slf4j
 @AllArgsConstructor
@@ -23,7 +24,6 @@ import javax.servlet.http.HttpSession;
 public class UserController {
 
     private NormalUserService normalUserService;
-    private SocialLoginCompleteService socialLoginCompleteService;
 
     @GetMapping("/login")
     public String login(HttpServletRequest request) {
@@ -31,6 +31,18 @@ public class UserController {
         request.getSession().setAttribute("prevPage", referrer);
 
         return "user/login-register";
+    }
+
+    // 일반유저 회원가입
+    @PostMapping("/member")
+    public String registration(@ModelAttribute @Valid NormalUserRequestDto userRequestDto)
+            throws Exception {
+
+        log.info("### userDto :" + userRequestDto);
+
+        normalUserService.userRegistration(userRequestDto);
+
+        return "user/register-complete";
     }
 
     @GetMapping("/registration")
@@ -56,31 +68,6 @@ public class UserController {
     public String checkout() {
 
         return "user/checkout";
-    }
-
-    // oauth2 로그인 성공 시 호출
-    @GetMapping("/oauth/loginSuccess")
-    public String loginComplete(HttpServletRequest request) throws Exception {
-        OAuth2AuthenticationToken authentication
-                = (OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-
-        String redirectUrl = null;
-
-        HttpSession session = request.getSession();
-
-        if (session != null) {
-            redirectUrl = (String) session.getAttribute("prevPage");
-            session.removeAttribute("prevPage");
-        }
-
-        if (redirectUrl == null)
-            redirectUrl = "/";
-
-        log.info("#### authentication : " + authentication);
-
-        socialLoginCompleteService.loginProc(authentication);
-
-        return "redirect:" + redirectUrl;
     }
 
     // form 로그아웃, oauth2 로그아웃 공통

@@ -2,22 +2,30 @@ package com.shoppingmall.config;
 
 import com.shoppingmall.handler.CustomLoginSuccessHandler;
 import com.shoppingmall.oauth.CustomOAuth2Provider;
+import com.shoppingmall.service.CustomUserDetailsService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -26,6 +34,12 @@ import java.util.stream.Collectors;
 @EnableWebSecurity
 @Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
+
+    @Autowired
+    private DataSource dataSource;
 
     @Override
     public void configure(WebSecurity web) throws Exception
@@ -38,7 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers("/checkout", "/cart", "/profile").hasAuthority("ROLE_USER")
+                .antMatchers("/oauth2/**").permitAll()
+                .antMatchers("/checkout", "/cart", "/profiles").hasAuthority("ROLE_USER")
                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest().permitAll()
                 .and()
@@ -68,18 +83,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .ignoringAntMatchers("/h2-console/**");
 
-    }
 
-    @Bean
-    public AuthenticationSuccessHandler successHandler() {
-        return new CustomLoginSuccessHandler("/");
+        http.rememberMe()
+                .key("slash")
+                .userDetailsService(customUserDetailsService)
+                .tokenRepository(getJDBCRepository())
+                .tokenValiditySeconds(60*60*24);
     }
-
 
     // Registration 리스트 만들기
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository(OAuth2ClientProperties oAuth2ClientProperties, @Value("${custom.oauth2.kakao.client-id}") String kakaoClientId) {
-        oAuth2ClientProperties.getRegistration().keySet();
         List<ClientRegistration> registrations = oAuth2ClientProperties.getRegistration().keySet().stream()
                 .map(client -> getRegistration(oAuth2ClientProperties, client))
                 .filter(Objects::nonNull)
@@ -96,7 +110,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     // 미리 제공된 Provider의 빌더에 yml로 넣어놓았던 clientId, clientSecret, scope를 세팅한 후 빌더로 만들어 반환
-    // client는 registrationId (google, kakao)
+    // client는 registrationId (google, github)
     private ClientRegistration getRegistration(OAuth2ClientProperties clientProperties, String client) {
         if ("google".equals(client)) {
             OAuth2ClientProperties.Registration registration = clientProperties.getRegistration().get("google");
@@ -115,6 +129,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         }
 
         return null;
+    }
+
+    private PersistentTokenRepository getJDBCRepository() {
+
+        JdbcTokenRepositoryImpl repo = new JdbcTokenRepositoryImpl();
+        repo.setDataSource(dataSource);
+
+        return repo;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        return new CustomLoginSuccessHandler("/");
     }
 
 }

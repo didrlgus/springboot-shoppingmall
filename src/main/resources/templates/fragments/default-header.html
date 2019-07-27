@@ -27,9 +27,9 @@
                 <div class="col-md-4">
                     <div class="widget">
                         <ul class="list-inline  text-right flip sm-text-center">
-                            <li sec:authorize="isAnonymous()" class="m-0 pl-10">
+                            <!--<li sec:authorize="isAnonymous()" class="m-0 pl-10">
                                 <a href="/login" class="text-white"><i class="fa fa-user-o mr-5 text-theme-colored2"></i> Login / Register</a>
-                            </li>
+                            </li>-->
                             <!--<li sec:authorize="isRememberMe() && isAuthenticated()" class="m-0 pl-10">
                                 <a th:text="${session.user.getName()} + 님" th:href="|/profiles/${session.user.getId()}|" class="text-white"></a>
                                 &lt;!&ndash;<a sec:authentication="name" href="/profiles" class="text-white"> 님</a>&ndash;&gt;
@@ -37,12 +37,12 @@
                             <li sec:authorize="isAuthenticated() && !isRememberMe()" class="m-0 pl-10">
                                 <a th:text="${session.user.getName()} + 님" th:href="|/profiles/${session.user.getId()}|" class="text-white"></a>
                             </li>-->
-                            <li sec:authorize="isAuthenticated()" class="m-0 pl-10">
+                            <!--<li sec:authorize="isAuthenticated()" class="m-0 pl-10">
                                 <a th:text="${session.user.getName()} + 님" href="/profiles" class="text-white"></a>
                             </li>
                             <li sec:authorize="isAuthenticated()" class="m-0 pl-10">
                                 <a href="/logout" class="text-white"><i class="fa fa-user-o mr-5 text-theme-colored2"></i> Logout </a>
-                            </li>
+                            </li>-->
                         </ul>
                     </div>
                 </div>

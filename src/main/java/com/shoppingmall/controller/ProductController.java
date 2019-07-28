@@ -18,4 +18,10 @@ public class ProductController {
 
         return "product/productList";
     }
+
+    @GetMapping("/productDetails")
+    public String initProductDetails() {
+
+        return "product/productDetails";
+    }
 }

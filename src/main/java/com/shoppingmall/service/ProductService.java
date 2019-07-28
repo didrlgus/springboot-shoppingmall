@@ -4,6 +4,7 @@ import com.shoppingmall.domain.Product;
 import com.shoppingmall.domain.ProductCat;
 import com.shoppingmall.dto.PagingDto;
 import com.shoppingmall.dto.ProductResponseDto;
+import com.shoppingmall.exception.NotExistProductException;
 import com.shoppingmall.repository.CategoryRepository;
 import com.shoppingmall.repository.ProductRepository;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @AllArgsConstructor
@@ -53,5 +55,15 @@ public class ProductService {
 
         // PageImpl 객체를 반환
         return resultMap;
+    }
+
+    // 상품 상세
+    public ProductResponseDto getProductDetails(Long id) {
+        Optional<Product> productDetails = productRepository.findById(id);
+
+        if (productDetails.isPresent())
+            return productDetails.get().toResponseDto();
+        else
+            throw new NotExistProductException("존재하지 않는 상품입니다.");
     }
 }

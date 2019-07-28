@@ -20,8 +20,6 @@
                         url  : "/productList/" + page + "/catCd/" + catCd,
                         contentType : "application/json",
                         success : function(data) {
-                            console.log(data);
-
                             var productList      = data.productList.content,
                                 productPagingDto = data.productPagingDto,
                                 $productList     = $(".products .product-list"),

@@ -24,4 +24,10 @@ public class ProductRestController {
 
         return ResponseEntity.ok().body(productService.getProductListByCategory(catCd, pageable, page));
     }
+
+    @GetMapping("/product/{id}")
+    public ResponseEntity<?> getProductDetails(@PathVariable Long id) {
+
+        return ResponseEntity.ok().body(productService.getProductDetails(id));
+    }
 }

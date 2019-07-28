@@ -10,6 +10,8 @@ public class MainController {
     @GetMapping("/")
     public String initMain(ModelMap model) {
 
+        model.addAttribute("pageName", "main");
+
         return "main/main";
     }
 }

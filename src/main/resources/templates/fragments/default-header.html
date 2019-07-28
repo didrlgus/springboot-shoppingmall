@@ -4,13 +4,6 @@
 <header id="header" class="header modern-header modern-header-theme-colored" th:fragment="headerFragment">
     <script th:inline="javascript">
 
-        var categoryObj = {
-
-            getProductList  : function(obj) {
-                console.log(obj);
-            }
-        }
-
         $(function() {
             var pageName = [[${pageName}]];
 
@@ -95,7 +88,7 @@
                                         <ul class="dropdown">
                                             <th:block th:if="${#lists.size(catList_S)} > 0" th:each="catList_S : ${catList}">
                                                 <li th:if="${(catList_S.getCatLv() eq 2) and (catList_L.getCatCd() eq catList_S.getUpprCatCd())}">
-                                                    <a href="#" th:data-code="${catList_S.getCatCd()}" onclick="categoryObj.getProductList(this)" th:text="${catList_S.getCatNm()}"></a>
+                                                    <a th:href="@{|${catList_S.getCnntUrl()}?catCd=${catList_S.getCatCd()}|}" th:text="${catList_S.getCatNm()}"></a>
                                                 </li>
                                             </th:block>
                                         </ul>

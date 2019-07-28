@@ -9,8 +9,99 @@
         </script>
         <script th:inline="javascript">
 
+            var productListObj = {
+
+                getProductList  : function(obj) {
+                    var catCd = [[${param.catCd}]][0],
+                        page = obj ? $(obj).data("page") : 1;
+
+                    $.ajax({
+                        type : "GET",
+                        url  : "/productList/" + page + "/catCd/" + catCd,
+                        contentType : "application/json",
+                        success : function(data) {
+                            console.log(data);
+
+                            var productList      = data.productList.content,
+                                productPagingDto = data.productPagingDto,
+                                $productList     = $(".products .product-list"),
+                                $productListPagination = $(".product-list-pagination");
+
+                            // 상품 리스트, 페이지 비우기
+                            $productList.empty();
+                            $productListPagination.empty();
+
+                            // 상품 리스트 그리기
+                            if (productList.length > 0) {
+                                productList.forEach(function(element) {
+                                    var productDiv =
+                                        "<div class='col-sm-6 col-md-4 col-lg-4 mb-30'>" +
+                                        "<div class='product pb-0'>" +
+                                        "<span class='tag-sale'>Sale!</span>" +
+                                        "<div class='product-thumb'>" +
+                                        "<img alt='' src='" + element.titleImg + "' class='img-responsive img-fullwidth'>" +
+                                        "<div class='overlay'>" +
+                                        "<div class='btn-add-to-cart-wrapper'>" +
+                                        "<a class='btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700' href='#'>Add To Cart</a>" +
+                                        "</div>" +
+                                        "<div class='btn-product-view-details'>" +
+                                        "<a class='btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700' href='/productDetails?productId=" + element.id + "'>Product detail</a>" +
+                                        "</div>" +
+                                        "</div>" +
+                                        "</div>" +
+                                        "<div class='product-details text-center bg-lighter pt-15 pb-10'>" +
+                                        "<a href='/productDetails?productId=" + element.id + "'><h5 class='product-title mt-0'>" + element.productNm + "</h5></a>" +
+                                        "<div class='star-rating' title='Rated 3.50 out of 5'><span style='width: 67%;'>3.50</span></div>" +
+                                        "<div class='price'><del><span class='amount'>$110.00</span></del><ins><span class='amount'><strong> " + element.price + "원</strong></span></ins></div>" +
+                                        "</div>" +
+                                        "</div>" +
+                                        "</div>"
+
+                                    $(".products .product-list").append(productDiv);
+                                })
+                            }
+
+                            // 페이징 그리기
+                            // Prev 페이지
+                            if (productPagingDto.scaleStartPage !== 1) {
+                                var prevLi =
+                                    "<li><a data-page='" + productPagingDto.prevPage + "' class='product-list-page' href='#' onclick='productListObj.getProductList(this)' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>";
+
+                                $productListPagination.append(prevLi);
+                            }
+
+                            // 중간 페이지
+                            for (var i = productPagingDto.scaleStartPage; i <= productPagingDto.scaleEndPage; i++) {
+                                var pageLi = "";
+
+                                if (productPagingDto.page === i) {
+                                    pageLi = "<li class='active'><a data-page='" + i + "' class='product-list-page' href='#' onclick='productListObj.getProductList(this)'>" + i + "</a></li>";
+                                } else {
+                                    pageLi = "<li class=''><a data-page='" + i + "' class='product-list-page' href='#' onclick='productListObj.getProductList(this)'>" + i + "</a></li>";
+                                }
+
+                                $productListPagination.append(pageLi);
+                            }
+
+                            // Next 페이지
+                            if (productPagingDto.scaleEndPage !== productPagingDto.totPage) {
+                                var nextLi =
+                                    "<li><a data-page='" + productPagingDto.nextPage + "' class='product-list-page' href='#' onclick='productListObj.getProductList(this)' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>"
+
+                                $productListPagination.append(nextLi);
+                            }
+                        },
+                        error   : function(e) {
+
+                        }
+                    })
+                }
+            }
+
             $(function() {
-                console.log([[${catCd}]]);
+
+                // 상품 리스트 얻기
+                productListObj.getProductList();
             })
 
         </script>
@@ -21,40 +112,14 @@
                     <div class="row multi-row-clearfix">
                         <div class="col-md-10 col-md-offset-1">
                             <div class="products">
-                                <th:block th:if="${#lists.size(productList)} > 0" th:each="productList : ${productList.content}">
-                                    <div class="col-sm-6 col-md-4 col-lg-4 mb-30">
-                                        <div class="product pb-0">
-                                            <span class="tag-sale">Sale!</span>
-                                            <div class="product-thumb">
-                                                <img alt="" th:src="${productList.getTitleImg()}" class="img-responsive img-fullwidth">
-                                                <div class="overlay">
-                                                    <div class="btn-add-to-cart-wrapper">
-                                                        <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="#">Add To Cart</a>
-                                                    </div>
-                                                    <div class="btn-product-view-details">
-                                                        <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" th:href="@{/productDetails(id=${productList.getId()})}">Product detail</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="product-details text-center bg-lighter pt-15 pb-10">
-                                                <a th:href="@{/productDetails(id=${productList.getId()})}"><h5 class="product-title mt-0" th:text="${productList.getProductNm()}"></h5></a>
-                                                <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 67%;">3.50</span></div>
-                                                <div class="price"><del><span class="amount">$110.00</span></del><ins><span class="amount" th:text="|${productList.getPrice()}원|"></span></ins></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </th:block>
+                                <div class="product-list">
+
+                                </div>
                                 <div class="col-md-12">
                                     <nav>
-                                        <th:block th:if="${pagingDto.getTotPage() != 0}">
-                                            <ul class="pagination theme-colored mt-0">
-                                                <li th:if="${pagingDto.getScaleStartPage() != 1}"> <a th:href="@{/productList(page=${pagingDto.getPrevPage()}, catCd=${catCd})}" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a> </li>
-                                                <li th:each="i : ${#numbers.sequence(pagingDto.getScaleStartPage(),pagingDto.getScaleEndPage())}" th:class="${pagingDto.page eq i} ? active : ''">
-                                                    <a th:href="@{/productList(page=${i}, catCd=${catCd})}" th:text="${i}"></a>
-                                                </li>
-                                                <li th:if="${pagingDto.getScaleEndPage() != pagingDto.getTotPage()}"> <a th:href="@{/productList(page=${pagingDto.getNextPage()}, catCd=${catCd})}" aria-label="Next"> <span aria-hidden="true">&raquo;</span> </a> </li>
-                                            </ul>
-                                        </th:block>
+                                        <ul class="pagination product-list-pagination theme-colored mt-0">
+
+                                        </ul>
                                     </nav>
                                 </div>
                             </div>

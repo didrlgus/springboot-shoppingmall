@@ -401,7 +401,7 @@
                 <div sec:authorize="hasAuthority('ROLE_USER')" class="modal-body">
                     <form id="questionFrm" name="question-form" class="question-form">
                         <input type="hidden" name="nomalUserId" th:value="${session.user.getId()}">
-                        <input type="hidden" name="productId" th:value="${#httpServletRequest.getParameter('id')}">
+                        <input type="hidden" name="productId" th:value="${#httpServletRequest.getParameter('productId')}">
                         <div class="row">
                             <div class="form-group col-md-6">
                                 아이디<br>

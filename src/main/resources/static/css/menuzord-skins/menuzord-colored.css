@@ -53,7 +53,7 @@ Colored Skin
 .menuzord.green .menuzord-menu > li.active > a, 
 .menuzord.green .menuzord-menu > li:hover > a, 
 .menuzord.green .menuzord-menu ul.dropdown li:hover > a{ 
-	background: #48CFAD; 
+	background: #5cb85c;
 	color: #fff;
 }
 .menuzord.green .showhide em{
@@ -63,7 +63,7 @@ Colored Skin
 	color: #fff;
 }
 .menuzord.green .menuzord-menu > li.search form input[type="text"]{
-	background: #48CFAD;
+	background: #5cb85c;
 	color: #fff;
 }
 /* red */
@@ -183,7 +183,7 @@ Colored Skin
 	/* green */
 	.menuzord.green.menuzord-responsive .menuzord-menu > li > a,
 	.menuzord.green.menuzord-responsive .menuzord-menu > li > a .indicator{
-		border-color: #48CFAD;
+		border-color: #5cb85c;
 	}
 	/* red */
 	.menuzord.red.menuzord-responsive .menuzord-menu > li > a,

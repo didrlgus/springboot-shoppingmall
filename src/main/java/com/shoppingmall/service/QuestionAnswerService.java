@@ -46,7 +46,7 @@ public class QuestionAnswerService {
             answerDtoList.add(answer.toDto());
         }
 
-        PageImpl<QuestionAnswerResponseDto> answers = new PageImpl(answerDtoList, pageable, answerList.getTotalElements());
+        PageImpl<QuestionAnswerResponseDto> answers = new PageImpl<>(answerDtoList, pageable, answerList.getTotalElements());
 
         HashMap<String, Object> resultMap = new HashMap<>();
 

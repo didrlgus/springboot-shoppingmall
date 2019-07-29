@@ -83,20 +83,20 @@ Gradient Skin
 }
 /* green */
 .menuzord.green { 
-	background: #48cfad;
+	background: #5cb85c;
 	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzQ4Y2ZhZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMzN2JjOWIiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-	background: -moz-linear-gradient(top,  #48cfad 0%, #37bc9b 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#48cfad), color-stop(100%,#37bc9b));
-	background: -webkit-linear-gradient(top,  #48cfad 0%,#37bc9b 100%);
-	background: -o-linear-gradient(top,  #48cfad 0%,#37bc9b 100%);
-	background: -ms-linear-gradient(top,  #48cfad 0%,#37bc9b 100%);
+	background: -moz-linear-gradient(top,  #5cb85c 0%, #37bc9b 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#5cb85c), color-stop(100%,#37bc9b));
+	background: -webkit-linear-gradient(top,  #5cb85c 0%,#37bc9b 100%);
+	background: -o-linear-gradient(top,  #5cb85c 0%,#37bc9b 100%);
+	background: -ms-linear-gradient(top,  #5cb85c 0%,#37bc9b 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#48cfad', endColorstr='#37bc9b',GradientType=0 );
 }
 .menuzord.green .menuzord-brand{ color: #fff; }
 .menuzord.green .menuzord-menu > li > a{ color: #fff; }
 .menuzord.green .menuzord-menu > li.active > a, 
 .menuzord.green .menuzord-menu > li:hover > a, 
-.menuzord.green .menuzord-menu ul.dropdown li:hover > a{ 
+.menuzord.green .menuzord-menu ul.dropdown li:hover > a{
 	background: #34c8a3;
 	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzM0YzhhMyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMzMmFhOGMiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
 	background: -moz-linear-gradient(top,  #34c8a3 0%, #32aa8c 100%);
@@ -321,7 +321,7 @@ Gradient Skin
 	/* green */
 	.menuzord.green.menuzord-responsive .menuzord-menu > li > a,
 	.menuzord.green.menuzord-responsive .menuzord-menu > li > a .indicator{
-		border-color: #48CFAD !important;
+		border-color: #5cb85c !important;
 	}
 	/* red */
 	.menuzord.red.menuzord-responsive .menuzord-menu > li > a,

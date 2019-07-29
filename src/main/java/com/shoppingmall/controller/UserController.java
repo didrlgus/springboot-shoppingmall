@@ -58,12 +58,6 @@ public class UserController {
         return "user/profiles";
     }
 
-    @GetMapping("/cart")
-    public String cart() {
-
-        return "user/cart";
-    }
-
     @GetMapping("/checkout")
     public String checkout() {
 

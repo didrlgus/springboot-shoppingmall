@@ -1,5 +1,6 @@
 package com.shoppingmall.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shoppingmall.domain.enums.ProductStatus;
 import com.shoppingmall.dto.ProductResponseDto;
 import lombok.*;
@@ -66,6 +67,10 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Question> questions;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Cart> carts;
 
     public ProductResponseDto toResponseDto() {
 

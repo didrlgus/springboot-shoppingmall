@@ -49,7 +49,7 @@ Top-bottom boxed border Skin
 /* green */
 .menuzord.green .menuzord-menu > li.active > a, 
 .menuzord.green .menuzord-menu > li:hover > a{ 
-	border-color: #48CFAD;
+	border-color: #5cb85c;
 }
 /* red */
 .menuzord.red .menuzord-menu > li.active > a, 

@@ -33,7 +33,6 @@
                         $(".purchase-count").text(data.purchaseCount + "개");
 
                         productDetails.normalUserQuestionListFn();
-                        productDetails.socialUserQuestionListFn();
                     }
                 })
             },
@@ -85,10 +84,7 @@
                         // 로그인이 되어있는지 session을 통해 파악
                         if ([[${session.user}]]) {
                             var userObj = [[${session.user}]];
-
-                            if (!userObj.socialType) {
-                                normalUserId = userObj.id;
-                            }
+                            normalUserId = userObj.id;
                         }
 
                         // 로그인 시 해당 유저가 작성한 문의의 수정버튼 띄우기
@@ -186,8 +182,6 @@
                     contentType : "application/json",
 
                     success : function (data) {
-                        console.log("data : ", data);
-
                         var userId = 0;
                         // 로그인이 되어있는지 session을 통해 파악
                         if ([[${session.user}]]) {
@@ -305,6 +299,52 @@
                     },
                     error   : function() {
                         alert("댓글을 작성해 주세요.");
+                    }
+                })
+            },
+            makeCartFn  : function() {
+                var user             = [[${session.user}]],
+                    userId           = 0,
+                    productCount     = Number($("#product-count").val()),
+                    limitCountText   = $(".limit-count").text(),
+                    limitCount       = Number(limitCountText.split("개")[0]);
+
+                if (!user) {
+                    alert("로그인 후 장바구니에 추가할 수 있습니다.");
+                    return;
+                }
+
+                userId = user.id;
+
+                if (productCount === 0) {
+                    alert("수량이 0일 수 없습니다.");
+                    return;
+                }
+
+                if (productCount > limitCount) {
+                    alert("재고가 없습니다.")
+                    return;
+                }
+
+                var data = {
+                    "userId"       : userId,
+                    "productId"    : productId,
+                    "productCount" : productCount
+                }
+
+                $.ajax({
+                    type : "POST",
+                    url  : "/cart",
+                    contentType : "application/json",
+                    data        : JSON.stringify(data),
+                    beforeSend  : function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success : function(data) {
+                        alert(data);
+                    },
+                    error : function(e) {
+                        alert(e.responseText);
                     }
                 })
             }
@@ -471,7 +511,7 @@
                     <div class="col-md-12">
                         <div class="horizontal-tab product-tab">
                             <ul class="nav nav-tabs">
-                                <li class="active normal-question-tab"><a href="#normal-tab" data-toggle="tab">User Answer</a></li>
+                                <li class="active normal-question-tab"><a href="#normal-tab" data-toggle="tab">Answer</a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane fade in active" id="normal-tab">
@@ -543,14 +583,14 @@
                                                 <td class="value">
                                                     <div class="quantity buttons_added">
                                                         <input type="button" class="minus" value="-">
-                                                        <input type="number" size="4" class="input-text qty text" title="Qty" value="1" name="quantity" min="1" step="1">
+                                                        <input id="product-count" type="number" size="4" class="input-text qty text" title="Qty" value="1" name="quantity" min="1" step="1">
                                                         <input type="button" class="plus" value="+">
                                                     </div>
                                                 </td>
                                             </tr>
                                             </tbody>
                                         </table>
-                                        <button class="single_add_to_cart_button btn btn-theme-colored" type="button">Add to cart</button>
+                                        <button class="single_add_to_cart_button btn btn-success" type="button" onclick="productDetails.makeCartFn()">장바구니에 추가</button>
                                     </form>
                                 </div>
                             </div>
@@ -558,7 +598,7 @@
                         <div class="col-md-12">
                             <div class="horizontal-tab product-tab">
                                 <ul class="nav nav-tabs">
-                                    <li class="active normal-question-tab"><a href="#tab1" data-toggle="tab">User Questions</a></li>
+                                    <li class="active normal-question-tab"><a href="#tab1" data-toggle="tab">Questions</a></li>
                                     <li><a href="#tab2" data-toggle="tab">Reviews</a></li>
                                 </ul>
                                 <div class="tab-content">
@@ -573,6 +613,7 @@
 
                                                 </ul>
                                                 <br>
+                                                <p sec:authorize="isAnonymous()" class="pull-right">로그인 후에 문의를 작성하실 수 있습니다. <a href="/login"><strong>  로그인하기</strong></a></p>
                                                 <button id="normal-btn" sec:authorize="hasAuthority('ROLE_USER')" data-toggle="modal" data-target=".bs-question-modal-sm" class="make-question-btn pull-right btn btn-success">문의하기</button>
                                             </nav>
                                         </div>

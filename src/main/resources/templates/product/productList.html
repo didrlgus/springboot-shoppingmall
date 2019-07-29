@@ -40,7 +40,7 @@
                                         "<img alt='' src='" + element.titleImg + "' class='img-responsive img-fullwidth'>" +
                                         "<div class='overlay'>" +
                                         "<div class='btn-add-to-cart-wrapper'>" +
-                                        "<a class='btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700' href='#'>Add To Cart</a>" +
+                                        "<a data-product-id='" + element.id + "' class='btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700' href='#' onclick='productListObj.makeCart(this)'>Add To Cart</a>" +
                                         "</div>" +
                                         "<div class='btn-product-view-details'>" +
                                         "<a class='btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700' href='/productDetails?productId=" + element.id + "'>Product detail</a>" +
@@ -90,7 +90,40 @@
                             }
                         },
                         error   : function(e) {
+                        }
+                    })
+                },
+                makeCart    : function (obj) {
+                    var user             = [[${session.user}]],
+                        userId           = 0,
+                        productId        = $(obj).data("productId");
 
+                    if (!user) {
+                        alert("로그인 후 장바구니에 추가할 수 있습니다.");
+                        return;
+                    }
+
+                    userId = user.id;
+
+                    var data = {
+                        "userId"       : userId,
+                        "productId"    : productId,
+                        "productCount" : 1
+                    }
+
+                    $.ajax({
+                        type : "POST",
+                        url  : "/cart",
+                        contentType : "application/json",
+                        data        : JSON.stringify(data),
+                        beforeSend  : function (xhr) {
+                            xhr.setRequestHeader(header, token);
+                        },
+                        success : function(data) {
+                            alert(data);
+                        },
+                        error : function(e) {
+                            alert(e.responseText);
                         }
                     })
                 }

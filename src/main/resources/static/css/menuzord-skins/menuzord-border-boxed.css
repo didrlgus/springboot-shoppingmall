@@ -48,7 +48,7 @@ Border Boxed Skin
 /* green */
 .menuzord.green .menuzord-menu > li.active > a, 
 .menuzord.green .menuzord-menu > li:hover > a{ 
-	border-color: #48CFAD!important;
+	border-color: #5cb85c!important;
 }
 /* red */
 .menuzord.red .menuzord-menu > li.active > a, 

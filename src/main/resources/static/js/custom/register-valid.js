@@ -53,7 +53,7 @@ var validCallback = {
             $this.val(removeBlankData);
 
             // 공백이 아닐 경우 if
-            if ($this.val() != "") {
+            if ($this.val() !== "") {
                 valid = true;
             } else {
                 var text = dataName;

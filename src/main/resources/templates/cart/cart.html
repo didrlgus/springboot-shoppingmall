@@ -9,6 +9,18 @@
         </script>
         <script th:inline="javascript">
 
+            var checkoutData = {
+                buyer_name : "",
+                email : "",
+                roadAddr : "",
+                buildingName : "",
+                detailAddr : "",
+                orderName : "",
+                amount : 0,
+                deliveryMessage : "",
+                cartId : [],
+            }
+
             var cartObj = {
 
                 getCartList : function(obj) {
@@ -30,6 +42,19 @@
                                     cartPagingDto = data.cartPagingDto,
                                     $cartTableBody = $(".cart-table-body"),
                                     $cartListPagination = $(".cart-list-pagination");
+
+                                checkoutData.buyer_name = cartList[0].normalUser.name;
+                                checkoutData.email = cartList[0].normalUser.email;
+                                checkoutData.roadAddr = cartList[0].normalUser.roadAddr;
+                                checkoutData.buildingName = cartList[0].normalUser.buildingName;
+                                checkoutData.detailAddr = cartList[0].normalUser.detailAddr;
+                                checkoutData.orderName = cartList[0].product.productNm + "외 " + (data.cartIdList.length - 1) + "건";
+
+                                checkoutData.cartId = [];
+
+                                data.cartIdList.forEach(function(element) {
+                                    checkoutData.cartId.push(element);
+                                })
 
                                 $cartTableBody.empty();
                                 $cartListPagination.empty();
@@ -86,7 +111,7 @@
                                     }
                                 }
                             }
-
+                            checkoutData.amount = checkoutPrice;
                             $("#checkout-price").text("결제금액 : " + checkoutPrice + "원")
                         },
                         error   : function(e) {
@@ -118,11 +143,138 @@
                             }
                         })
                     }
+                },
+                checkoutFn  : function() {
+                    var count = 0;
+
+                    $(".addressDiv input").each(function () {
+                        var $this = $(this),
+                            text = $this.data("name");
+
+                        if ($this.val() === ""){
+                            alert(text + "은/는 필수 입력 값입니다.");
+
+                            $this.focus();
+
+                            count++;
+                        }
+
+                        if (count > 0)
+                            return false;
+                    })
+
+                    if (count > 0) {
+                        return;
+                    }
+
+                    var IMP = window.IMP; // 생략가능
+                    IMP.init('imp69013622');
+
+                    IMP.request_pay({
+                        pg : 'kakaopay',
+                        pay_method : 'card',
+                        merchant_uid : new Date().getTime(),
+                        name : checkoutData.orderName,
+                        amount : checkoutData.amount,
+                        buyer_email : checkoutData.email,
+                        buyer_name : checkoutData.name,
+                        buyer_addr : checkoutData.roadAddr + " " + checkoutData.buildingName + " " +  checkoutData.detailAddr
+                    }, function(rsp) {
+                        var msg = "";
+                        if (rsp.success) {
+                            var orderNumber = rsp.merchant_uid;
+                            checkoutData.deliveryMessage = $("#delivery-message-area").val();
+
+                            var orderData = {
+                                cartIdList      : checkoutData.cartId,
+                                orderNumber     : orderNumber,
+                                orderName       : checkoutData.orderName,
+                                deliveryMessage : checkoutData.deliveryMessage,
+                                address         : checkoutData.roadAddr + " " + checkoutData.buildingName + " " +  checkoutData.detailAddr,
+                                amount          : checkoutData.amount
+                            }
+
+                            $.ajax({
+                                type : "POST",
+                                url  : "/order",
+                                contentType : "application/json",
+                                data        : JSON.stringify(orderData),
+                                beforeSend  : function(xhr) {
+                                    xhr.setRequestHeader(header, token);
+                                },
+                                success     : function(data) {
+                                    location.reload();
+                                },
+                                error       : function(e) {
+                                    console.log(e);
+                                }
+                            })
+
+                            msg += '결제가 완료되었습니다.\n';
+                            msg += '주문번호 : ' + orderNumber + "\n";
+                            msg += '결제 금액 : ' + rsp.paid_amount;
+
+                            alert(msg);
+                        } else {
+                            msg += '결제에 실패하였습니다.\n';
+                            msg += '에러내용 : ' + rsp.error_msg;
+
+                            alert(msg);
+                        }
+                    });
+                },
+                remainingFn   : function() {
+                    // 댓글 사이즈 제한하기
+                    $(".remaining").each(function() {
+                        // count 정보 및 count 정보와 관련된 textarea/input 요소를 찾아내서 변수에 저장한다.
+                        var $count = $(".count", this);
+                        var $input = $(this).prev();
+                        // .text()가 문자열을 반환하기에 이 문자를 숫자로 만들기 위해 1을 곱한다.
+                        var maximumCount = $count.text() * 1;
+                        // update 함수는 keyup, paste, input 이벤트에서 호출한다.
+                        var update = function() {
+                            var before = $count.text() * 1;
+                            var now = maximumCount - $input.val().length;
+                            // 사용자가 입력한 값이 제한 값을 초과하는지를 검사한다.
+                            if (now < 0) {
+                                var str = $input.val();
+                                alert("글자 입력수가 초과하였습니다.");
+                                $input.val(str.substr(0, maximumCount));
+                                now = 0;
+                            }
+                            // 필요한 경우 DOM을 수정한다.
+                            if (before != now) {
+                                $count.text(now);
+                            }
+                        };
+                        // input, keyup, paste 이벤트와 update 함수를 바인드한다
+                        $input.bind("input keyup paste", function() {
+                            setTimeout(update, 0)
+                        });
+                        update();
+                    });
+                }
+            }
+
+            var cartListEventObj = {
+
+                addressChkBoxFnCb : function(obj) {
+
+                    if (obj.checked) {
+                        $("input[name='roadAddr']").val(checkoutData.roadAddr);
+                        $("input[name='buildingName']").val(checkoutData.buildingName);
+                        $("input[name='detailAddr']").val(checkoutData.detailAddr);
+                    } else {
+                        $(".addressDiv input").val("");
+                    }
+
                 }
             }
 
             $(function() {
                 cartObj.getCartList();
+
+                cartObj.remainingFn();
             })
         </script>
 
@@ -131,6 +283,8 @@
                 <div class="section-content">
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1">
+                            <h2>Cart List</h2>
+                            <hr>
                             <table class="table table-striped table-bordered tbl-shopping-cart">
                                 <thead>
                                 <tr>
@@ -154,6 +308,39 @@
                                     </ul>
                                 </nav>
                             </div>
+                            <form id="registerFrm" name="reg-form" class="register-form" method="post" th:action="@{/member}">
+                                <h2>Address</h2>
+                                <input type="checkbox" name="addressChkBox" id="addressChkBox" onclick="cartListEventObj.addressChkBoxFnCb(this)"/>프로필 정보 가져오기
+                                <hr>
+                                <div class="row addressDiv">
+                                    <div class="form-group col-md-6">
+                                        <label for="register-address">Road Address</label>
+                                        <input id="register-address" data-name="도로명주소" name="roadAddr" class="form-control" type="text" />
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="register-buildingName">Building Name</label>
+                                        <input id="register-buildingName" data-name="건물이름" name="buildingName" class="form-control" type="text" />
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="register-detailAddress">Detail Address</label>
+                                        <input id="register-detailAddress" data-name="상세주소" name="detailAddr" class="form-control" type="text" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <button th:type="button" class="btn btn-success" th:onclick="registAddrObj.searchAddrFn()">우편번호 검색</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-12">
+                                        배송 메세지(선택사항)<br>
+                                        <textarea class="form-control" rows="2" name="message" id="delivery-message-area"></textarea>
+                                        <div class="remaining">남은 글자수: <span class="count">200</span></div>
+                                    </div>
+                                </div>
+                            </form>
+                            <hr>
+                            <h2>Checkout</h2>
                             <table class="table table-striped table-bordered tbl-shopping-cart">
                                 <tbody>
                                     <tr class="cart_item">
@@ -163,7 +350,7 @@
                                             <button type="button" class="btn btn-success">쿠폰 적용</button>
                                         </div></td>
                                         <td id="checkout-price" colspan="2"></td>
-                                        <td><button type="button" class="btn pull-right btn-success">결제하기</button></td>
+                                        <td><button type="button" class="btn pull-right btn-success" onclick="cartObj.checkoutFn()">결제하기</button></td>
                                     </tr>
                                 </tbody>
                             </table>

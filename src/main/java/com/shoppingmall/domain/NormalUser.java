@@ -69,6 +69,10 @@ public class NormalUser {
     @JsonIgnore
     private List<Cart> carts;
 
+    @OneToMany(mappedBy = "normalUser", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<ProductOrder> productOrders;
+
     public NormalUserResponseDto toResponseDto(NormalUser normalUser) {
 
         return NormalUserResponseDto.builder()

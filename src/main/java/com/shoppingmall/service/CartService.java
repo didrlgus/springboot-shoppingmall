@@ -55,6 +55,7 @@ public class CartService {
                 .normalUser(user.get())
                 .product(product)
                 .productCount(cartRequestDto.getProductCount())
+                .useYn('Y')
                 .build());
     }
 
@@ -62,7 +63,7 @@ public class CartService {
         int realPage = page - 1;
         pageable = PageRequest.of(realPage, 5);
 
-        Page<Cart> cartList = cartRepository.findAllByNormalUserIdOrderByCreatedDateDesc(userId, pageable);
+        Page<Cart> cartList = cartRepository.findAllByNormalUserIdAndUseYnOrderByCreatedDateDesc(userId, 'Y', pageable);
 
         if (cartList.getTotalElements() > 0) {
             List<CartResponseDto> cartResponseDtoList = new ArrayList<>();
@@ -76,10 +77,12 @@ public class CartService {
             PagingDto cartPagingDto = new PagingDto();
             cartPagingDto.setPagingInfo(cartLists);
 
-            List<Cart> carts = cartRepository.findAllByNormalUserId(userId);
+            List<Cart> carts = cartRepository.findAllByNormalUserIdAndUseYnOrderByCreatedDateDesc(userId, 'Y');
             int checkoutPrice = 0;
+            List<Long> cartIdList = new ArrayList<>();
 
             for (Cart cart : carts) {
+                cartIdList.add(cart.getId());
                 checkoutPrice += cart.getProduct().getPrice() * cart.getProductCount();
             }
 
@@ -87,6 +90,7 @@ public class CartService {
             resultMap.put("cartList", cartLists);
             resultMap.put("cartPagingDto", cartPagingDto);
             resultMap.put("checkoutPrice", checkoutPrice);
+            resultMap.put("cartIdList", cartIdList);
 
             return resultMap;
         }

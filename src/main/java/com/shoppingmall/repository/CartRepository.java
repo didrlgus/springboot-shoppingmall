@@ -10,7 +10,8 @@ import java.util.List;
 
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
-    Page<Cart> findAllByNormalUserIdOrderByCreatedDateDesc(Long userId, Pageable pageable);
 
-    List<Cart> findAllByNormalUserId(Long userId);
+    Page<Cart> findAllByNormalUserIdAndUseYnOrderByCreatedDateDesc(Long userId, char useYn, Pageable pageable);
+
+    List<Cart> findAllByNormalUserIdAndUseYnOrderByCreatedDateDesc(Long userId, char useYn);
 }

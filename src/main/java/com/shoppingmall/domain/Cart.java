@@ -1,5 +1,6 @@
 package com.shoppingmall.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shoppingmall.dto.CartRequestDto;
 import com.shoppingmall.dto.CartResponseDto;
 import lombok.*;
@@ -21,7 +22,10 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column
     private Integer productCount;
+    @Column
+    private Character useYn;
     @CreatedDate
     private Date createdDate;
 
@@ -33,6 +37,11 @@ public class Cart {
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "product_order_id", referencedColumnName = "id")
+    @JsonIgnore
+    private ProductOrder productOrder;
 
     public CartResponseDto toResponseDto() {
 

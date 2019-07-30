@@ -6,8 +6,8 @@ var registAddrObj = {
         daum.postcode.load(function(){
             new daum.Postcode({
                 oncomplete: function(data) {
-                    $("input[name='roadAddr']").attr("value", data.roadAddress);
-                    $("input[name='buildingName']").attr("value", data.buildingName);
+                    $("input[name='roadAddr']").val(data.roadAddress);
+                    $("input[name='buildingName']").val(data.buildingName);
                 }
             }).open();
         });

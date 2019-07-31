@@ -54,7 +54,9 @@ public class Question {
                 .message(message)
                 .answerCount(answerCount)
                 .answerState(answerState)
-                .createdDate(createdDate)
+                .createdDate(createdDate.getYear() + "-" + createdDate.getMonthValue() + "-"
+                        + createdDate.getDayOfMonth() + " " + createdDate.getHour() + ":" + createdDate.getMinute() + ":"
+                        + createdDate.getSecond())
                 .updatedDate(updatedDate)
                 .build();
     }

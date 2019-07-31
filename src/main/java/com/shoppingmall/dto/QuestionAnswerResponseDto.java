@@ -17,5 +17,5 @@ public class QuestionAnswerResponseDto {
     private NormalUser normalUser;
     private Question question;
     private String message;
-    private LocalDateTime createdDate;
+    private String createdDate;
 }

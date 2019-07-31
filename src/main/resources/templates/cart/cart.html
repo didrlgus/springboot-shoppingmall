@@ -37,18 +37,29 @@
                         success : function(data) {
                             var checkoutPrice = 0;
 
+
                             if (data) {
                                 var cartList = data.cartList.content,
                                     cartPagingDto = data.cartPagingDto,
                                     $cartTableBody = $(".cart-table-body"),
                                     $cartListPagination = $(".cart-list-pagination");
 
+                                if (page === 1) {
+                                    var representProductNm = cartList[0].product.productNm;
+
+                                    if (data.cartIdList.length > 1) {
+                                        checkoutData.orderName = representProductNm + " 외 " + (data.cartIdList.length - 1) + "건";
+                                    } else {
+                                        checkoutData.orderName = representProductNm;
+                                    }
+                                }
+
+                                // 유저 정보는 모든 카트 정보에서 공통
                                 checkoutData.buyer_name = cartList[0].normalUser.name;
                                 checkoutData.email = cartList[0].normalUser.email;
                                 checkoutData.roadAddr = cartList[0].normalUser.roadAddr;
                                 checkoutData.buildingName = cartList[0].normalUser.buildingName;
                                 checkoutData.detailAddr = cartList[0].normalUser.detailAddr;
-                                checkoutData.orderName = cartList[0].product.productNm + "외 " + (data.cartIdList.length - 1) + "건";
 
                                 checkoutData.cartId = [];
 
@@ -66,18 +77,18 @@
                                     cartList.forEach(function(element) {
                                         var amount = Number(element.productCount) * Number(element.product.price);
 
-                                        var catTr = "<tr class='cart_itme'>" +
+                                        var cartTr = "<tr class='cart_itme'>" +
                                             "<td class=\"product-remove\"><a data-cart-id='" + element.id + "' title=\"Remove this item\" class=\"remove\" href=\"#\" onclick='cartObj.removeCart(this)'>×</a></td>" +
                                             "<td class=\"product-thumbnail\"><a href='/productDetails?productId=" + element.product.id +  "'><img alt=\"member\" src='" + element.product.titleImg + "'></a></td>" +
                                             "<td class=\"product-name\"><a class=\"text-theme-colored\" href='/productDetails?productId=" + element.product.id +  "'>" + element.product.productNm + "</a>" +
                                             "<ul class=\"variation\">" +
                                             "</ul></td>" +
                                             "<td class=\"product-price\"><span class=\"amount\">" + element.product.price + "</span></td>" +
-                                            "<td class=\"product-quantity\"><span class=\"amount\">" + element.productCount + "</span></span></td>" +
+                                            "<td class=\"product-price\"><span class=\"amount\">" + element.productCount + "</span></td>" +
                                             "<td class=\"product-subtotal\"><span class=\"amount\">" + amount + "</span></td>" +
                                             "</tr>"
 
-                                        $cartTableBody.append(catTr);
+                                        $cartTableBody.append(cartTr);
                                     })
 
                                     // 페이징 그리기
@@ -115,7 +126,7 @@
                             $("#checkout-price").text("결제금액 : " + checkoutPrice + "원")
                         },
                         error   : function(e) {
-
+                            alert(e.responseText);
                         }
                     })
                 },
@@ -203,10 +214,9 @@
                                     xhr.setRequestHeader(header, token);
                                 },
                                 success     : function(data) {
-                                    location.reload();
                                 },
                                 error       : function(e) {
-                                    console.log(e);
+                                    alert(e.responseText);
                                 }
                             })
 
@@ -215,6 +225,8 @@
                             msg += '결제 금액 : ' + rsp.paid_amount;
 
                             alert(msg);
+
+                            location.href = "/order";
                         } else {
                             msg += '결제에 실패하였습니다.\n';
                             msg += '에러내용 : ' + rsp.error_msg;
@@ -243,7 +255,7 @@
                                 now = 0;
                             }
                             // 필요한 경우 DOM을 수정한다.
-                            if (before != now) {
+                            if (before !== now) {
                                 $count.text(now);
                             }
                         };

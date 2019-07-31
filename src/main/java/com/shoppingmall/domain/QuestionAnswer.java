@@ -40,7 +40,9 @@ public class QuestionAnswer {
                 .normalUser(normalUser)
                 .question(question)
                 .message(message)
-                .createdDate(createdDate)
+                .createdDate(createdDate.getYear() + "-" + createdDate.getMonthValue() + "-"
+                        + createdDate.getDayOfMonth() + " " + createdDate.getHour() + ":" + createdDate.getMinute() + ":"
+                        + createdDate.getSecond())
                 .build();
     }
 }

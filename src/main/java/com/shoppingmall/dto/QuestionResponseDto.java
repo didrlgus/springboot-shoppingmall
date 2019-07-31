@@ -17,7 +17,7 @@ public class QuestionResponseDto {
     private String message;
     private boolean answerState;
     private Integer answerCount;
-    private LocalDateTime createdDate;
+    private String createdDate;
     private LocalDateTime updatedDate;
     private NormalUser normalUser;
     private Product product;

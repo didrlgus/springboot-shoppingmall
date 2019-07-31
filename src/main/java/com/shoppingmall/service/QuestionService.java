@@ -77,7 +77,7 @@ public class QuestionService {
             }
         }
 
-        PageImpl<QuestionResponseDto> questions = new PageImpl(questionResponseDtoList, pageable, questionList.getTotalElements());
+        PageImpl<QuestionResponseDto> questions = new PageImpl<>(questionResponseDtoList, pageable, questionList.getTotalElements());
 
         PagingDto questionPagingDto = new PagingDto();
         questionPagingDto.setPagingInfo(questions);

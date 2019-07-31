@@ -5,8 +5,11 @@ import com.shoppingmall.domain.NormalUser;
 import com.shoppingmall.domain.Product;
 import com.shoppingmall.domain.ProductOrder;
 import com.shoppingmall.domain.enums.OrderStatus;
+import com.shoppingmall.dto.PagingDto;
 import com.shoppingmall.dto.ProductOrderRequestDto;
+import com.shoppingmall.dto.ProductOrderResponseDto;
 import com.shoppingmall.exception.NotExistCartException;
+import com.shoppingmall.exception.NotExistOrderException;
 import com.shoppingmall.exception.NotExistUserException;
 import com.shoppingmall.repository.CartRepository;
 import com.shoppingmall.repository.NormalUserRepository;
@@ -14,6 +17,10 @@ import com.shoppingmall.repository.ProductOrderRepository;
 import com.shoppingmall.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -93,5 +100,40 @@ public class ProductOrderService {
             product.setTotalCount(product.getTotalCount() - productCount);
             productRepository.save(product);
         }
+    }
+
+    public ProductOrderResponseDto getOrderDetails(Long orderId) {
+
+        Optional<ProductOrder> orderOpt = productOrderRepository.findById(orderId);
+
+        if (!orderOpt.isPresent())
+            throw new NotExistOrderException("존재하지 않는 주문입니다.");
+
+        return orderOpt.get().toResponseDto();
+    }
+
+    public HashMap<String, Object> getAllOrder(Long userId, int page, Pageable pageable) {
+        int realPage = (page == 0) ? 0 : (page - 1);
+        pageable = PageRequest.of(realPage, 5);
+
+        Page<ProductOrder> productOrderPage = productOrderRepository.findAllByNormalUserIdOrderByCreatedDateDesc(userId, pageable);
+
+        List<ProductOrderResponseDto> productOrderResponseDtoList = new ArrayList<>();
+
+        for (ProductOrder productOrder : productOrderPage) {
+            productOrderResponseDtoList.add(productOrder.toResponseDto());
+        }
+
+        PageImpl<ProductOrderResponseDto> productOrderResponseDtos
+                = new PageImpl<>(productOrderResponseDtoList, pageable, productOrderPage.getTotalElements());
+
+        PagingDto productOrderPagingDto = new PagingDto();
+        productOrderPagingDto.setPagingInfo(productOrderResponseDtos);
+
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("productOrderList", productOrderResponseDtos);
+        resultMap.put("productOrderPagingDto", productOrderPagingDto);
+
+        return resultMap;
     }
 }

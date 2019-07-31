@@ -1,6 +1,8 @@
 package com.shoppingmall.domain;
 
 import com.shoppingmall.domain.enums.OrderStatus;
+import com.shoppingmall.dto.ProductOrderResponseDto;
+import com.shoppingmall.dto.ProductResponseDto;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -47,4 +49,23 @@ public class ProductOrder {
 
     @OneToMany(mappedBy = "productOrder", cascade = CascadeType.ALL)
     private List<Cart> carts;
+
+    public ProductOrderResponseDto toResponseDto() {
+
+        return ProductOrderResponseDto.builder()
+                .id(id)
+                .orderNumber(orderNumber)
+                .orderName(orderName)
+                .deliveryMessage(deliveryMessage)
+                .orderStatus(orderStatus.getValue())
+                .address(address)
+                .refundState(refundState)
+                .amount(amount)
+                .createdDate(createdDate.getYear() + "." + createdDate.getMonthValue() + "."
+                        + createdDate.getDayOfMonth() + " " + createdDate.getHour() + ":" + createdDate.getMinute() + ":"
+                        + createdDate.getSecond())
+                .carts(carts)
+                .build();
+    }
+
 }

@@ -44,7 +44,7 @@ public class ProductService {
             productResponseDtoList.add(product.toResponseDto());
         }
 
-        PageImpl<ProductResponseDto> products = new PageImpl(productResponseDtoList, pageable, productList.getTotalElements());
+        PageImpl<ProductResponseDto> products = new PageImpl<>(productResponseDtoList, pageable, productList.getTotalElements());
         
         PagingDto questionPagingDto = new PagingDto();
         questionPagingDto.setPagingInfo(products);

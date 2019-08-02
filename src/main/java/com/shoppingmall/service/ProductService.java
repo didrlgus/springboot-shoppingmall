@@ -4,6 +4,7 @@ import com.shoppingmall.domain.Product;
 import com.shoppingmall.domain.ProductCat;
 import com.shoppingmall.dto.PagingDto;
 import com.shoppingmall.dto.ProductResponseDto;
+import com.shoppingmall.exception.NoValidProductSortException;
 import com.shoppingmall.exception.NotExistProductException;
 import com.shoppingmall.repository.CategoryRepository;
 import com.shoppingmall.repository.ProductRepository;
@@ -46,15 +47,7 @@ public class ProductService {
 
         PageImpl<ProductResponseDto> products = new PageImpl<>(productResponseDtoList, pageable, productList.getTotalElements());
         
-        PagingDto questionPagingDto = new PagingDto();
-        questionPagingDto.setPagingInfo(products);
-
-        HashMap<String, Object> resultMap = new HashMap<>();
-        resultMap.put("productList", products);
-        resultMap.put("productPagingDto", questionPagingDto);
-
-        // PageImpl 객체를 반환
-        return resultMap;
+        return getResultMap(products);
     }
 
     // 상품 상세
@@ -66,4 +59,77 @@ public class ProductService {
         else
             throw new NotExistProductException("존재하지 않는 상품입니다.");
     }
+
+    public HashMap<String, Object> getProductListByKeyword(int page, String largeCatCd, String sortCd) {
+        int realPage = page - 1;
+
+        PageImpl<ProductResponseDto> productResponseDtoPage = checkSort(realPage, largeCatCd, sortCd);
+
+        return getResultMap(productResponseDtoPage);
+    }
+
+    private PageImpl<ProductResponseDto> checkSort(int realPage, String largeCatCd, String sortCd) {
+        Pageable pageable;
+        Page<Product> productList;
+
+        if (largeCatCd.equals("ALL")) {
+            pageable = getPageable(realPage, sortCd);
+
+            productList = productRepository.findAll(pageable);
+        } else {
+            pageable = getPageable(realPage, sortCd);
+
+            productList = productRepository.findAllByLargeCatCd(largeCatCd, pageable);
+        }
+
+        List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
+
+        for (Product product : productList) {
+            productResponseDtoList.add(product.toResponseDto());
+        }
+
+        return new PageImpl<>(productResponseDtoList, pageable, productList.getTotalElements());
+    }
+
+    private Pageable getPageable(int realPage, String sortCd) {
+        Pageable pageable;
+
+        switch (sortCd) {
+            case "new":
+                pageable = PageRequest.of(realPage, 9, new Sort(Sort.Direction.DESC, "createdDate"));
+                break;
+            case "past":
+                pageable = PageRequest.of(realPage, 9, new Sort(Sort.Direction.ASC, "createdDate"));
+                break;
+            case "highPrice":
+                pageable = PageRequest.of(realPage, 9, new Sort(Sort.Direction.DESC, "price", "createdDate"));
+                break;
+            case "lowPrice":
+                pageable = PageRequest.of(realPage, 9, new Sort(Sort.Direction.ASC, "price", "createdDate"));
+                break;
+            case "highSell":
+                pageable = PageRequest.of(realPage, 9, new Sort(Sort.Direction.DESC, "purchaseCount", "createdDate"));
+                break;
+            case "lowSell":
+                pageable = PageRequest.of(realPage, 9, new Sort(Sort.Direction.ASC, "purchaseCount", "createdDate"));
+                break;
+            default:
+                throw new NoValidProductSortException("유효하지 않은 상품 정렬입니다.");
+        }
+        return pageable;
+    }
+
+    private HashMap<String, Object> getResultMap(PageImpl<ProductResponseDto> products) {
+
+        PagingDto questionPagingDto = new PagingDto();
+        questionPagingDto.setPagingInfo(products);
+
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("productList", products);
+        resultMap.put("productPagingDto", questionPagingDto);
+
+        // PageImpl 객체를 반환
+        return resultMap;
+    }
+
 }

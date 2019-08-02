@@ -30,4 +30,11 @@ public class ProductRestController {
 
         return ResponseEntity.ok().body(productService.getProductDetails(id));
     }
+
+    @GetMapping("/productList/{page}/catCd/{catCd}/sortCd/{sortCd}")
+    public ResponseEntity<?> getProductListByKeyword(@PathVariable("page") int page, @PathVariable("catCd") String catCd,
+                                                     @PathVariable("sortCd") String sortCd) {
+
+        return ResponseEntity.ok().body(productService.getProductListByKeyword(page, catCd, sortCd));
+    }
 }

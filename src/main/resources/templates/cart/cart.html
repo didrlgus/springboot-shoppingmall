@@ -95,7 +95,7 @@
                                     // Prev 페이지
                                     if (cartPagingDto.scaleStartPage !== 1) {
                                         var prevLi =
-                                            "<li><a data-page='" + cartPagingDto.prevPage + "' class='product-list-page' href='#' onclick='cartObj.getCartList(this)' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>";
+                                            "<li><a data-page='" + cartPagingDto.prevPage + "' class='product-list-page' href='javascript:;' onclick='cartObj.getCartList(this)' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>";
 
                                         $cartListPagination.append(prevLi);
                                     }
@@ -105,9 +105,9 @@
                                         var pageLi = "";
 
                                         if (cartPagingDto.page === i) {
-                                            pageLi = "<li class='active'><a data-page='" + i + "' class='product-list-page' href='#' onclick='cartObj.getCartList(this)'>" + i + "</a></li>";
+                                            pageLi = "<li class='active'><a data-page='" + i + "' class='product-list-page' href='javascript:;' onclick='cartObj.getCartList(this)'>" + i + "</a></li>";
                                         } else {
-                                            pageLi = "<li class=''><a data-page='" + i + "' class='product-list-page' href='#' onclick='cartObj.getCartList(this)'>" + i + "</a></li>";
+                                            pageLi = "<li class=''><a data-page='" + i + "' class='product-list-page' href='javascript:;' onclick='cartObj.getCartList(this)'>" + i + "</a></li>";
                                         }
 
                                         $cartListPagination.append(pageLi);
@@ -116,7 +116,7 @@
                                     // Next 페이지
                                     if (cartPagingDto.scaleEndPage !== cartPagingDto.totPage) {
                                         var nextLi =
-                                            "<li><a data-page='" + cartPagingDto.nextPage + "' class='product-list-page' href='#' onclick='cartObj.getCartList(this)' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>"
+                                            "<li><a data-page='" + cartPagingDto.nextPage + "' class='product-list-page' href='javascript:;' onclick='cartObj.getCartList(this)' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>"
 
                                         $cartListPagination.append(nextLi);
                                     }

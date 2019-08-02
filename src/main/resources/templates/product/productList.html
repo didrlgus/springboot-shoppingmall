@@ -11,6 +11,109 @@
 
             var productListObj = {
 
+                getProductListCmmn  : function(data, keyword) {
+                    var productList      = data.productList.content,
+                        productPagingDto = data.productPagingDto,
+                        $productList     = $(".products .product-list"),
+                        $productListPagination = $(".product-list-pagination");
+
+                    // 상품 리스트, 페이지 비우기
+                    $productList.empty();
+                    $productListPagination.empty();
+
+                    // 상품 리스트 그리기
+                    if (productList.length > 0) {
+                        productList.forEach(function(element) {
+                            var productDiv =
+                                "<div class='col-sm-6 col-md-4 col-lg-4 mb-30'>" +
+                                "<div class='product pb-0'>" +
+                                "<span class='tag-sale'>Sale!</span>" +
+                                "<div class='product-thumb'>" +
+                                "<img alt='' src='" + element.titleImg + "' class='img-responsive img-fullwidth'>" +
+                                "<div class='overlay'>" +
+                                "<div class='btn-add-to-cart-wrapper'>" +
+                                "<a data-product-id='" + element.id + "' class='btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700' href='javascript:;' onclick='productListObj.makeCart(this)'>Add To Cart</a>" +
+                                "</div>" +
+                                "<div class='btn-product-view-details'>" +
+                                "<a class='btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700' href='/productDetails?productId=" + element.id + "'>Product detail</a>" +
+                                "</div>" +
+                                "</div>" +
+                                "</div>" +
+                                "<div class='product-details text-center bg-lighter pt-15 pb-10'>" +
+                                "<a href='/productDetails?productId=" + element.id + "'><h5 class='product-title mt-0'>" + element.productNm + "</h5></a>" +
+                                "<div class='star-rating' title='Rated 3.50 out of 5'><span style='width: 67%;'>3.50</span></div>" +
+                                "<div class='price'><del><span class='amount'>$110.00</span></del><ins><span class='amount'><strong> " + element.price + "원</strong></span></ins></div>" +
+                                "</div>" +
+                                "</div>" +
+                                "</div>"
+
+                            $(".products .product-list").append(productDiv);
+                        })
+                    }
+
+                    if (!keyword) {
+                        // 페이징 그리기
+                        // Prev 페이지
+                        if (productPagingDto.scaleStartPage !== 1) {
+                            var prevLi =
+                                "<li><a data-page='" + productPagingDto.prevPage + "' class='product-list-page' href='#' onclick='productListObj.getProductListByKeyword(this)' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>";
+
+                            $productListPagination.append(prevLi);
+                        }
+
+                        // 중간 페이지
+                        for (var i = productPagingDto.scaleStartPage; i <= productPagingDto.scaleEndPage; i++) {
+                            var pageLi = "";
+
+                            if (productPagingDto.page === i) {
+                                pageLi = "<li class='active'><a data-page='" + i + "' class='product-list-page' href='#' onclick='productListObj.getProductList(this)'>" + i + "</a></li>";
+                            } else {
+                                pageLi = "<li class=''><a data-page='" + i + "' class='product-list-page' href='#' onclick='productListObj.getProductList(this)'>" + i + "</a></li>";
+                            }
+
+                            $productListPagination.append(pageLi);
+                        }
+
+                        // Next 페이지
+                        if (productPagingDto.scaleEndPage !== productPagingDto.totPage) {
+                            var nextLi =
+                                "<li><a data-page='" + productPagingDto.nextPage + "' class='product-list-page' href='#' onclick='productListObj.getProductList(this)' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>"
+
+                            $productListPagination.append(nextLi);
+                        }
+                    } else {
+                        // 페이징 그리기
+                        // Prev 페이지
+                        if (productPagingDto.scaleStartPage !== 1) {
+                            var prevLi =
+                                "<li><a data-page='" + productPagingDto.prevPage + "' class='product-list-page' href='#' onclick='productListObj.getProductListByKeyword(this)' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>";
+
+                            $productListPagination.append(prevLi);
+                        }
+
+                        // 중간 페이지
+                        for (var i = productPagingDto.scaleStartPage; i <= productPagingDto.scaleEndPage; i++) {
+                            var pageLi = "";
+
+                            if (productPagingDto.page === i) {
+                                pageLi = "<li class='active'><a data-page='" + i + "' class='product-list-page' href='#' onclick='productListObj.getProductListByKeyword(this)'>" + i + "</a></li>";
+                            } else {
+                                pageLi = "<li class=''><a data-page='" + i + "' class='product-list-page' href='#' onclick='productListObj.getProductListByKeyword(this)'>" + i + "</a></li>";
+                            }
+
+                            $productListPagination.append(pageLi);
+                        }
+
+                        // Next 페이지
+                        if (productPagingDto.scaleEndPage !== productPagingDto.totPage) {
+                            var nextLi =
+                                "<li><a data-page='" + productPagingDto.nextPage + "' class='product-list-page' href='#' onclick='productListObj.getProductListByKeyword(this)' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>"
+
+                            $productListPagination.append(nextLi);
+                        }
+                    }
+                },
+
                 getProductList  : function(obj) {
                     var catCd = [[${param.catCd}]][0],
                         page = obj ? $(obj).data("page") : 1;
@@ -20,74 +123,9 @@
                         url  : "/productList/" + page + "/catCd/" + catCd,
                         contentType : "application/json",
                         success : function(data) {
-                            var productList      = data.productList.content,
-                                productPagingDto = data.productPagingDto,
-                                $productList     = $(".products .product-list"),
-                                $productListPagination = $(".product-list-pagination");
+                            console.log(data);
 
-                            // 상품 리스트, 페이지 비우기
-                            $productList.empty();
-                            $productListPagination.empty();
-
-                            // 상품 리스트 그리기
-                            if (productList.length > 0) {
-                                productList.forEach(function(element) {
-                                    var productDiv =
-                                        "<div class='col-sm-6 col-md-4 col-lg-4 mb-30'>" +
-                                        "<div class='product pb-0'>" +
-                                        "<span class='tag-sale'>Sale!</span>" +
-                                        "<div class='product-thumb'>" +
-                                        "<img alt='' src='" + element.titleImg + "' class='img-responsive img-fullwidth'>" +
-                                        "<div class='overlay'>" +
-                                        "<div class='btn-add-to-cart-wrapper'>" +
-                                        "<a data-product-id='" + element.id + "' class='btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700' href='#' onclick='productListObj.makeCart(this)'>Add To Cart</a>" +
-                                        "</div>" +
-                                        "<div class='btn-product-view-details'>" +
-                                        "<a class='btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700' href='/productDetails?productId=" + element.id + "'>Product detail</a>" +
-                                        "</div>" +
-                                        "</div>" +
-                                        "</div>" +
-                                        "<div class='product-details text-center bg-lighter pt-15 pb-10'>" +
-                                        "<a href='/productDetails?productId=" + element.id + "'><h5 class='product-title mt-0'>" + element.productNm + "</h5></a>" +
-                                        "<div class='star-rating' title='Rated 3.50 out of 5'><span style='width: 67%;'>3.50</span></div>" +
-                                        "<div class='price'><del><span class='amount'>$110.00</span></del><ins><span class='amount'><strong> " + element.price + "원</strong></span></ins></div>" +
-                                        "</div>" +
-                                        "</div>" +
-                                        "</div>"
-
-                                    $(".products .product-list").append(productDiv);
-                                })
-                            }
-
-                            // 페이징 그리기
-                            // Prev 페이지
-                            if (productPagingDto.scaleStartPage !== 1) {
-                                var prevLi =
-                                    "<li><a data-page='" + productPagingDto.prevPage + "' class='product-list-page' href='#' onclick='productListObj.getProductList(this)' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>";
-
-                                $productListPagination.append(prevLi);
-                            }
-
-                            // 중간 페이지
-                            for (var i = productPagingDto.scaleStartPage; i <= productPagingDto.scaleEndPage; i++) {
-                                var pageLi = "";
-
-                                if (productPagingDto.page === i) {
-                                    pageLi = "<li class='active'><a data-page='" + i + "' class='product-list-page' href='#' onclick='productListObj.getProductList(this)'>" + i + "</a></li>";
-                                } else {
-                                    pageLi = "<li class=''><a data-page='" + i + "' class='product-list-page' href='#' onclick='productListObj.getProductList(this)'>" + i + "</a></li>";
-                                }
-
-                                $productListPagination.append(pageLi);
-                            }
-
-                            // Next 페이지
-                            if (productPagingDto.scaleEndPage !== productPagingDto.totPage) {
-                                var nextLi =
-                                    "<li><a data-page='" + productPagingDto.nextPage + "' class='product-list-page' href='#' onclick='productListObj.getProductList(this)' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>"
-
-                                $productListPagination.append(nextLi);
-                            }
+                            productListObj.getProductListCmmn(data);
                         },
                         error   : function(e) {
                         }
@@ -126,23 +164,87 @@
                             alert(e.responseText);
                         }
                     })
+                },
+                getProductListByKeyword : function (obj) {
+                    var page = obj ? $(obj).data("page") : 1,
+                        catCd = $(":radio[name='catCd']:checked").val(),
+                        sortCd = $(":radio[name='sortCd']:checked").val();
+
+                    if (!catCd || !sortCd) {
+                        alert("상품 카테고리와 상품 정렬을 선택하세요.");
+                        return;
+                    }
+
+                    $.ajax({
+                        type : "GET",
+                        url  : "/productList/" + page + "/catCd/" + catCd + "/sortCd/" + sortCd,
+                        contentType : "application/json",
+                        success : function (data) {
+                            console.log(data);
+
+                            productListObj.getProductListCmmn(data, "keyword");
+
+                            $(".products p.product-sort").text($(":radio[name='catCd']:checked").closest("li").text() + ", " + $(":radio[name='sortCd']:checked").closest("li").text() + " 순");
+                        },
+                        error : function(e) {
+                            console.log(e);
+                        }
+                    })
+
                 }
             }
 
             $(function() {
-
                 // 상품 리스트 얻기
                 productListObj.getProductList();
             })
 
         </script>
-        <section class="">
+        <section class="productList">
+
             <div class="container mt-30 mb-30 p-30">
-                <div class="section-content">
+                <!-- 카테고리 -->
+                <ul class="cateWrap">
+                    <li>
+                        <div class="groupBox">
+                            <p class="btn_group text-center">상품 카테고리</p>
+                        </div>
+                        <ul class="cateList">
+                            <li class="btn_cate"><input type="radio" name="catCd" value="ALL" checked="checked"/>전체</li>
+                            <th:block th:if="${#lists.size(catList_L)} > 0" th:each="catList_L : ${catList}">
+                                <li th:if="${catList_L.getCatLv() eq 1}" class="btn_cate">
+                                    <input type="radio" name="catCd" th:value="${catList_L.getCatCd()}" th:text="${catList_L.getCatNm()}" />
+                                </li>
+                            </th:block>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="groupBox centered">
+                            <p class="btn_group">상품 정렬</p>
+                        </div>
+                        <ul class="cateList">
+                            <li class="btn_cate"><input type="radio" name="sortCd" value="new" checked="checked"/>최신</li>
+                            <li class="btn_cate"><input type="radio" name="sortCd" value="past" />과거</li>
+                            <li class="btn_cate"><input type="radio" name="sortCd" value="highPrice" />높은 가격</li>
+                            <li class="btn_cate"><input type="radio" name="sortCd" value="lowPrice" />낮은 가격</li>
+                            <li class="btn_cate"><input type="radio" name="sortCd" value="highSell" />높은 판매율</li>
+                            <li class="btn_cate"><input type="radio" name="sortCd" value="lowSell" />낮은 판매율</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <div class="col-md-12">
+                    <br>
+                    <button type="button" data-type="search" class="btn btn-success pull-right" onclick="productListObj.getProductListByKeyword()">조회</button>
+                </div>
+
+                <div id="product-section" class="section-content">
                     <div class="row multi-row-clearfix">
                         <div class="col-md-10 col-md-offset-1">
                             <div class="products">
-                                <h2 class="sm-pull-center">Product List</h2><hr>
+                                <h2>Product List</h2>
+                                <p class="product-sort"></p>
+                                <hr>
                                 <div class="product-list">
 
                                 </div>
@@ -161,5 +263,4 @@
         </section>
         <!-- end main-content -->
     </div>
-
 </html>

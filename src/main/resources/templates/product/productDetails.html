@@ -102,7 +102,7 @@
                         // 페이징 처리하기
                         if (questionPaigingDto.scaleStartPage !== 1) {
                             var prevLi =
-                                "<li><a data-page='" + questionPaigingDto.prevPage + "' class='question-page' href='javascript:void(0);' onclick='productDetails.normalUserQuestionListFn(this)' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>";
+                                "<li><a data-page='" + questionPaigingDto.prevPage + "' class='question-page' href='javascript:;' onclick='productDetails.normalUserQuestionListFn(this)' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>";
 
                             $questionPagination.append(prevLi);
                         }
@@ -111,9 +111,9 @@
                             var pageLi = "";
 
                             if (questionPaigingDto.page === i) {
-                                pageLi = "<li class='active'><a data-page='" + i + "' class='question-page' href='javascript:void(0);' onclick='productDetails.normalUserQuestionListFn(this)'>" + i + "</a></li>";
+                                pageLi = "<li class='active'><a data-page='" + i + "' class='question-page' href='javascript:;' onclick='productDetails.normalUserQuestionListFn(this)'>" + i + "</a></li>";
                             } else {
-                                pageLi = "<li class=''><a data-page='" + i + "' class='question-page' href='javascript:void(0);' onclick='productDetails.normalUserQuestionListFn(this)'>" + i + "</a></li>";
+                                pageLi = "<li class=''><a data-page='" + i + "' class='question-page' href='javascript:;' onclick='productDetails.normalUserQuestionListFn(this)'>" + i + "</a></li>";
                             }
 
                             $questionPagination.append(pageLi);
@@ -121,7 +121,7 @@
 
                         if (questionPaigingDto.scaleEndPage !== questionPaigingDto.totPage) {
                             var nextLi =
-                                "<li><a data-page='" + questionPaigingDto.nextPage + "' class='question-page' href='javascript:void(0);' onclick='productDetails.normalUserQuestionListFn(this)' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>"
+                                "<li><a data-page='" + questionPaigingDto.nextPage + "' class='question-page' href='javascript:;' onclick='productDetails.normalUserQuestionListFn(this)' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>"
 
                             $questionPagination.append(nextLi);
                         }
@@ -236,7 +236,7 @@
                         // 페이징 처리하기
                         if (answerPagingDto.scaleStartPage !== 1) {
                             var prevLi =
-                                "<li><a data-page='" + answerPagingDto.prevPage + "' class='question-page' href='javascript:void(0);' onclick='productDetails.getAnswerFn(this)' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>";
+                                "<li><a data-page='" + answerPagingDto.prevPage + "' class='question-page' href='javascript:;' onclick='productDetails.getAnswerFn(this)' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>";
 
                             $answerPagination.append(prevLi);
                         }
@@ -245,9 +245,9 @@
                             var pageLi = "";
 
                             if (answerPagingDto.page === i) {
-                                pageLi = "<li class='active'><a data-page='" + i + "' class='question-page' href='javascript:void(0);' onclick='productDetails.getAnswerFn(this)'>" + i + "</a></li>";
+                                pageLi = "<li class='active'><a data-page='" + i + "' class='question-page' href='javascript:;' onclick='productDetails.getAnswerFn(this)'>" + i + "</a></li>";
                             } else {
-                                pageLi = "<li class=''><a data-page='" + i + "' class='question-page' href='javascript:void(0);' onclick='productDetails.getAnswerFn(this)'>" + i + "</a></li>";
+                                pageLi = "<li class=''><a data-page='" + i + "' class='question-page' href='javascript:;' onclick='productDetails.getAnswerFn(this)'>" + i + "</a></li>";
                             }
 
                             $answerPagination.append(pageLi);
@@ -255,7 +255,7 @@
 
                         if (answerPagingDto.scaleEndPage !== answerPagingDto.totPage) {
                             var nextLi =
-                                "<li><a data-page='" + answerPagingDto.nextPage + "' class='question-page' href='javascript:void(0);' onclick='productDetails.getAnswerFn(this)' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>"
+                                "<li><a data-page='" + answerPagingDto.nextPage + "' class='question-page' href='javascript:;' onclick='productDetails.getAnswerFn(this)' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>"
 
                             $answerPagination.append(nextLi);
                         }

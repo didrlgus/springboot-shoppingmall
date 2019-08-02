@@ -8,3 +8,30 @@ theme. But don't modify style-main.css file.
 */
 
 /* Your custom css codes start here: */
+/* 메인 */
+.conWrap{position:relative; width:100%; max-width:1500px; min-width:1000px; height:auto; margin:0 auto;}
+.conWrap1300{position:relative; width:100%; max-width:1300px; min-width:1000px; height:auto; margin:0 auto;}
+.conWrap:after{content:""; display:block; clear:both;}
+
+.ovH{overflow:hidden;}
+
+.productList .cateWrap{border:1px solid #b5b5b5; margin-top:37px;}
+.productList .cateWrap > li{position:relative; border-top:1px solid #b5b5b5;}
+.productList .cateWrap > li:first-child{border-top:0;}
+.productList .cateWrap > li .groupBox{position:absolute; top:0; left:0; width:200px; height:100%; background:#5CB85C; border-top:1px solid #5CB85C; margin-top:-1px; z-index:1; -webkit-transition:all 0.2s ease-in-out; -o-transition:all 0.2s ease-in-out; transition:all 0.2s ease-in-out;}
+.productList .cateWrap > li:first-child .groupBox{border-top:1px solid #b5b5b5;}
+.productList .cateWrap > li .btn_group{width:auto; font-size:16px; color:#fff; line-height:33px; text-align:left;  letter-spacing:1px; padding:5px 28px; cursor:auto;}
+.productList .cateWrap > li.on .groupBox{background:#5CB85C;}
+.productList .cateWrap > li.off .cateList{height:30px;}
+.productList .cateWrap > li .cateList{padding:7px 18px 6px 218px; overflow:hidden;}
+.productList .cateWrap > li .cateList > p{line-height:30px;}
+.productList .cateWrap > li .cateList > li{float:left; width:16.6666%;}
+.productList .cateWrap > li .cateList > li .btn_cate{display:inline-block; max-width:100%; text-overflow:ellipsis; white-space:nowrap; overflow:hidden; font-size:16px; color:#000; line-height:22px; text-align:left; outline:0; transition:none; padding:4px 10px 4px 0;}
+.productList .cateWrap > li .cateList > li.on .btn_cate{font-weight:700; color:#3c546c;}
+.productList .cateWrap > li.on .cateList{height:100%;}
+.productList .lst_cate{position:relative; min-height:32px; background:#f5f4f4; border:1px solid #b5b5b5; border-top:0; margin-bottom:37px; padding:7px 148px 7px 37px;}
+.productList .lst_cate ul li{float:left; width:auto; height:auto; font-size:16px; color:#666; margin-right:32px; padding:0 12px;}
+.productList .lst_cate ul li > span{display:inline-block; line-height:32px;}
+.productList .lst_cate ul li .btn_deselect{width:15px; height:15px; margin:0 12px 0 6px;}
+.productList .lst_cate ul li .btn_deselect img{vertical-align:top;}
+.productList .lst_cate .btn_allSearch{position:absolute; top:50%; right:27px; width:94px; height:30px; line-height:28px; font-size:16px; color:#f5f4f4; background:#5CB85C; border:1px solid #5CB85C; margin-top:-15px;}

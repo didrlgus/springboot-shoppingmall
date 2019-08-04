@@ -26,4 +26,14 @@ public class ProductResponseDto {
     private ProductStatus productStatus;
     private List<ProductImg> productImg;
     private List<Question> questions;
+
+    @Getter
+    @Builder
+    @ToString
+    public static class MainProductResponseDto {
+        private Long id;
+        private String productNm;
+        private String titleImg;
+        private Integer price;
+    }
 }

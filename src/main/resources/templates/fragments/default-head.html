@@ -79,6 +79,16 @@
         <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js?autoload=false"></script>
         <!-- 아임포트 결제모듈 -->
         <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+        <!-- summernote 웹 에디터 -->
+        <!-- include summernote css/js -->
+        <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
+        <script src="js/summernote-ko-KR.js"></script>
+
+        <script>
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var token  = $("meta[name='_csrf']").attr("content");
+        </script>
     </head>
 </html>
 

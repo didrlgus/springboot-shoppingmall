@@ -35,3 +35,15 @@ theme. But don't modify style-main.css file.
 .productList .lst_cate ul li .btn_deselect{width:15px; height:15px; margin:0 12px 0 6px;}
 .productList .lst_cate ul li .btn_deselect img{vertical-align:top;}
 .productList .lst_cate .btn_allSearch{position:absolute; top:50%; right:27px; width:94px; height:30px; line-height:28px; font-size:16px; color:#f5f4f4; background:#5CB85C; border:1px solid #5CB85C; margin-top:-15px;}
+
+.star_rating {font-size:0; letter-spacing:-4px;}
+.star_rating a {
+    font-size:22px;
+    letter-spacing:0;
+    display:inline-block;
+    margin-left:5px;
+    color:#777;
+    text-decoration:none;
+}
+.star_rating a:first-child {margin-left:0;}
+.star_rating a.on {color:#5CB85C;}

@@ -1,0 +1,155 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default-layout}">
+
+    <div class="main-content" layout:fragment="content">
+
+
+        <script th:inline="javascript">
+            var userId = [[${session.user.getId()}]],
+                paramArr = [[${param.productId}]],
+                productId = paramArr[0];
+
+            var summernoteObj = {
+                placeholder: '리뷰를 작성하세요.',
+                tabsize: 2,
+                height: 500,
+                lang: 'ko-KR',
+                callbacks: {
+                    onImageUpload: function(files, editor, welEditable) {
+                        for (var i = files.length - 1; i >= 0; i--) {
+                            reviewObj.sendFile(files[i], this);
+                        }
+                    }
+                }
+            }
+
+            var reviewObj = {
+
+                sendFile    : function (file, obj) {
+                    var form_data = new FormData();
+                    form_data.append('file', file);
+                    $.ajax({
+                        data: form_data,
+                        type: "POST",
+                        url: '/review/image',
+                        cache: false,
+                        contentType: false,
+                        enctype: 'multipart/form-data',
+                        processData: false,
+                        beforeSend	: function(xhr) {
+                            xhr.setRequestHeader(header, token);
+                        },
+                        success: function(url) {
+                            $(obj).summernote('editor.insertImage', url);
+                            $('#imageBoard > ul').append('<li><img src="'+ url +'" width="480" height="auto"/></li>');
+                        }
+                    });
+                },
+                makeReview  : function() {
+                    var title = $("input[name='review-title']").val();
+                    var rate = 0;
+                    var content = $("#summernote").val();
+
+                    $(".star_rating").find("a").each(function () {
+                        if ($(this).hasClass("on"))
+                            rate++;
+                    })
+
+                    if (title === "") {
+                        alert("제목을 작성하세요.");
+                        $("input[name='review-title']").focus();
+
+                        return;
+                    }
+
+                    if (rate === 0) {
+                        alert("평점을 선택하세요.(평점은 1점 이상이어야 합니다.)");
+                        $(".star_rating").find("a").eq(0).focus();
+
+                        return;
+                    }
+
+                    if (content === "") {
+                        alert("리뷰 내용을 작성하세요.");
+                        $(".note-editable").focus();
+
+                        return;
+                    }
+
+                    var data = {
+                        userId : userId,
+                        productId : productId,
+                        title : title,
+                        rate  : rate,
+                        content : content
+                    }
+
+                    $.ajax({
+                        type : "POST",
+                        url  : "/review",
+                        contentType : "application/json",
+                        data : JSON.stringify(data),
+                        beforeSend	: function(xhr) {
+                            xhr.setRequestHeader(header, token);
+                        },
+                        success : function(data) {
+                            alert(data);
+
+                            location.href = "/productDetails?productId=" + productId;
+                        },
+                        error   : function (e) {
+                            alert(e.responseText);
+                        }
+                    })
+                }
+            }
+
+            var eventCbFn = {
+
+                starRatingCbFn  : function() {
+                    $(this).parent().children("a").removeClass("on");
+                    $(this).addClass("on").prevAll("a").addClass("on");
+                    return false;
+                }
+            }
+
+            $(function() {
+
+                $('#summernote').summernote(summernoteObj);
+                $( ".star_rating a" ).on("click", eventCbFn.starRatingCbFn);
+
+            })
+        </script>
+
+        <section>
+            <div class="container">
+                <div>
+                    <form id="articleForm" role="form" action="/review" method="post">
+                        <h3>Review</h3><hr>
+                        <div class="form-group">
+                            <span>상품</span><p th:text="${productNm}"></p>
+                            <br>
+                            <span>제목</span><input type="text" class="form-control" id="review-title" name="review-title" placeholder="제목을 작성하세요." required>
+                            <br>
+                            <span>평점</span>
+                            <p class="star_rating">
+                                <a href="#">★</a>
+                                <a href="#">★</a>
+                                <a href="#">★</a>
+                                <a href="#">★</a>
+                                <a href="#">★</a>
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" id="summernote" name="content" placeholder="content" maxlength="140" rows="7"></textarea>
+                        </div>
+                        <button type="button" class="btn btn-success pull-right" onclick="reviewObj.makeReview()">리뷰 작성</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <!-- end main-content -->
+    </div>
+
+</html>

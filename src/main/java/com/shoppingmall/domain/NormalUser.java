@@ -73,6 +73,10 @@ public class NormalUser {
     @JsonIgnore
     private List<ProductOrder> productOrders;
 
+    @OneToMany(mappedBy = "normalUser", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Review> reviews;
+
     public NormalUserResponseDto toResponseDto(NormalUser normalUser) {
 
         return NormalUserResponseDto.builder()
@@ -83,6 +87,13 @@ public class NormalUser {
                 .roadAddr(normalUser.getRoadAddr())
                 .buildingName(normalUser.getBuildingName())
                 .detailAddr(normalUser.getDetailAddr())
+                .build();
+    }
+
+    public NormalUserResponseDto.ReviewUserResponseDto toReviewResponseDto() {
+
+        return NormalUserResponseDto.ReviewUserResponseDto.builder()
+                .identifier(identifier)
                 .build();
     }
 }

@@ -2,6 +2,11 @@ spring:
   profiles:
     active: local
 
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 200MB
+      max-request-size: 215MB
 ---
 spring.profiles: local
 spring.profiles.include: local-social
@@ -22,6 +27,9 @@ spring:
     hibernate:
       ddl-auto: update
 
+file:
+  upload-dir: C:\review-upload-image
+
 logging:
   level:
     org.hibernate.SQL: debug
@@ -34,9 +42,14 @@ spring.profiles.include: real-db, real-social-set1
 server:
   port: 8081
 
+file:
+  upload-dir: /home/ec2-user/app/images/review-upload-image
 ---
 spring.profiles: set2
 spring.profiles.include: real-db, real-social-set2
 
 server:
   port: 8082
+
+file:
+  upload-dir: /home/ec2-user/app/images/review-upload-image

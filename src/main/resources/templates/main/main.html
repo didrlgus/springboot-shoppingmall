@@ -3,9 +3,49 @@
       layout:decorate="~{layout/default-layout}">
 
 <div class="main-content" layout:fragment="content">
+
     <!-- Section: home -->
     <section id="home">
         <div class="container-fluid p-0">
+
+            <script th:inline="javascript">
+                var mainObj = {
+                    makeCart    : function (obj) {
+                        var user             = [[${session.user}]],
+                            userId           = 0,
+                            productId        = $(obj).data("productId");
+
+                        if (!user) {
+                            alert("로그인 후 장바구니에 추가할 수 있습니다.");
+                            return;
+                        }
+
+                        userId = user.id;
+
+                        var data = {
+                            "userId"       : userId,
+                            "productId"    : productId,
+                            "productCount" : 1
+                        }
+
+                        $.ajax({
+                            type : "POST",
+                            url  : "/cart",
+                            contentType : "application/json",
+                            data        : JSON.stringify(data),
+                            beforeSend  : function (xhr) {
+                                xhr.setRequestHeader(header, token);
+                            },
+                            success : function(data) {
+                                alert(data);
+                            },
+                            error : function(e) {
+                                alert(e.responseText);
+                            }
+                        })
+                    }
+                }
+            </script>
 
             <script>
                 $(document).ready(function(e) {
@@ -101,7 +141,6 @@
                 });
             </script>
             <!-- Slider Revolution Ends -->
-
         </div>
     </section>
 
@@ -112,116 +151,36 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h2 class="mt-0 mb-5">Best Selling Products</h2>
-                        <h4>See our all time best products in online store</h4>
+                        <p>가장 인기있는 상품 리스트 TOP 10</p>
                     </div>
                 </div>
             </div>
             <div class="row multi-row-clearfix">
                 <div class="col-md-12">
                     <div class="products owl-carousel-4col">
-                        <div class="item">
-                            <div class="product">
-                                <span class="tag-sale">Sale!</span>
-                                <div class="product-thumb">
-                                    <img alt="" src="http://placehold.it/320x360" class="img-responsive img-fullwidth">
-                                    <div class="overlay">
-                                        <div class="btn-add-to-cart-wrapper">
-                                            <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-cart.html" target="_blank">Add To Cart</a>
-                                        </div>
-                                        <div class="btn-product-view-details">
-                                            <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-product-details.html" target="_blank">View detail</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="product-details text-center">
-                                    <a href="#"><h5 class="product-title">Shirt</h5></a>
-                                    <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 67%;">3.50</span></div>
-                                    <div class="price"><del><span class="amount">$110.00</span></del><ins><span class="amount">$90.00</span></ins></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="product">
-                                <div class="product-thumb">
-                                    <img alt="" src="http://placehold.it/320x360" class="img-responsive img-fullwidth">
-                                    <div class="overlay">
-                                        <div class="btn-add-to-cart-wrapper">
-                                            <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-cart.html" target="_blank">Add To Cart</a>
-                                        </div>
-                                        <div class="btn-product-view-details">
-                                            <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-product-details.html" target="_blank">View detail</a>
+                        <th:block th:if="${#lists.size(bestProductList)} > 0" th:each="bestProductList, index : ${bestProductList}">
+                            <div class="item">
+                                <div class="product">
+                                    <span class="tag-sale" th:text="@{|${index.index + 1}위|}"><strong></strong></span>
+                                    <div class="product-thumb">
+                                        <img alt="" th:src="${bestProductList.getTitleImg()}" class="img-responsive img-fullwidth">
+                                        <div class="overlay">
+                                            <div class="btn-add-to-cart-wrapper">
+                                                <a th:data-product-id="${bestProductList.getId()}" class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="javascript:;" target="_blank" onclick="mainObj.makeCart(this)">Add To Cart</a>
+                                            </div>
+                                            <div class="btn-product-view-details">
+                                                <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" th:href="@{|/productDetails?productId=${bestProductList.getId()}|}" target="_blank">View detail</a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="product-details text-center">
-                                    <a href="#"><h5 class="product-title">T-Shirt</h5></a>
-                                    <div class="star-rating" title="Rated 5.00 out of 5"><span style="width: 100%;">5.00</span></div>
-                                    <div class="price"><ins><span class="amount">$480.00</span></ins></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="product">
-                                <span class="tag-sale">Sale!</span>
-                                <div class="product-thumb">
-                                    <img alt="" src="http://placehold.it/320x360" class="img-responsive img-fullwidth">
-                                    <div class="overlay">
-                                        <div class="btn-add-to-cart-wrapper">
-                                            <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-cart.html" target="_blank">Add To Cart</a>
-                                        </div>
-                                        <div class="btn-product-view-details">
-                                            <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-product-details.html" target="_blank">View detail</a>
-                                        </div>
+                                    <div class="product-details text-center">
+                                        <a href="#"><h5 class="product-title" th:text="${bestProductList.getProductNm()}"></h5></a>
+                                        <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 67%;">3.50</span></div>
+                                        <div class="price"><del><span class="amount">$110.00</span></del><ins><span class="amount" th:text="${bestProductList.getPrice()}"></span></ins></div>
                                     </div>
                                 </div>
-                                <div class="product-details text-center">
-                                    <a href="#"><h5 class="product-title">White T-Shirt</h5></a>
-                                    <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 60%;">3.50</span></div>
-                                    <div class="price"><del><span class="amount">$70.00</span></del><ins><span class="amount">$55.00</span></ins></div>
-                                </div>
                             </div>
-                        </div>
-                        <div class="item">
-                            <div class="product">
-                                <div class="product-thumb">
-                                    <img alt="" src="http://placehold.it/320x360" class="img-responsive img-fullwidth">
-                                    <div class="overlay">
-                                        <div class="btn-add-to-cart-wrapper">
-                                            <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-cart.html" target="_blank">Add To Cart</a>
-                                        </div>
-                                        <div class="btn-product-view-details">
-                                            <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-product-details.html" target="_blank">View detail</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="product-details text-center">
-                                    <a href="#"><h5 class="product-title">Blue-Shirt</h5></a>
-                                    <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 75%;">3.50</span></div>
-                                    <div class="price"><ins><span class="amount">$185.00</span></ins></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="product">
-                                <span class="tag-sale">Sale!</span>
-                                <div class="product-thumb">
-                                    <img alt="" src="http://placehold.it/320x360" class="img-responsive img-fullwidth">
-                                    <div class="overlay">
-                                        <div class="btn-add-to-cart-wrapper">
-                                            <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-cart.html" target="_blank">Add To Cart</a>
-                                        </div>
-                                        <div class="btn-product-view-details">
-                                            <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-product-details.html" target="_blank">View detail</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="product-details text-center">
-                                    <a href="#"><h5 class="product-title">Blue-Jeans</h5></a>
-                                    <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 40%;">3.50</span></div>
-                                    <div class="price"><del><span class="amount">$220.00</span></del><ins><span class="amount">$210.00</span></ins></div>
-                                </div>
-                            </div>
-                        </div>
+                        </th:block>
                     </div>
                 </div>
             </div>
@@ -252,178 +211,35 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h2 class="mt-0 mb-5">New Collection</h2>
-                        <p class="font-16 mt-0">See what new products are available in online shop</p>
+                        <p class="font-16 mt-0">신상품 리스트</p>
                     </div>
                 </div>
             </div>
             <div class="row multi-row-clearfix">
                 <div class="col-md-12">
                     <div class="products">
-                        <div class="col-sm-6 col-md-4 col-lg-3 mb-30">
-                            <div class="product">
-                                <span class="tag-sale">Sale!</span>
-                                <div class="product-thumb">
-                                    <img alt="" src="http://placehold.it/320x360" class="img-responsive img-fullwidth">
-                                    <div class="overlay">
-                                        <div class="btn-add-to-cart-wrapper">
-                                            <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-cart.html" target="_blank">Add To Cart</a>
-                                        </div>
-                                        <div class="btn-product-view-details">
-                                            <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-product-details.html" target="_blank">View detail</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="product-details text-center">
-                                    <a href="#"><h5 class="product-title">Shirt</h5></a>
-                                    <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 67%;">3.50</span></div>
-                                    <div class="price"><del><span class="amount">$110.00</span></del><ins><span class="amount">$90.00</span></ins></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3 mb-30">
-                            <div class="product">
-                                <div class="product-thumb">
-                                    <img alt="" src="http://placehold.it/320x360" class="img-responsive img-fullwidth">
-                                    <div class="overlay">
-                                        <div class="btn-add-to-cart-wrapper">
-                                            <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-cart.html" target="_blank">Add To Cart</a>
-                                        </div>
-                                        <div class="btn-product-view-details">
-                                            <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-product-details.html" target="_blank">View detail</a>
+                        <th:block th:if="${#lists.size(newProductList)} > 0" th:each="newProductList, index : ${newProductList}">
+                            <div class="col-sm-6 col-md-4 col-lg-3 mb-30">
+                                <div class="product">
+                                    <div class="product-thumb">
+                                        <img alt="" th:src="${newProductList.getTitleImg()}" class="img-responsive img-fullwidth">
+                                        <div class="overlay">
+                                            <div class="btn-add-to-cart-wrapper">
+                                                <a th:data-product-id="${newProductList.getId()}" class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="javascript:;" target="_blank" onclick="mainObj.makeCart(this)">Add To Cart</a>
+                                            </div>
+                                            <div class="btn-product-view-details">
+                                                <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" th:href="@{|/productDetails?productId=${newProductList.getId()}|}" target="_blank">View detail</a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="product-details text-center">
-                                    <a href="#"><h5 class="product-title">T-Shirt</h5></a>
-                                    <div class="star-rating" title="Rated 5.00 out of 5"><span style="width: 100%;">5.00</span></div>
-                                    <div class="price"><ins><span class="amount">$480.00</span></ins></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3 mb-30">
-                            <div class="product">
-                                <span class="tag-sale">Sale!</span>
-                                <div class="product-thumb">
-                                    <img alt="" src="http://placehold.it/320x360" class="img-responsive img-fullwidth">
-                                    <div class="overlay">
-                                        <div class="btn-add-to-cart-wrapper">
-                                            <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-cart.html" target="_blank">Add To Cart</a>
-                                        </div>
-                                        <div class="btn-product-view-details">
-                                            <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-product-details.html" target="_blank">View detail</a>
-                                        </div>
+                                    <div class="product-details text-center">
+                                        <a href="#"><h5 class="product-title" th:text="${newProductList.getProductNm()}"></h5></a>
+                                        <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 67%;">3.50</span></div>
+                                        <div class="price"><del><span class="amount">$110.00</span></del><ins><span class="amount" th:text="${newProductList.getPrice()}"></span></ins></div>
                                     </div>
                                 </div>
-                                <div class="product-details text-center">
-                                    <a href="#"><h5 class="product-title">White T-Shirt</h5></a>
-                                    <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 60%;">3.50</span></div>
-                                    <div class="price"><del><span class="amount">$70.00</span></del><ins><span class="amount">$55.00</span></ins></div>
-                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3 mb-30">
-                            <div class="product">
-                                <div class="product-thumb">
-                                    <img alt="" src="http://placehold.it/320x360" class="img-responsive img-fullwidth">
-                                    <div class="overlay">
-                                        <div class="btn-add-to-cart-wrapper">
-                                            <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-cart.html" target="_blank">Add To Cart</a>
-                                        </div>
-                                        <div class="btn-product-view-details">
-                                            <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-product-details.html" target="_blank">View detail</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="product-details text-center">
-                                    <a href="#"><h5 class="product-title">Blue-Shirt</h5></a>
-                                    <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 75%;">3.50</span></div>
-                                    <div class="price"><ins><span class="amount">$185.00</span></ins></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3 mb-30">
-                            <div class="product">
-                                <span class="tag-sale">Sale!</span>
-                                <div class="product-thumb">
-                                    <img alt="" src="http://placehold.it/320x360" class="img-responsive img-fullwidth">
-                                    <div class="overlay">
-                                        <div class="btn-add-to-cart-wrapper">
-                                            <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-cart.html" target="_blank">Add To Cart</a>
-                                        </div>
-                                        <div class="btn-product-view-details">
-                                            <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-product-details.html" target="_blank">View detail</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="product-details text-center">
-                                    <a href="#"><h5 class="product-title">Blue-Jeans</h5></a>
-                                    <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 40%;">3.50</span></div>
-                                    <div class="price"><del><span class="amount">$220.00</span></del><ins><span class="amount">$210.00</span></ins></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3 mb-30">
-                            <div class="product">
-                                <span class="tag-sale">Sale!</span>
-                                <div class="product-thumb">
-                                    <img alt="" src="http://placehold.it/320x360" class="img-responsive img-fullwidth">
-                                    <div class="overlay">
-                                        <div class="btn-add-to-cart-wrapper">
-                                            <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-cart.html" target="_blank">Add To Cart</a>
-                                        </div>
-                                        <div class="btn-product-view-details">
-                                            <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-product-details.html" target="_blank">View detail</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="product-details text-center">
-                                    <a href="#"><h5 class="product-title">Faid-Jeans</h5></a>
-                                    <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 80%;">3.50</span></div>
-                                    <div class="price"><del><span class="amount">$165.00</span></del><ins><span class="amount">$160.00</span></ins></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3 mb-30">
-                            <div class="product">
-                                <span class="tag-sale">Sale!</span>
-                                <div class="product-thumb">
-                                    <img alt="" src="http://placehold.it/320x360" class="img-responsive img-fullwidth">
-                                    <div class="overlay">
-                                        <div class="btn-add-to-cart-wrapper">
-                                            <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-cart.html" target="_blank">Add To Cart</a>
-                                        </div>
-                                        <div class="btn-product-view-details">
-                                            <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-product-details.html" target="_blank">View detail</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="product-details text-center">
-                                    <a href="#"><h5 class="product-title">Bd-Jeans</h5></a>
-                                    <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 32%;">3.50</span></div>
-                                    <div class="price"><del><span class="amount">$120.00</span></del><ins><span class="amount">$110.00</span></ins></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3 mb-30">
-                            <div class="product">
-                                <div class="product-thumb">
-                                    <img alt="" src="http://placehold.it/320x360" class="img-responsive img-fullwidth">
-                                    <div class="overlay">
-                                        <div class="btn-add-to-cart-wrapper">
-                                            <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-cart.html" target="_blank">Add To Cart</a>
-                                        </div>
-                                        <div class="btn-product-view-details">
-                                            <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="shop-product-details.html" target="_blank">View detail</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="product-details text-center">
-                                    <a href="#"><h5 class="product-title">gabadin-Jeans</h5></a>
-                                    <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 85%;">3.50</span></div>
-                                    <div class="price"><ins><span class="amount">$240.00</span></ins></div>
-                                </div>
-                            </div>
-                        </div>
+                        </th:block>
                     </div>
                 </div>
             </div>

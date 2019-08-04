@@ -132,4 +132,39 @@ public class ProductService {
         return resultMap;
     }
 
+    public List<ProductResponseDto.MainProductResponseDto> getBestProductList() {
+
+        List<Product> bestProducts = productRepository.findTop10ByOrderByPurchaseCountDesc();
+
+        List<ProductResponseDto.MainProductResponseDto> bestProductResponseList = new ArrayList<>();
+
+        for (Product product : bestProducts) {
+            bestProductResponseList.add(product.toMainProductResponseDto());
+        }
+
+        return bestProductResponseList;
+    }
+
+    public List<ProductResponseDto.MainProductResponseDto> getNewProductList() {
+
+        List<Product> newProducts = productRepository.findTop8ByOrderByCreatedDateDesc();
+
+        List<ProductResponseDto.MainProductResponseDto> newProductResponseList = new ArrayList<>();
+
+        for (Product product : newProducts) {
+            newProductResponseList.add(product.toMainProductResponseDto());
+        }
+
+        return newProductResponseList;
+    }
+
+    public String initReview(Long productId) {
+
+        Optional<Product> productOpt = productRepository.findById(productId);
+
+        if (!productOpt.isPresent())
+            throw new NotExistProductException("존재하지 않는 상품입니다.");
+
+        return productOpt.get().getProductNm();
+    }
 }

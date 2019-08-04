@@ -3,10 +3,6 @@
       layout:decorate="~{layout/default-layout}">
 
     <div class="main-content" layout:fragment="content">
-        <script>
-            var header = $("meta[name='_csrf_header']").attr("content");
-            var token  = $("meta[name='_csrf']").attr("content");
-        </script>
         <script th:inline="javascript">
 
             var orderObj = {
@@ -24,8 +20,6 @@
                             xhr.setRequestHeader(header, token);
                         },
                         success : function(data) {
-                            console.log(data);
-
                             if (data) {
                                 var productOrderList      = data.productOrderList.content,
                                     productOrderPagingDto = data.productOrderPagingDto,

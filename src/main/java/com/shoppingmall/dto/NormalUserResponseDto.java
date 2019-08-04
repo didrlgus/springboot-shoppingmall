@@ -2,6 +2,8 @@ package com.shoppingmall.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Builder
 @Getter
@@ -14,4 +16,13 @@ public class NormalUserResponseDto {
     private String roadAddr;
     private String buildingName;
     private String detailAddr;
+
+    @Setter
+    @Getter
+    @Builder
+    @ToString
+    public static class ReviewUserResponseDto {
+        private String identifier;
+    }
+
 }

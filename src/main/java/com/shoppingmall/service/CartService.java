@@ -6,10 +6,7 @@ import com.shoppingmall.domain.Product;
 import com.shoppingmall.dto.CartRequestDto;
 import com.shoppingmall.dto.CartResponseDto;
 import com.shoppingmall.dto.PagingDto;
-import com.shoppingmall.exception.NotExistCartException;
-import com.shoppingmall.exception.NotExistProductException;
-import com.shoppingmall.exception.NotExistUserException;
-import com.shoppingmall.exception.ProductLimitCountException;
+import com.shoppingmall.exception.*;
 import com.shoppingmall.repository.CartRepository;
 import com.shoppingmall.repository.NormalUserRepository;
 import com.shoppingmall.repository.ProductRepository;
@@ -105,5 +102,22 @@ public class CartService {
         }
 
         cartRepository.delete(cartOpt.get());
+    }
+
+    public int checkReviewAuthority(HashMap<String, Object> paramMap) {
+        Long userId    = Long.parseLong(paramMap.get("userId").toString());
+        Long productId = Long.parseLong(paramMap.get("productId").toString());
+
+        List<Cart> cartList = cartRepository.findAllByNormalUserIdAndProductId(userId, productId);
+
+        if (cartList.size() > 0) {
+            for (Cart cart : cartList) {
+                if (cart.getProductOrder() != null) {
+                    return 1;
+                }
+            }
+        }
+
+        throw new CheckReviewAuthorityException("해당상품 결제를 완료한 회원만 리뷰를 작성할 수 있습니다.");
     }
 }

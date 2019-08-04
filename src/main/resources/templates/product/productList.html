@@ -3,10 +3,6 @@
       layout:decorate="~{layout/default-layout}">
 
     <div class="main-content" layout:fragment="content">
-        <script>
-            var header = $("meta[name='_csrf_header']").attr("content");
-            var token  = $("meta[name='_csrf']").attr("content");
-        </script>
         <script th:inline="javascript">
 
             var productListObj = {
@@ -123,8 +119,6 @@
                         url  : "/productList/" + page + "/catCd/" + catCd,
                         contentType : "application/json",
                         success : function(data) {
-                            console.log(data);
-
                             productListObj.getProductListCmmn(data);
                         },
                         error   : function(e) {
@@ -180,14 +174,12 @@
                         url  : "/productList/" + page + "/catCd/" + catCd + "/sortCd/" + sortCd,
                         contentType : "application/json",
                         success : function (data) {
-                            console.log(data);
-
                             productListObj.getProductListCmmn(data, "keyword");
 
                             $(".products p.product-sort").text($(":radio[name='catCd']:checked").closest("li").text() + ", " + $(":radio[name='sortCd']:checked").closest("li").text() + " 순");
                         },
                         error : function(e) {
-                            console.log(e);
+                            alert(e.responseText);
                         }
                     })
 

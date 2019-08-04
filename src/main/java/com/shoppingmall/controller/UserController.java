@@ -58,12 +58,6 @@ public class UserController {
         return "user/profiles";
     }
 
-    @GetMapping("/checkout")
-    public String checkout() {
-
-        return "user/checkout";
-    }
-
     // form 로그아웃, oauth2 로그아웃 공통
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) throws Exception {

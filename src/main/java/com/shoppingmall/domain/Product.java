@@ -72,6 +72,10 @@ public class Product {
     @JsonIgnore
     private List<Cart> carts;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Review> reviews;
+
     public ProductResponseDto toResponseDto() {
 
         return ProductResponseDto.builder()
@@ -86,6 +90,16 @@ public class Product {
                 .productStatus(productStatus)
                 .titleImg(titleImg)
                 .questions(questions)
+                .build();
+    }
+
+    public ProductResponseDto.MainProductResponseDto toMainProductResponseDto() {
+
+        return ProductResponseDto.MainProductResponseDto.builder()
+                .id(id)
+                .productNm(productNm)
+                .titleImg(titleImg)
+                .price(price)
                 .build();
     }
 }

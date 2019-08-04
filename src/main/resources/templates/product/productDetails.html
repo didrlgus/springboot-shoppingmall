@@ -4,10 +4,6 @@
       layout:decorate="~{layout/default-layout}">
 
 <div class="main-content" layout:fragment="content">
-    <script>
-        var header = $("meta[name='_csrf_header']").attr("content");
-        var token  = $("meta[name='_csrf']").attr("content");
-    </script>
     <script th:inline="javascript">
         var paramArr = [[${param.productId}]],
             productId = paramArr[0],
@@ -32,7 +28,10 @@
                         $(".limit-count").text(data.limitCount + "개");
                         $(".purchase-count").text(data.purchaseCount + "개");
 
+                        // 문의 리스트 가져오기
                         productDetails.normalUserQuestionListFn();
+                        // 리뷰 리스트 가져오기
+                        productDetails.getReviewListFn();
                     }
                 })
             },
@@ -340,13 +339,132 @@
                     beforeSend  : function (xhr) {
                         xhr.setRequestHeader(header, token);
                     },
-                    success : function(data) {
+                    success : function (data) {
                         alert(data);
                     },
                     error : function(e) {
                         alert(e.responseText);
                     }
                 })
+            },
+            makeReview  : function() {
+                var userId = 0;
+                // 로그인이 되어있는지 session을 통해 파악
+                if ([[${session.user}]]) {
+                    var userObj = [[${session.user}]];
+                    userId = userObj.id;
+                }
+
+                if (userId === 0) {
+                    alert("로그인을 해야 리뷰를 작성할 수 있습니다.")
+                    return;
+                }
+
+                // 리뷰를 작성할 수 있는 회원인지 파악
+                $.ajax({
+                    type : "GET",
+                    url  : "/review/authority",
+                    data : {userId : userId, productId : productId},
+                    contentType : "application/json",
+                    beforeSend  : function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success : function (data) {
+                        console.log(data);
+
+                        location.href = "/review?userId=" + userId + "&" + "productId=" + productId;
+                    },
+                    error   : function (e) {
+                        alert(e.responseText);
+                    }
+                })
+            },
+            getReviewListFn : function (obj) {
+                var page = 1;
+
+                if (obj)
+                    page = $(obj).data("page");
+
+                var $reviewPagination = $(".review-pagination");
+
+                $.ajax({
+                    type : "GET",
+                    url : "/product/" + productId + "/review/" + page,
+                    contentType : "application/json",
+                    success : function (data) {
+                        console.log(data);
+
+                        var reviewPagingDto = data.reviewPagingDto,
+                            reviewList       = [];
+
+                        // 문의 리스트, 페이지 비우기
+                        $(".review-list").empty();
+                        $reviewPagination.empty();
+
+                        if (data.reviewList.content) {
+                            reviewList      = data.reviewList.content;
+                        }
+
+                        $(".review-count").text(data.reviewList.totalElements);
+
+                        // 리뷰 리스트, 페이지 그리기
+                        reviewList.forEach(function (element) {
+                            var rate = (element.rate * 20) + "%";
+
+                            var reviewLi = "<li class=\"comment\">" +
+                                    "<div class=\"media\"> <a href=\"#\" class=\"media-left\"><img class=\"img-circle\" alt=\"\" src=\"https://placehold.it/75x75\" width=\"75\"></a>" +
+                                    "<div class=\"media-body\">" +
+                                    "<ul class=\"review_text list-inline\">" +
+                                    "<li>" +
+                                    "<div title=\"Rated 5.00 out of 5\" class=\"star-rating\"><span style='width: " + rate + ";'>5.00</span></div>" +
+                                    "</li>" +
+                                    "<li>" +
+                                    "<h5 class=\"media-heading meta\"><span class=\"author\"><strong>" + element.userIdentifier.identifier + "</strong></span>     " + element.createdDate + "</h5>" +
+                                    "</li>" +
+                                    "</ul><a data-review-id='" + element.id + "' href='#'>" + element.title + "</a>" +
+                                    "</div>" +
+                                    "</div>" +
+                                    "</li>" +
+                                    "<hr>";
+
+                            $(".review-list").append(reviewLi);
+                        })
+
+                        // 페이징 처리하기
+                        if (reviewPagingDto.scaleStartPage !== 1) {
+                            var prevLi =
+                                "<li><a data-page='" + reviewPagingDto.prevPage + "' class='question-page' href='javascript:;' onclick='productDetails.getReviewListFn(this)' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>";
+
+                            $reviewPagination.append(prevLi);
+                        }
+
+                        for (var i = reviewPagingDto.scaleStartPage; i <= reviewPagingDto.scaleEndPage; i++) {
+                            var pageLi = "";
+
+                            if (reviewPagingDto.page === i) {
+                                pageLi = "<li class='active'><a data-page='" + i + "' class='question-page' href='javascript:;' onclick='productDetails.getReviewListFn(this)'>" + i + "</a></li>";
+                            } else {
+                                pageLi = "<li class=''><a data-page='" + i + "' class='question-page' href='javascript:;' onclick='productDetails.getReviewListFn(this)'>" + i + "</a></li>";
+                            }
+
+                            $reviewPagination.append(pageLi);
+                        }
+
+                        if (reviewPagingDto.scaleEndPage !== reviewPagingDto.totPage) {
+                            var nextLi =
+                                "<li><a data-page='" + reviewPagingDto.nextPage + "' class='question-page' href='javascript:;' onclick='productDetails.normalUserQuestionListFn(this)' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>"
+
+                            $reviewPagination.append(nextLi);
+                        }
+                    },
+                    error   : function (e) {
+                        alert(e.responseText);
+                    }
+
+
+                })
+
+
             }
         }
 
@@ -566,8 +684,8 @@
                                         <li>
                                             <div title="Rated 4.50 out of 5" class="star-rating"><span style="width: 90%;">4.50</span></div>
                                         </li>
-                                        <li><a href="#"><span>2</span>Reviews</a></li>
-                                        <li><a href="#">Add reviews</a></li>
+                                        <li><span class="review-count"></span>Reviews</li>
+                                        <li><a href="#" onclick="productDetails.makeReview()">Add reviews</a></li>
                                     </ul>
                                 </div>
                                 <div class="price"> <del><span class="amount">$165.00</span></del> <ins><span class="real-price amount">$160.00</span></ins> </div>
@@ -620,36 +738,20 @@
                                     </div>
                                     <div class="tab-pane fade" id="tab2">
                                         <div class="reviews">
-                                            <ol class="commentlist">
-                                                <li class="comment">
-                                                    <div class="media"> <a href="#" class="media-left"><img class="img-circle" alt="" src="https://placehold.it/75x75" width="75"></a>
-                                                        <div class="media-body">
-                                                            <ul class="review_text list-inline">
-                                                                <li>
-                                                                    <div title="Rated 5.00 out of 5" class="star-rating"><span style="width: 100%;">5.00</span></div>
-                                                                </li>
-                                                                <li>
-                                                                    <h5 class="media-heading meta"><span class="author">Tom Joe</span> – Mar 15, 2015:</h5>
-                                                                </li>
-                                                            </ul>
-                                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec volutpat purus tempor sem molestie, sed blandit lacus posuere. Lorem ipsum dolor sit amet.</div>
-                                                    </div>
-                                                </li>
-                                                <li class="comment">
-                                                    <div class="media"> <a href="#" class="media-left"><img class="img-circle" alt="" src="https://placehold.it/75x75" width="75"></a>
-                                                        <div class="media-body">
-                                                            <ul class="review_text list-inline">
-                                                                <li>
-                                                                    <div title="Rated 4.00 out of 5" class="star-rating"><span style="width: 80%;">4.00</span></div>
-                                                                </li>
-                                                                <li>
-                                                                    <h5 class="media-heading meta"><span class="author">Mark Doe</span> – Jan 23, 2015:</h5>
-                                                                </li>
-                                                            </ul>
-                                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec volutpat purus tempor sem molestie, sed blandit lacus posuere. Lorem ipsum dolor sit amet.</div>
-                                                    </div>
-                                                </li>
+                                            <ol class="review-list">
+
+
                                             </ol>
+                                            <div class="col-md-12">
+
+                                                <nav>
+                                                    <ul class="review-pagination pagination pagination-sm">
+
+                                                    </ul>
+                                                </nav>
+
+                                                <button id="review-btn" class="make-review-btn pull-right btn btn-success" onclick="productDetails.makeReview()">리뷰 작성하기</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

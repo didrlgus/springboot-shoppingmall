@@ -16,6 +16,6 @@ public class ProductOrderController {
 
         model.addAttribute("pageName", "order");
 
-        return "product/order";
+        return "user/order";
     }
 }

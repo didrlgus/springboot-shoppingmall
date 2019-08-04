@@ -46,7 +46,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         if (profiles.equals("local")) {
             registry.addResourceHandler("/review-upload-image/**").addResourceLocations("file:///review-upload-image/").setCachePeriod(31536000);
         } else {    // AWS EC2
-            registry.addResourceHandler("/review-upload-image/**").addResourceLocations("/home/ec2-user/app/images/review-upload-image/").setCachePeriod(31536000);
+            registry.addResourceHandler("/review-upload-image/**").addResourceLocations("file:///home/ec2-user/app/images/review-upload-image/").setCachePeriod(31536000);
         }
     }
 }

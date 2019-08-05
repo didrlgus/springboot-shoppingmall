@@ -15,4 +15,11 @@ public class ReviewResponseDto {
     private String title;
     private int rate;
     private String createdDate;
+
+    @Getter
+    @Builder
+    @ToString
+    public static class ReviewDetailResponseDto {
+        private String content;
+    }
 }

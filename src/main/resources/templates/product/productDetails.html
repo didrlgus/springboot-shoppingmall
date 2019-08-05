@@ -7,7 +7,8 @@
     <script th:inline="javascript">
         var paramArr = [[${param.productId}]],
             productId = paramArr[0],
-            questionId = 0;
+            questionId = 0,
+            reviewDetailFlag = false;
 
         var productDetails = {
 
@@ -126,7 +127,7 @@
                         }
                     },
                     error       : function(e) {
-                        console.log(e);
+                        alert(e.responseText);
                     }
                 })
             },
@@ -356,7 +357,7 @@
                 }
 
                 if (userId === 0) {
-                    alert("로그인을 해야 리뷰를 작성할 수 있습니다.")
+                    alert("로그인 후 리뷰를 작성할 수 있습니다.")
                     return;
                 }
 
@@ -370,7 +371,6 @@
                         xhr.setRequestHeader(header, token);
                     },
                     success : function (data) {
-                        console.log(data);
 
                         location.href = "/review?userId=" + userId + "&" + "productId=" + productId;
                     },
@@ -392,7 +392,8 @@
                     url : "/product/" + productId + "/review/" + page,
                     contentType : "application/json",
                     success : function (data) {
-                        console.log(data);
+                        // 상품의 전체 평점 값 설정하기
+                        $(".product-review-rate").attr("style", "width: " + data.rateAvg + "%;")
 
                         var reviewPagingDto = data.reviewPagingDto,
                             reviewList       = [];
@@ -419,9 +420,9 @@
                                     "<div title=\"Rated 5.00 out of 5\" class=\"star-rating\"><span style='width: " + rate + ";'>5.00</span></div>" +
                                     "</li>" +
                                     "<li>" +
-                                    "<h5 class=\"media-heading meta\"><span class=\"author\"><strong>" + element.userIdentifier.identifier + "</strong></span>     " + element.createdDate + "</h5>" +
+                                    "<h5 class=\"media-heading meta\"><span class=\"author\"><strong>" + element.userIdentifier.identifier + "</strong> / </span>     " + element.createdDate + "</h5>" +
                                     "</li>" +
-                                    "</ul><a data-review-id='" + element.id + "' href='#'>" + element.title + "</a>" +
+                                    "</ul><a data-review-id='" + element.id + "' href='#review-btn' onclick='productDetails.getReviewDetail(this)'>" + element.title + "</a>" +
                                     "</div>" +
                                     "</div>" +
                                     "</li>" +
@@ -460,11 +461,39 @@
                     error   : function (e) {
                         alert(e.responseText);
                     }
+                })
+            },
+            getReviewDetail : function (obj) {
+                var reviewId = $(obj).data("reviewId");
+                var $reviewDeatilTarget = $("#review-detail");
 
+                $reviewDeatilTarget.empty();
 
+                $.ajax({
+                    type : "GET",
+                    url  : "/review/" + reviewId,
+                    contentType : "application/json",
+                    beforeSend  : function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success : function (data) {
+                        $reviewDeatilTarget.append("<hr>").append(data.content)
+                            .append("<button data-review-id='" + reviewId + "' class='pull-right btn btn-success' onclick='productDetails.closeReviewDetail(this)'>닫기</button>").append("<hr>");
+
+                    },
+                    error   : function (e) {
+                        alert(e.responseText);
+                    }
                 })
 
+                $reviewDeatilTarget.show();
+            },
+            closeReviewDetail   : function (obj) {
+                var $reviewDeatilTarget = $("#review-detail");
 
+                $reviewDeatilTarget.empty();
+
+                $reviewDeatilTarget.hide();
             }
         }
 
@@ -682,7 +711,7 @@
                                 <div class="product_review">
                                     <ul class="review_text list-inline">
                                         <li>
-                                            <div title="Rated 4.50 out of 5" class="star-rating"><span style="width: 90%;">4.50</span></div>
+                                            <div title="Rated 4.50 out of 5" class="star-rating"><span class="product-review-rate" style="width: 90%;">4.50</span></div>
                                         </li>
                                         <li><span class="review-count"></span>Reviews</li>
                                         <li><a href="#" onclick="productDetails.makeReview()">Add reviews</a></li>
@@ -740,16 +769,13 @@
                                         <div class="reviews">
                                             <ol class="review-list">
 
-
                                             </ol>
                                             <div class="col-md-12">
-
                                                 <nav>
                                                     <ul class="review-pagination pagination pagination-sm">
 
                                                     </ul>
                                                 </nav>
-
                                                 <button id="review-btn" class="make-review-btn pull-right btn btn-success" onclick="productDetails.makeReview()">리뷰 작성하기</button>
                                             </div>
                                         </div>
@@ -758,6 +784,13 @@
                             </div>
                         </div>
                     </div>
+                    <!-- 리뷰 상세 -->
+                    <div id="review-detail" class="col-md-12" style="display:none;">
+
+                    </div>
+
+
+
                     <div class="col-md-12 mt-30">
                         <h3 class="line-bottom">Related Products</h3>
                         <div class="row multi-row-clearfix">

@@ -169,7 +169,7 @@
                                                 <a th:data-product-id="${bestProductList.getId()}" class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="javascript:;" target="_blank" onclick="mainObj.makeCart(this)">Add To Cart</a>
                                             </div>
                                             <div class="btn-product-view-details">
-                                                <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" th:href="@{|/productDetails?productId=${bestProductList.getId()}|}" target="_blank">View detail</a>
+                                                <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" th:href="@{|/productDetails?productId=${bestProductList.getId()}|}">Product detail</a>
                                             </div>
                                         </div>
                                     </div>
@@ -228,7 +228,7 @@
                                                 <a th:data-product-id="${newProductList.getId()}" class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="javascript:;" target="_blank" onclick="mainObj.makeCart(this)">Add To Cart</a>
                                             </div>
                                             <div class="btn-product-view-details">
-                                                <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" th:href="@{|/productDetails?productId=${newProductList.getId()}|}" target="_blank">View detail</a>
+                                                <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" th:href="@{|/productDetails?productId=${newProductList.getId()}|}">Product detail</a>
                                             </div>
                                         </div>
                                     </div>

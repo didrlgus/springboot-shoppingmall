@@ -65,4 +65,11 @@ public class ReviewRestController {
 
         return ResponseEntity.ok().body(reviewService.getReviewList(productId, page));
     }
+
+    // 리뷰 상세 조회
+    @GetMapping("/review/{id}")
+    public ResponseEntity<?> getReviewDetail(@PathVariable Long id) {
+
+        return ResponseEntity.ok().body(reviewService.getReviewDetail(id));
+    }
 }

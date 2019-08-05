@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shoppingmall.domain.enums.ProductStatus;
 import com.shoppingmall.dto.ProductResponseDto;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -52,6 +53,10 @@ public class Product {
 
     @Column(length = 100)
     private String titleImg;
+
+    @Column
+    @ColumnDefault("0") //default 0
+    private Integer rateAvg;
 
     @CreatedDate
     private LocalDateTime createdDate;

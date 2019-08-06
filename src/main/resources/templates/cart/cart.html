@@ -33,8 +33,9 @@
                         success : function(data) {
                             var checkoutPrice = 0;
 
-
                             if (data) {
+                                console.log(data);
+
                                 var cartList = data.cartList.content,
                                     cartPagingDto = data.cartPagingDto,
                                     $cartTableBody = $(".cart-table-body"),
@@ -71,7 +72,7 @@
                                 if (cartList.length > 0) {
 
                                     cartList.forEach(function(element) {
-                                        var amount = Number(element.productCount) * Number(element.product.price);
+                                        var amount = Number(element.productCount) * Number(element.salePrice);
 
                                         var cartTr = "<tr class='cart_itme'>" +
                                             "<td class=\"product-remove\"><a data-cart-id='" + element.id + "' title=\"Remove this item\" class=\"remove\" href=\"#\" onclick='cartObj.removeCart(this)'>×</a></td>" +
@@ -79,7 +80,7 @@
                                             "<td class=\"product-name\"><a class=\"text-theme-colored\" href='/productDetails?productId=" + element.product.id +  "'>" + element.product.productNm + "</a>" +
                                             "<ul class=\"variation\">" +
                                             "</ul></td>" +
-                                            "<td class=\"product-price\"><span class=\"amount\">" + element.product.price + "</span></td>" +
+                                            "<td class=\"product-price\"><span class=\"amount\">" + element.salePrice + "</span></td>" +
                                             "<td class=\"product-price\"><span class=\"amount\">" + element.productCount + "</span></td>" +
                                             "<td class=\"product-subtotal\"><span class=\"amount\">" + amount + "</span></td>" +
                                             "</tr>"

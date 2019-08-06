@@ -3,6 +3,7 @@ package com.shoppingmall.service;
 import com.shoppingmall.domain.Cart;
 import com.shoppingmall.domain.NormalUser;
 import com.shoppingmall.domain.Product;
+import com.shoppingmall.domain.ProductDisPrc;
 import com.shoppingmall.dto.CartRequestDto;
 import com.shoppingmall.dto.CartResponseDto;
 import com.shoppingmall.dto.PagingDto;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @AllArgsConstructor
@@ -66,7 +68,16 @@ public class CartService {
             List<CartResponseDto> cartResponseDtoList = new ArrayList<>();
 
             for (Cart cart : cartList) {
-                cartResponseDtoList.add(cart.toResponseDto());
+                int disPrice = 0;
+
+                if (cart.getProduct().getProductDisPrcList().size() > 0) {
+                    List<ProductDisPrc> disprcList
+                            = cart.getProduct().getProductDisPrcList().stream().sorted().limit(1).collect(Collectors.toList());
+
+                    disPrice = disprcList.get(0).getDisPrc();
+                }
+
+                cartResponseDtoList.add(cart.toResponseDto(disPrice));
             }
 
             PageImpl<CartResponseDto> cartLists = new PageImpl<>(cartResponseDtoList, pageable, cartList.getTotalElements());
@@ -80,7 +91,19 @@ public class CartService {
 
             for (Cart cart : carts) {
                 cartIdList.add(cart.getId());
-                checkoutPrice += cart.getProduct().getPrice() * cart.getProductCount();
+
+                int disPrice = 0;
+
+                if (cart.getProduct().getProductDisPrcList().size() > 0) {
+                    List<ProductDisPrc> disprcList
+                            = cart.getProduct().getProductDisPrcList().stream().sorted().limit(1).collect(Collectors.toList());
+
+                    disPrice = disprcList.get(0).getDisPrc();
+                }
+
+                int salePrice = (int)((((float) 100 - (float) disPrice) / (float)100) * cart.getProduct().getPrice());
+
+                checkoutPrice += salePrice * cart.getProductCount();
             }
 
             HashMap<String, Object> resultMap = new HashMap<>();

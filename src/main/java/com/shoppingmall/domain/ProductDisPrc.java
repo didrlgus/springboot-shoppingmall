@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class ProductDisPrc {
+public class ProductDisPrc implements Comparable<ProductDisPrc> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +30,7 @@ public class ProductDisPrc {
     private LocalDateTime endDt;
 
     @Column
-    private BigDecimal disPrc;
+    private Integer disPrc;
 
     @Column
     private Character rateYn;
@@ -41,9 +41,13 @@ public class ProductDisPrc {
     @LastModifiedDate
     private LocalDateTime updatedDate;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     @JsonIgnore
     private Product product;
 
+    @Override
+    public int compareTo(ProductDisPrc o) {
+        return Integer.compare(o.disPrc, this.disPrc);
+    }
 }

@@ -43,7 +43,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/js/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS+"js/").setCachePeriod(31536000);
         // 외부 resource에 접근 가능 (/upload url 요청 시 로컬 디스크의 /upload 폴더로 접근)
         // 로컬
-        if (profiles.equals("local")) {
+        if (profiles.equals("local-social")) {
             registry.addResourceHandler("/review-upload-image/**").addResourceLocations("file:///review-upload-image/").setCachePeriod(31536000);
         } else {    // AWS EC2
             registry.addResourceHandler("/review-upload-image/**").addResourceLocations("file:///home/ec2-user/app/images/review-upload-image/").setCachePeriod(31536000);

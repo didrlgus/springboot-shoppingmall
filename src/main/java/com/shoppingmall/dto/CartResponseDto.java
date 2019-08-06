@@ -14,5 +14,6 @@ public class CartResponseDto {
     private Long id;
     private NormalUser normalUser;
     private Product product;
+    private Integer salePrice;
     private Integer productCount;
 }

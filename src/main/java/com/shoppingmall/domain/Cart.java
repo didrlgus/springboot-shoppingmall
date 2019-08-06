@@ -43,12 +43,13 @@ public class Cart {
     @JsonIgnore
     private ProductOrder productOrder;
 
-    public CartResponseDto toResponseDto() {
+    public CartResponseDto toResponseDto(int disPrice) {
 
         return CartResponseDto.builder()
                 .id(id)
                 .normalUser(normalUser)
                 .product(product)
+                .salePrice((int)((((float) 100 - (float) disPrice) / (float)100) * product.getPrice()))
                 .productCount(productCount)
                 .build();
     }

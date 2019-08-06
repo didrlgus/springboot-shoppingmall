@@ -20,10 +20,17 @@
                     // 상품 리스트 그리기
                     if (productList.length > 0) {
                         productList.forEach(function(element) {
+                            var salePrice = 0;
+
                             var productDiv =
                                 "<div class='col-sm-6 col-md-4 col-lg-4 mb-30'>" +
-                                "<div class='product pb-0'>" +
-                                "<span class='tag-sale'>Sale!</span>" +
+                                "<div class='product pb-0'>";
+
+                            if (element.disPrice !== 0) {
+                                productDiv += "<span class='tag-sale'>" + element.disPrice + "% Sale!</span>";
+                            }
+
+                            productDiv +=
                                 "<div class='product-thumb'>" +
                                 "<img alt='' src='" + element.titleImg + "' class='img-responsive img-fullwidth'>" +
                                 "<div class='overlay'>" +
@@ -37,8 +44,15 @@
                                 "</div>" +
                                 "<div class='product-details text-center bg-lighter pt-15 pb-10'>" +
                                 "<a href='/productDetails?productId=" + element.id + "'><h5 class='product-title mt-0'>" + element.productNm + "</h5></a>" +
-                                "<div class='star-rating' title='Rated 3.50 out of 5'><span style='width: 67%;'>3.50</span></div>" +
-                                "<div class='price'><del><span class='amount'>$110.00</span></del><ins><span class='amount'><strong> " + element.price + "원</strong></span></ins></div>" +
+                                "<div class='star-rating' title='Rated 3.50 out of 5'><span style='width: " + element.rateAvg + "%;'>3.50</span></div>";
+
+                            if (element.disPrice !== 0) {
+                                salePrice = element.price * ((100 - element.disPrice) / 100);
+                                productDiv +=  "<div class='price'><del><span class='amount'>" + element.price + "원</span></del><ins><span class='amount'><strong> " + salePrice + "원</strong></span></ins></div>";
+                            } else
+                                productDiv += "<div class='price'><ins><span class='amount'><strong> " + element.price + "원</strong></span></ins></div>";;
+
+                            productDiv +=
                                 "</div>" +
                                 "</div>" +
                                 "</div>"

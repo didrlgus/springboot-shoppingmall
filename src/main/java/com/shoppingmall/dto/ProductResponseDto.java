@@ -20,11 +20,12 @@ public class ProductResponseDto {
     private String largeCatCd;
     private String smallCatCd;
     private Integer price;
+    private Integer disPrice;
     private Integer purchaseCount;
     private Integer limitCount;
     private Integer totalCount;
     private ProductStatus productStatus;
-    private List<ProductImg> productImg;
+    private Integer rateAvg;
     private List<Question> questions;
 
     @Getter
@@ -35,5 +36,8 @@ public class ProductResponseDto {
         private String productNm;
         private String titleImg;
         private Integer price;
+        private Integer disPrice;
+        private Integer salePrice;
+        private Integer rateAvg;
     }
 }

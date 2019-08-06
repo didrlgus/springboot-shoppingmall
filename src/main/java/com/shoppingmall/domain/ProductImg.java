@@ -37,7 +37,7 @@ public class ProductImg {
     @LastModifiedDate
     private LocalDateTime updatedDate;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     @JsonIgnore
     private Product product;

@@ -68,6 +68,7 @@ public class Product {
     private List<ProductImg> productImgList;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<ProductDisPrc> productDisPrcList;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
@@ -81,7 +82,7 @@ public class Product {
     @JsonIgnore
     private List<Review> reviews;
 
-    public ProductResponseDto toResponseDto() {
+    public ProductResponseDto toResponseDto(int disPrice) {
 
         return ProductResponseDto.builder()
                 .id(id)
@@ -89,22 +90,27 @@ public class Product {
                 .largeCatCd(largeCatCd)
                 .smallCatCd(smallCatCd)
                 .price(price)
+                .disPrice(disPrice)
                 .purchaseCount(purchaseCount)
                 .limitCount(limitCount)
                 .totalCount(totalCount)
                 .productStatus(productStatus)
+                .rateAvg(rateAvg)
                 .titleImg(titleImg)
                 .questions(questions)
                 .build();
     }
 
-    public ProductResponseDto.MainProductResponseDto toMainProductResponseDto() {
+    public ProductResponseDto.MainProductResponseDto toMainProductResponseDto(int disPrice) {
 
         return ProductResponseDto.MainProductResponseDto.builder()
                 .id(id)
                 .productNm(productNm)
                 .titleImg(titleImg)
                 .price(price)
+                .disPrice(disPrice)
+                .salePrice((int)((((float) 100 - (float) disPrice) / (float)100) * price))
+                .rateAvg(rateAvg)
                 .build();
     }
 }

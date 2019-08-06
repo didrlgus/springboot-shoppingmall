@@ -7,8 +7,7 @@
     <script th:inline="javascript">
         var paramArr = [[${param.productId}]],
             productId = paramArr[0],
-            questionId = 0,
-            reviewDetailFlag = false;
+            questionId = 0;
 
         var productDetails = {
 
@@ -22,10 +21,13 @@
                         xhr.setRequestHeader(header, token);
                     },
                     success: function (data) {
+                        console.log(data);
+
                         $(".zoom-gallery a").attr("href", data.titleImg).attr("title", data.productNm);
                         $(".zoom-gallery img").attr("src", data.titleImg);
                         $(".product-name").text(data.productNm);
                         $(".real-price").text(data.price + "원");
+                        $(".sale-price").text(data.price * ((100 - data.disPrice) / 100) + "원");
                         $(".limit-count").text(data.limitCount + "개");
                         $(".purchase-count").text(data.purchaseCount + "개");
 
@@ -717,7 +719,7 @@
                                         <li><a href="#" onclick="productDetails.makeReview()">Add reviews</a></li>
                                     </ul>
                                 </div>
-                                <div class="price"> <del><span class="amount">$165.00</span></del> <ins><span class="real-price amount">$160.00</span></ins> </div>
+                                <div class="price"> <del><span class="real-price amount">$165.00</span></del> <ins><span class="sale-price amount">$160.00</span></ins> </div>
                                 <div class="category"><strong>재고:</strong> <span class="limit-count">Product Name</span></div>
                                 <div class="category"><strong>구매 수:</strong> <span class="purchase-count">Product Name</span></div>
                                 <div class="cart-form-wrapper mt-30">

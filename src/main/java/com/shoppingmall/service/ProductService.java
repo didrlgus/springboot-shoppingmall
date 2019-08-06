@@ -2,6 +2,7 @@ package com.shoppingmall.service;
 
 import com.shoppingmall.domain.Product;
 import com.shoppingmall.domain.ProductCat;
+import com.shoppingmall.domain.ProductDisPrc;
 import com.shoppingmall.dto.PagingDto;
 import com.shoppingmall.dto.ProductResponseDto;
 import com.shoppingmall.exception.NoValidProductSortException;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @AllArgsConstructor
@@ -42,7 +44,11 @@ public class ProductService {
         List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
 
         for (Product product : productList) {
-            productResponseDtoList.add(product.toResponseDto());
+            int disPrice = 0;
+            if (product.getProductDisPrcList().size() > 0) {
+                disPrice = getDisPrice(product);
+            }
+            productResponseDtoList.add(product.toResponseDto(disPrice));
         }
 
         PageImpl<ProductResponseDto> products = new PageImpl<>(productResponseDtoList, pageable, productList.getTotalElements());
@@ -54,8 +60,16 @@ public class ProductService {
     public ProductResponseDto getProductDetails(Long id) {
         Optional<Product> productDetails = productRepository.findById(id);
 
-        if (productDetails.isPresent())
-            return productDetails.get().toResponseDto();
+        if (productDetails.isPresent()) {
+            Product product = productDetails.get();
+
+            int disPrice = 0;
+            if (product.getProductDisPrcList().size() > 0) {
+                disPrice = getDisPrice(product);
+            }
+
+            return product.toResponseDto(disPrice);
+        }
         else
             throw new NotExistProductException("존재하지 않는 상품입니다.");
     }
@@ -85,7 +99,12 @@ public class ProductService {
         List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
 
         for (Product product : productList) {
-            productResponseDtoList.add(product.toResponseDto());
+            int disPrice = 0;
+            if (product.getProductDisPrcList().size() > 0) {
+                disPrice = getDisPrice(product);
+            }
+
+            productResponseDtoList.add(product.toResponseDto(disPrice));
         }
 
         return new PageImpl<>(productResponseDtoList, pageable, productList.getTotalElements());
@@ -139,7 +158,11 @@ public class ProductService {
         List<ProductResponseDto.MainProductResponseDto> bestProductResponseList = new ArrayList<>();
 
         for (Product product : bestProducts) {
-            bestProductResponseList.add(product.toMainProductResponseDto());
+            int disPrice = 0;
+            if (product.getProductDisPrcList().size() > 0) {
+                disPrice = getDisPrice(product);
+            }
+            bestProductResponseList.add(product.toMainProductResponseDto(disPrice));
         }
 
         return bestProductResponseList;
@@ -152,7 +175,11 @@ public class ProductService {
         List<ProductResponseDto.MainProductResponseDto> newProductResponseList = new ArrayList<>();
 
         for (Product product : newProducts) {
-            newProductResponseList.add(product.toMainProductResponseDto());
+            int disPrice = 0;
+            if (product.getProductDisPrcList().size() > 0) {
+                disPrice = getDisPrice(product);
+            }
+            newProductResponseList.add(product.toMainProductResponseDto(disPrice));
         }
 
         return newProductResponseList;
@@ -166,5 +193,11 @@ public class ProductService {
             throw new NotExistProductException("존재하지 않는 상품입니다.");
 
         return productOpt.get().getProductNm();
+    }
+
+    private int getDisPrice(Product product) {
+        List<ProductDisPrc> disprcList = product.getProductDisPrcList().stream().sorted().limit(1).collect(Collectors.toList());
+
+        return disprcList.get(0).getDisPrc();
     }
 }

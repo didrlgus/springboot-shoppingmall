@@ -175,8 +175,9 @@
                                     </div>
                                     <div class="product-details text-center">
                                         <a href="#"><h5 class="product-title" th:text="${bestProductList.getProductNm()}"></h5></a>
-                                        <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 67%;">3.50</span></div>
-                                        <div class="price"><del><span class="amount">$110.00</span></del><ins><span class="amount" th:text="${bestProductList.getPrice()}"></span></ins></div>
+                                        <div class="star-rating" title="Rated 3.50 out of 5"><span th:style="@{|width: ${bestProductList.getRateAvg()}%;|}">3.50</span></div>
+                                        <div class="price">
+                                            <del><span class="amount" th:if="${bestProductList.getDisPrice() != 0}" th:text="@{|${bestProductList.getPrice()}원|}"></span></del><ins><span class="amount" th:text="@{|${bestProductList.getSalePrice()}원|}"></span></ins></div>
                                     </div>
                                 </div>
                             </div>
@@ -221,6 +222,7 @@
                         <th:block th:if="${#lists.size(newProductList)} > 0" th:each="newProductList, index : ${newProductList}">
                             <div class="col-sm-6 col-md-4 col-lg-3 mb-30">
                                 <div class="product">
+                                    <span class="tag-sale" th:if="${newProductList.getDisPrice() != 0}" th:text="@{|${newProductList.getDisPrice()}% Sale!|}"><strong></strong></span>
                                     <div class="product-thumb">
                                         <img alt="" th:src="${newProductList.getTitleImg()}" class="img-responsive img-fullwidth">
                                         <div class="overlay">
@@ -234,8 +236,8 @@
                                     </div>
                                     <div class="product-details text-center">
                                         <a href="#"><h5 class="product-title" th:text="${newProductList.getProductNm()}"></h5></a>
-                                        <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 67%;">3.50</span></div>
-                                        <div class="price"><del><span class="amount">$110.00</span></del><ins><span class="amount" th:text="${newProductList.getPrice()}"></span></ins></div>
+                                        <div class="star-rating" title="Rated 3.50 out of 5"><span th:style="@{|width: ${newProductList.getRateAvg()}%;|}">3.50</span></div>
+                                        <div class="price"><del><span class="amount" th:if="${newProductList.getDisPrice() != 0}" th:text="@{|${newProductList.getPrice()}원|}"></span></del><ins><span class="amount" th:text="@{|${newProductList.getSalePrice()}원|}"></span></ins></div>
                                     </div>
                                 </div>
                             </div>

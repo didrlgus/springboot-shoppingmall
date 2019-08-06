@@ -1,6 +1,5 @@
 package com.shoppingmall.controller;
 
-import com.shoppingmall.dto.ProductResponseDto;
 import com.shoppingmall.service.ProductService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

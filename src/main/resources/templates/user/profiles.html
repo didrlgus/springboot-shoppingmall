@@ -273,6 +273,11 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-md-6">
+                                        <label th:text="@{|보유 적립금 : ${session.user.getSavings()}원|}"></label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
                                         <label>Road Address</label>
                                         <input name="roadAddr" class="form-control changeable-input" th:value="${session.user.getRoadAddr()}" type="text">
                                     </div>

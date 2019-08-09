@@ -26,7 +26,11 @@
                         $(".zoom-gallery a").attr("href", data.titleImg).attr("title", data.productNm);
                         $(".zoom-gallery img").attr("src", data.titleImg);
                         $(".product-name").text(data.productNm);
-                        $(".real-price").text(data.price + "원");
+
+                        if (data.disPrice !== 0) {
+                            $(".detail-product-price").prepend("<del><span class=\"real-price amount\">" + data.price + "원</span></del>")
+                        }
+                        // $(".real-price").text(data.price + "원");
                         $(".sale-price").text(data.price * ((100 - data.disPrice) / 100) + "원");
                         $(".limit-count").text(data.limitCount + "개");
                         $(".purchase-count").text(data.purchaseCount + "개");
@@ -719,7 +723,10 @@
                                         <li><a href="#" onclick="productDetails.makeReview()">Add reviews</a></li>
                                     </ul>
                                 </div>
-                                <div class="price"> <del><span class="real-price amount">$165.00</span></del> <ins><span class="sale-price amount">$160.00</span></ins> </div>
+                                <div class="price detail-product-price">
+                                    <!--<del><span class="real-price amount">$165.00</span></del> -->
+                                    <ins><span class="sale-price amount">$160.00</span></ins>
+                                </div>
                                 <div class="category"><strong>재고:</strong> <span class="limit-count">Product Name</span></div>
                                 <div class="category"><strong>구매 수:</strong> <span class="purchase-count">Product Name</span></div>
                                 <div class="cart-form-wrapper mt-30">

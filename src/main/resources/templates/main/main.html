@@ -166,7 +166,7 @@
                                         <img alt="" th:src="${bestProductList.getTitleImg()}" class="img-responsive img-fullwidth">
                                         <div class="overlay">
                                             <div class="btn-add-to-cart-wrapper">
-                                                <a th:data-product-id="${bestProductList.getId()}" class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="javascript:;" target="_blank" onclick="mainObj.makeCart(this)">Add To Cart</a>
+                                                <a th:data-product-id="${bestProductList.getId()}" class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="javascript:;" onclick="mainObj.makeCart(this)">Add To Cart</a>
                                             </div>
                                             <div class="btn-product-view-details">
                                                 <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" th:href="@{|/productDetails?productId=${bestProductList.getId()}|}">Product detail</a>
@@ -174,7 +174,7 @@
                                         </div>
                                     </div>
                                     <div class="product-details text-center">
-                                        <a href="#"><h5 class="product-title" th:text="${bestProductList.getProductNm()}"></h5></a>
+                                        <a th:href="@{|/productDetails?productId=${bestProductList.getId()}|}"><h5 class="product-title" th:text="${bestProductList.getProductNm()}"></h5></a>
                                         <div class="star-rating" title="Rated 3.50 out of 5"><span th:style="@{|width: ${bestProductList.getRateAvg()}%;|}">3.50</span></div>
                                         <div class="price">
                                             <del><span class="amount" th:if="${bestProductList.getDisPrice() != 0}" th:text="@{|${bestProductList.getPrice()}원|}"></span></del><ins><span class="amount" th:text="@{|${bestProductList.getSalePrice()}원|}"></span></ins></div>
@@ -197,9 +197,9 @@
                     </div>
                     <div class="col-md-7 text-left">
                         <h4 class="mt-50 text-theme-colored mb-0">Big discount!</h4>
-                        <h1 class="mt-0">New Trendy Products</h1>
-                        <h4 class="mt-10">Up to 21% off on all products!</h4>
-                        <a href="#" class="btn btn-theme-colored btn-circled mt-20">Shop now</a>
+                        <h1 class="mt-0">Products On sale!</h1>
+                        <p class="mt-10">여러 할인 중인 상품들이 있습니다.</p>
+                        <a th:href="@{/saleProductList}" class="btn btn-success btn-circled mt-20">할인중인 상품 보러가기</a>
                     </div>
                 </div>
             </div>
@@ -227,7 +227,7 @@
                                         <img alt="" th:src="${newProductList.getTitleImg()}" class="img-responsive img-fullwidth">
                                         <div class="overlay">
                                             <div class="btn-add-to-cart-wrapper">
-                                                <a th:data-product-id="${newProductList.getId()}" class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="javascript:;" target="_blank" onclick="mainObj.makeCart(this)">Add To Cart</a>
+                                                <a th:data-product-id="${newProductList.getId()}" class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="javascript:;" onclick="mainObj.makeCart(this)">Add To Cart</a>
                                             </div>
                                             <div class="btn-product-view-details">
                                                 <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" th:href="@{|/productDetails?productId=${newProductList.getId()}|}">Product detail</a>
@@ -235,7 +235,7 @@
                                         </div>
                                     </div>
                                     <div class="product-details text-center">
-                                        <a href="#"><h5 class="product-title" th:text="${newProductList.getProductNm()}"></h5></a>
+                                        <a th:href="@{|/productDetails?productId=${newProductList.getId()}|}"><h5 class="product-title" th:text="${newProductList.getProductNm()}"></h5></a>
                                         <div class="star-rating" title="Rated 3.50 out of 5"><span th:style="@{|width: ${newProductList.getRateAvg()}%;|}">3.50</span></div>
                                         <div class="price"><del><span class="amount" th:if="${newProductList.getDisPrice() != 0}" th:text="@{|${newProductList.getPrice()}원|}"></span></del><ins><span class="amount" th:text="@{|${newProductList.getSalePrice()}원|}"></span></ins></div>
                                     </div>

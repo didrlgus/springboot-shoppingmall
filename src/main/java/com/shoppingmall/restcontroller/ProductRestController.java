@@ -1,6 +1,5 @@
 package com.shoppingmall.restcontroller;
 
-import com.shoppingmall.dto.ProductResponseDto;
 import com.shoppingmall.service.ProductService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
@@ -45,5 +42,11 @@ public class ProductRestController {
     public ResponseEntity<?> getBestProductList() {
 
         return ResponseEntity.ok().body(productService.getBestProductList());
+    }
+
+    @GetMapping("/productList/sale/{page}")
+    public ResponseEntity<?> getSaleProductList(@PathVariable int page) {
+
+        return ResponseEntity.ok().body(productService.getSaleProductList(page));
     }
 }

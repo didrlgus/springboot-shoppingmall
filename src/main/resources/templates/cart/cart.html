@@ -14,7 +14,9 @@
                 orderName : "",
                 amount : 0,
                 deliveryMessage : "",
-                cartId : [],
+                userSavings : 0,
+                useSavings : 0,
+                cartId : []
             }
 
             var cartObj = {
@@ -57,6 +59,10 @@
                                 checkoutData.roadAddr = cartList[0].normalUser.roadAddr;
                                 checkoutData.buildingName = cartList[0].normalUser.buildingName;
                                 checkoutData.detailAddr = cartList[0].normalUser.detailAddr;
+
+
+                                checkoutData.userSavings = cartList[0].normalUser.savings;
+                                $(".savings p.user-savings").text(checkoutData.userSavings + "원 보유 (5000원 이상 결제 시 사용가능)");
 
                                 checkoutData.cartId = [];
 
@@ -120,7 +126,7 @@
                                 }
                             }
                             checkoutData.amount = checkoutPrice;
-                            $("#checkout-price").text("결제금액 : " + checkoutPrice + "원")
+                            $("#checkout-price").text("결제금액 : " + checkoutPrice + "원");
                         },
                         error   : function(e) {
                             alert(e.responseText);
@@ -144,7 +150,8 @@
                             success : function(data) {
                                 alert(data);
 
-                                cartObj.getCartList();
+                                // cartObj.getCartList();
+                                location.reload();
                             },
                             error   : function(e) {
                                 alert(e.responseText);
@@ -199,7 +206,8 @@
                                 orderName       : checkoutData.orderName,
                                 deliveryMessage : checkoutData.deliveryMessage,
                                 address         : checkoutData.roadAddr + " " + checkoutData.buildingName + " " +  checkoutData.detailAddr,
-                                amount          : checkoutData.amount
+                                amount          : checkoutData.amount,
+                                useSavings      : checkoutData.useSavings
                             }
 
                             $.ajax({
@@ -276,7 +284,48 @@
                     } else {
                         $(".addressDiv input").val("");
                     }
+                },
+                savingsUseFn    : function () {
+                    var $savingsTarget = $("#savings"),
+                        savings = $savingsTarget.val(),
+                        userSavings = Number($("#checkout-price").text().substring(7).split("원")[0]),
+                        $userSavingsTarget = $(".savings p.user-savings");
 
+                    if (savings === "") {
+                        alert("적립금으로 사용하실 금액을 적어주세요.");
+                        return;
+                    }
+                    if (savings > Number($userSavingsTarget.text().split("원")[0])) {
+                        alert("보유중인 적립금보다 많은 적립금을 사용할 수 없습니다.");
+                        return;
+                    }
+                    if (userSavings < 5000) {
+                        alert("5000원 이상 결제 시 적립금 사용이 가능합니다.")
+                        return;
+                    }
+
+                    $savingsTarget.attr("disabled", true);
+
+                    var remainSavings = Number($userSavingsTarget.text().split("원")[0]) - Number(savings);
+
+                    $userSavingsTarget.text(remainSavings + "원 보유 (5000원 이상 결제 시 사용가능)");
+
+                    checkoutData.amount = userSavings - Number(savings);
+                    $("#checkout-price").text("결제금액 : " + checkoutData.amount + "원");
+
+                    checkoutData.useSavings = savings;
+                },
+                savingsCancelFn : function () {
+                    var $savingsTarget = $("#savings");
+
+                    $savingsTarget.val("");
+                    $(".savings p.user-savings").text(checkoutData.userSavings + "원 보유 (5000원 이상 결제 시 사용가능)");
+                    $savingsTarget.removeAttr("disabled");
+
+                    checkoutData.amount += Number(checkoutData.useSavings);
+                    $("#checkout-price").text("결제금액 : " + checkoutData.amount + "원");
+
+                    checkoutData.useSavings = 0;
                 }
             }
 
@@ -353,11 +402,27 @@
                             <table class="table table-striped table-bordered tbl-shopping-cart">
                                 <tbody>
                                     <tr class="cart_item">
-                                        <td colspan="3"><div class="coupon">
-                                            <label for="cart-coupon">Coupon: </label>
-                                            <input id="cart-coupon" type="text" placeholder="Coupon code" value="" name="coupon_code">
-                                            <button type="button" class="btn btn-success">쿠폰 적용</button>
-                                        </div></td>
+                                        <td colspan="3">
+                                            <div class="coupon">
+                                                <label for="cart-coupon">Coupon: </label>
+                                                <input id="cart-coupon" type="text" placeholder="Coupon code" value="" name="coupon_code">
+                                                <button type="button" class="btn btn-success">쿠폰 적용</button>
+                                            </div>
+                                        </td>
+                                        <td colspan="3">
+                                            <div class="savings">
+                                                <label for="savings">적립금:  </label>
+                                                <input id="savings" type="text" placeholder="0" value="">원
+                                                <button type="button" class="btn btn-success" onclick="cartListEventObj.savingsUseFn()">사용</button>
+                                                <button type="button" class="btn btn-success" onclick="cartListEventObj.savingsCancelFn()">취소</button>
+                                                <p class="user-savings"></p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="cart_item">
+                                        <td colspan="3">
+
+                                        </td>
                                         <td id="checkout-price" colspan="2"></td>
                                         <td><button type="button" class="btn pull-right btn-success" onclick="cartObj.checkoutFn()">결제하기</button></td>
                                     </tr>

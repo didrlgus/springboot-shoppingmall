@@ -22,4 +22,5 @@ public class ProductOrderRequestDto {
     @NotBlank(message = "주소를 작성해 주세요.")
     private String address;
     private Integer amount;
+    private Integer useSavings;
 }

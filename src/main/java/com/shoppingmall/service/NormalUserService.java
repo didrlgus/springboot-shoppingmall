@@ -21,11 +21,6 @@ public class NormalUserService {
 
     private NormalUserRepository normalUserRepository;
 
-    public void registration() {
-
-        normalUserRepository.save(NormalUser.builder().identifier("didrlgus").name("양기현").build());
-    }
-
     // 일반유저 회원가입
     public NormalUserResponseDto userRegistration(NormalUserRequestDto userRequestDto) throws Exception {
 

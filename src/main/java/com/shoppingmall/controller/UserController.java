@@ -10,9 +10,11 @@ import org.springframework.security.web.authentication.logout.CookieClearingLogo
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,25 +37,20 @@ public class UserController {
 
     // 일반유저 회원가입
     @PostMapping("/member")
-    public String registration(@ModelAttribute @Valid NormalUserRequestDto userRequestDto)
+    public String registration(@ModelAttribute @Valid NormalUserRequestDto userRequestDto, RedirectAttributes rttr)
             throws Exception {
-
-        log.info("### userDto :" + userRequestDto);
 
         normalUserService.userRegistration(userRequestDto);
 
-        return "user/register-complete";
-    }
+        rttr.addFlashAttribute("registerComplete", "회원가입이 완료되었습니다.");
 
-    @GetMapping("/registration")
-    public void registration() {
-
-        normalUserService.registration();
-
+        return "redirect:/login";
     }
 
     @GetMapping("/profiles")
-    public String profiles() {
+    public String profiles(Model model) {
+
+        model.addAttribute("pageName", "profiles");
 
         return "user/profiles";
     }

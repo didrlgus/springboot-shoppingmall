@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,6 +60,7 @@ public class QuestionAnswerService {
         return resultMap;
     }
 
+    @Transactional
     public void makeAnswer(Long questionId, QuestionAnswerRequestDto questionAnswerRequestDto) {
 
         Optional<NormalUser> normalUser = normalUserRepository.findById(questionAnswerRequestDto.getUserId());

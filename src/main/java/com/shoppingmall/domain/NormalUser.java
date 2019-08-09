@@ -3,6 +3,7 @@ package com.shoppingmall.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shoppingmall.dto.NormalUserResponseDto;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -49,6 +50,10 @@ public class NormalUser {
     private String authorities;
 
     @Column
+    @ColumnDefault("0")
+    private Integer savings;
+
+    @Column
     private Character deleteYn;
 
     @CreatedDate
@@ -87,6 +92,7 @@ public class NormalUser {
                 .roadAddr(normalUser.getRoadAddr())
                 .buildingName(normalUser.getBuildingName())
                 .detailAddr(normalUser.getDetailAddr())
+                .savings(normalUser.getSavings())
                 .build();
     }
 

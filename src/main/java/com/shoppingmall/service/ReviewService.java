@@ -25,6 +25,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -56,7 +57,7 @@ public class ReviewService {
     @Autowired
     private ReviewRepository reviewRepository;
 
-
+    @Transactional
     public UploadFile uploadReviewImage(MultipartFile file) throws Exception {
 
         try {
@@ -109,6 +110,7 @@ public class ReviewService {
     }
 
     // 리뷰 추가 서비스
+    @Transactional
     public void makeReview(ReviewRequestDto reviewRequestDto) {
         Optional<NormalUser> userOpt = normalUserRepository.findById(reviewRequestDto.getUserId());
 

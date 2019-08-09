@@ -24,4 +24,12 @@ public class ProductController {
 
         return "product/productDetails";
     }
+
+    @GetMapping("/saleProductList")
+    public String initSaleProductList(Model model) {
+
+        model.addAttribute("pageName", "saleProductList");
+
+        return "product/saleProductList";
+    }
 }

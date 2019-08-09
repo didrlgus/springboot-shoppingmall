@@ -11,6 +11,7 @@ import com.shoppingmall.dto.ProductOrderResponseDto;
 import com.shoppingmall.exception.NotExistCartException;
 import com.shoppingmall.exception.NotExistOrderException;
 import com.shoppingmall.exception.NotExistUserException;
+import com.shoppingmall.exception.SavingsException;
 import com.shoppingmall.repository.CartRepository;
 import com.shoppingmall.repository.NormalUserRepository;
 import com.shoppingmall.repository.ProductOrderRepository;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,8 +40,8 @@ public class ProductOrderService {
     private ProductOrderRepository productOrderRepository;
     private ProductRepository productRepository;
 
+    @Transactional
     public void makeOrder(ProductOrderRequestDto productOrderRequestDto) {
-
         List<Long> cartIdList = productOrderRequestDto.getCartIdList();
 
         Optional<Cart> cartOpt = cartRepository.findById(cartIdList.get(0));
@@ -57,8 +59,10 @@ public class ProductOrderService {
             throw new NotExistUserException("존재하지 않는 유저 입니다.");
         }
 
+        NormalUser user = userOpt.get();
+
         ProductOrder productOrder = productOrderRepository.save(ProductOrder.builder()
-                .normalUser(userOpt.get())
+                .normalUser(user)
                 .orderNumber(productOrderRequestDto.getOrderNumber())
                 .orderName(productOrderRequestDto.getOrderName())
                 .amount(productOrderRequestDto.getAmount())
@@ -100,6 +104,16 @@ public class ProductOrderService {
             product.setTotalCount(product.getTotalCount() - productCount);
             productRepository.save(product);
         }
+
+        // 적립금 수정
+        if (user.getSavings() < productOrderRequestDto.getUseSavings()) {
+            throw new SavingsException("갖고 있는 적립금 보다 많은 적립금을 사용할 수 없습니다.");
+        }
+        // 추가될 적립금 (결제금액의 3%)
+        int addSavings = (int)((((float) 3 / (float)100) * productOrderRequestDto.getAmount()));
+
+        user.setSavings(user.getSavings() - productOrderRequestDto.getUseSavings() + addSavings);
+        normalUserRepository.save(user);
     }
 
     public ProductOrderResponseDto getOrderDetails(Long orderId) {

@@ -16,6 +16,7 @@ public class NormalUserResponseDto {
     private String roadAddr;
     private String buildingName;
     private String detailAddr;
+    private Integer savings;
 
     @Setter
     @Getter

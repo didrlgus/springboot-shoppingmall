@@ -18,7 +18,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +36,7 @@ public class CartService {
     private ProductRepository productRepository;
     private CartRepository cartRepository;
 
+    @Transactional
     public void makeCart(CartRequestDto cartRequestDto) {
         Optional<NormalUser> user = normalUserRepository.findById(cartRequestDto.getUserId());
 
@@ -58,6 +61,7 @@ public class CartService {
                 .build());
     }
 
+    @Transactional
     public HashMap<String, Object> getCartList(Long userId, int page, Pageable pageable) {
         int realPage = page - 1;
         pageable = PageRequest.of(realPage, 5);
@@ -68,16 +72,8 @@ public class CartService {
             List<CartResponseDto> cartResponseDtoList = new ArrayList<>();
 
             for (Cart cart : cartList) {
-                int disPrice = 0;
 
-                if (cart.getProduct().getProductDisPrcList().size() > 0) {
-                    List<ProductDisPrc> disprcList
-                            = cart.getProduct().getProductDisPrcList().stream().sorted().limit(1).collect(Collectors.toList());
-
-                    disPrice = disprcList.get(0).getDisPrc();
-                }
-
-                cartResponseDtoList.add(cart.toResponseDto(disPrice));
+                cartResponseDtoList.add(cart.toResponseDto(getDisPrice(cart)));
             }
 
             PageImpl<CartResponseDto> cartLists = new PageImpl<>(cartResponseDtoList, pageable, cartList.getTotalElements());
@@ -92,16 +88,7 @@ public class CartService {
             for (Cart cart : carts) {
                 cartIdList.add(cart.getId());
 
-                int disPrice = 0;
-
-                if (cart.getProduct().getProductDisPrcList().size() > 0) {
-                    List<ProductDisPrc> disprcList
-                            = cart.getProduct().getProductDisPrcList().stream().sorted().limit(1).collect(Collectors.toList());
-
-                    disPrice = disprcList.get(0).getDisPrc();
-                }
-
-                int salePrice = (int)((((float) 100 - (float) disPrice) / (float)100) * cart.getProduct().getPrice());
+                int salePrice = (int)((((float) 100 - (float) getDisPrice(cart)) / (float)100) * cart.getProduct().getPrice());
 
                 checkoutPrice += salePrice * cart.getProductCount();
             }
@@ -117,6 +104,7 @@ public class CartService {
         return null;
     }
 
+    @Transactional
     public void removeCart(Long id) {
         Optional<Cart> cartOpt = cartRepository.findById(id);
 
@@ -127,6 +115,7 @@ public class CartService {
         cartRepository.delete(cartOpt.get());
     }
 
+    @Transactional
     public int checkReviewAuthority(HashMap<String, Object> paramMap) {
         Long userId    = Long.parseLong(paramMap.get("userId").toString());
         Long productId = Long.parseLong(paramMap.get("productId").toString());
@@ -142,5 +131,21 @@ public class CartService {
         }
 
         throw new CheckReviewAuthorityException("해당상품 결제를 완료한 회원만 리뷰를 작성할 수 있습니다.");
+    }
+
+    @Transactional
+    private int getDisPrice(Cart cart) {
+
+        int disPrice = 0;
+
+        if (cart.getProduct().getProductDisPrcList().size() > 0) {
+            List<ProductDisPrc> disprcList
+                    = cart.getProduct().getProductDisPrcList().stream().filter(productDisPrc -> LocalDateTime.now().isAfter(productDisPrc.getStartDt())
+                    && LocalDateTime.now().isBefore(productDisPrc.getEndDt())).sorted().limit(1).collect(Collectors.toList());
+
+            disPrice = disprcList.get(0).getDisPrc();
+        }
+
+        return disPrice;
     }
 }

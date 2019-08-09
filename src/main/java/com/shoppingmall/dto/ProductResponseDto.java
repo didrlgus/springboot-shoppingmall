@@ -40,4 +40,18 @@ public class ProductResponseDto {
         private Integer salePrice;
         private Integer rateAvg;
     }
+
+    @Getter
+    @Builder
+    @ToString
+    public static class SaleProductResponseDto {
+        private Long productId;
+        private String productNm;
+        private String titleImg;
+        private Integer price;
+        private Integer disPrice;
+        private Integer salePrice;
+        private Integer rateAvg;
+    }
+
 }

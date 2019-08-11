@@ -1,6 +1,5 @@
 package com.shoppingmall.dto;
 
-import com.shoppingmall.domain.ProductImg;
 import com.shoppingmall.domain.Question;
 import com.shoppingmall.domain.enums.ProductStatus;
 import lombok.Builder;

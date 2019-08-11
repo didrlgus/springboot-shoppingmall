@@ -206,6 +206,24 @@ public class ProductService {
         return resultMap;
     }
 
+    // 관련 상품 4가지를 얻되 구매수가 많은 것부터 얻음
+    public List<ProductResponseDto.MainProductResponseDto> getRelatedProductList(Long id, String smallCatCd) {
+
+        List<Product> relatedProductList = productRepository.getRelatedProductList(id, smallCatCd);
+
+        List<ProductResponseDto.MainProductResponseDto> relatedProductResponseDtoList = new ArrayList<>();
+
+        for (Product product : relatedProductList) {
+            int disPrice = 0;
+            if (product.getProductDisPrcList().size() > 0) {
+                disPrice = getDisPrice(product);
+            }
+            relatedProductResponseDtoList.add(product.toMainProductResponseDto(disPrice));
+        }
+
+        return relatedProductResponseDtoList;
+    }
+
     private int getDisPrice(Product product) {
         // 스트림 API를 사용하여 현재 날짜가 할인이 적용되는 날짜 사이에 있는 데이터 중 가장 할인률이 높은 데이터 하나만을 꺼내서 리스트로 저장
         List<ProductDisPrc> disprcList
@@ -245,4 +263,6 @@ public class ProductService {
                 .salePrice((int)((((float) 100 - (float) disPrice) / (float)100) * saleProduct.getPrice()))
                 .build();
     }
+
+
 }

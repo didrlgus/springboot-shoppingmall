@@ -49,4 +49,10 @@ public class ProductRestController {
 
         return ResponseEntity.ok().body(productService.getSaleProductList(page));
     }
+
+    @GetMapping("/product/{id}/relation/{smallCatCd}")
+    public ResponseEntity<?> getRelatedProductList(@PathVariable("id") Long id, @PathVariable("smallCatCd") String smallCatCd) {
+
+        return ResponseEntity.ok().body(productService.getRelatedProductList(id, smallCatCd));
+    }
 }

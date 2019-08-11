@@ -15,8 +15,6 @@
                         url  : "/productList/sale/" + page,
                         contentType : "application/json",
                         success : function (data) {
-                            console.log(data);
-
                             var saleProductList             = data.saleProductList.content,
                                 saleProductPagingDto        = data.saleProductPagingDto,
                                 $saleProductList            = $(".products .sale-product-list"),

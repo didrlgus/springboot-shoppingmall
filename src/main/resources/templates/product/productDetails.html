@@ -21,8 +21,6 @@
                         xhr.setRequestHeader(header, token);
                     },
                     success: function (data) {
-                        console.log(data);
-
                         $(".zoom-gallery a").attr("href", data.titleImg).attr("title", data.productNm);
                         $(".zoom-gallery img").attr("src", data.titleImg);
                         $(".product-name").text(data.productNm);
@@ -39,6 +37,8 @@
                         productDetails.normalUserQuestionListFn();
                         // 리뷰 리스트 가져오기
                         productDetails.getReviewListFn();
+                        // 관련 상품 리스트 가져오기
+                        productDetails.getRelatedProductListFn(data.id, data.smallCatCd);
                     }
                 })
             },
@@ -484,7 +484,7 @@
                     },
                     success : function (data) {
                         $reviewDeatilTarget.append("<hr>").append(data.content)
-                            .append("<button data-review-id='" + reviewId + "' class='pull-right btn btn-success' onclick='productDetails.closeReviewDetail(this)'>닫기</button>").append("<hr>");
+                            .append("<button data-review-id='" + reviewId + "' class='pull-right btn btn-success' onclick='productDetails.closeReviewDetail()'>닫기</button>").append("<hr>");
 
                     },
                     error   : function (e) {
@@ -494,12 +494,63 @@
 
                 $reviewDeatilTarget.show();
             },
-            closeReviewDetail   : function (obj) {
+            closeReviewDetail   : function () {
                 var $reviewDeatilTarget = $("#review-detail");
 
                 $reviewDeatilTarget.empty();
-
                 $reviewDeatilTarget.hide();
+            },
+            getRelatedProductListFn : function(id, smallCatCd) {
+
+                $.ajax({
+                    type : "GET",
+                    url  : "/product/" + id + "/relation/" + smallCatCd,
+                    contentType : "application/json",
+                    success : function(data) {
+                        var $relatedProductList = $("#related-product-list");
+
+                        if (data.length > 0) {
+
+                            data.forEach(function(element) {
+
+                                var relatedProductDiv = "<div class=\"col-sm-6 col-md-3 col-lg-3 mb-30\">" +
+                                        "<div class=\"product pb-0\">";
+
+                                if (element.disPrice !== 0)
+                                    relatedProductDiv += "<span class=\"tag-sale\">" + element.disPrice + "% Sale!</span>";
+
+                                relatedProductDiv += "<div class=\"product-thumb\">" +
+                                        "<img alt=\"\" src='" + element.titleImg + "' class=\"img-responsive img-fullwidth\">" +
+                                        "<div class=\"overlay\">" +
+                                        "<div class=\"btn-add-to-cart-wrapper\">" +
+                                        "<a class=\"btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700\" href='javascript:;' onclick='productDetails.makeCartFn()'>Add To Cart</a>" +
+                                        "</div>" +
+                                        "<div class=\"btn-product-view-details\">" +
+                                        "<a class=\"btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700\" href='/productDetails?productId=" + element.id + "'>Product detail</a>" +
+                                        "</div>" +
+                                        "</div>" +
+                                        "</div>" +
+                                        "<div class=\"product-details text-center bg-lighter pt-15 pb-10\">" +
+                                        "<a href='/productDetails?productId=" + element.id + "'><h5 class=\"product-title mt-0\">" + element.productNm + "</h5></a>" +
+                                        "<div class=\"star-rating\" title=\"Rated 3.50 out of 5\"><span style='width: " + element.rateAvg + "%;'></span></div>";
+
+                                if (element.disPrice !== 0) {
+                                    relatedProductDiv += "<div class=\"price\"><del><span class=\"amount\">" + element.price + "원</span></del><ins><span class=\"amount\">" + element.salePrice + "원</span></ins></div>";
+                                } else {
+                                    relatedProductDiv += "<div class=\"price\"><ins><span class=\"amount\">" + element.salePrice + "원</span></ins></div>";
+                                }
+
+                                relatedProductDiv += "</div></div></div>";
+
+                                $relatedProductList.append(relatedProductDiv);
+                            })
+                            $("#related-products").show();
+                        }
+                    },
+                    error   : function(e) {
+                        alert(e.responseText);
+                    }
+                })
             }
         }
 
@@ -798,94 +849,11 @@
 
                     </div>
 
-
-
-                    <div class="col-md-12 mt-30">
+                    <div id="related-products" class="col-md-12 mt-30" style="display:none;">
                         <h3 class="line-bottom">Related Products</h3>
                         <div class="row multi-row-clearfix">
-                            <div class="products related">
-                                <div class="col-sm-6 col-md-3 col-lg-3 mb-30">
-                                    <div class="product pb-0">
-                                        <span class="tag-sale">Sale!</span>
-                                        <div class="product-thumb">
-                                            <img alt="" src="http://placehold.it/320x360" class="img-responsive img-fullwidth">
-                                            <div class="overlay">
-                                                <div class="btn-add-to-cart-wrapper">
-                                                    <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="#">Add To Cart</a>
-                                                </div>
-                                                <div class="btn-product-view-details">
-                                                    <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="#">View detail</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="product-details text-center bg-lighter pt-15 pb-10">
-                                            <a href="#"><h5 class="product-title mt-0">Product Name</h5></a>
-                                            <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 80%;">3.50</span></div>
-                                            <div class="price"><del><span class="amount">$165.00</span></del><ins><span class="amount">$160.00</span></ins></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-3 col-lg-3 mb-30">
-                                    <div class="product pb-0">
-                                        <span class="tag-sale">Sale!</span>
-                                        <div class="product-thumb">
-                                            <img alt="" src="http://placehold.it/320x360" class="img-responsive img-fullwidth">
-                                            <div class="overlay">
-                                                <div class="btn-add-to-cart-wrapper">
-                                                    <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="#">Add To Cart</a>
-                                                </div>
-                                                <div class="btn-product-view-details">
-                                                    <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="#">View detail</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="product-details text-center bg-lighter pt-15 pb-10">
-                                            <a href="#"><h5 class="product-title mt-0">Product Name</h5></a>
-                                            <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 60%;">3.50</span></div>
-                                            <div class="price"><del><span class="amount">$70.00</span></del><ins><span class="amount">$55.00</span></ins></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-3 col-lg-3 mb-30">
-                                    <div class="product pb-0">
-                                        <div class="product-thumb">
-                                            <img alt="" src="http://placehold.it/320x360" class="img-responsive img-fullwidth">
-                                            <div class="overlay">
-                                                <div class="btn-add-to-cart-wrapper">
-                                                    <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="#">Add To Cart</a>
-                                                </div>
-                                                <div class="btn-product-view-details">
-                                                    <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="#">View detail</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="product-details text-center bg-lighter pt-15 pb-10">
-                                            <a href="#"><h5 class="product-title mt-0">Product Name</h5></a>
-                                            <div class="star-rating" title="Rated 3.50 out of 5"><span style="width: 75%;">3.50</span></div>
-                                            <div class="price"><ins><span class="amount">$185.00</span></ins></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md3 col-lg-3 mb-30">
-                                    <div class="product pb-0">
-                                        <div class="product-thumb">
-                                            <img alt="" src="http://placehold.it/320x360" class="img-responsive img-fullwidth">
-                                            <div class="overlay">
-                                                <div class="btn-add-to-cart-wrapper">
-                                                    <a class="btn btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="#">Add To Cart</a>
-                                                </div>
-                                                <div class="btn-product-view-details">
-                                                    <a class="btn btn-default btn-theme-colored btn-sm btn-flat pl-20 pr-20 btn-add-to-cart text-uppercase font-weight-700" href="#">View detail</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="product-details text-center bg-lighter pt-15 pb-10">
-                                            <a href="#"><h5 class="product-title mt-0">Product Name</h5></a>
-                                            <div class="star-rating" title="Rated 5.00 out of 5"><span style="width: 100%;">5.00</span></div>
-                                            <div class="price"><ins><span class="amount">$480.00</span></ins></div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div id="related-product-list" class="products related">
+
                             </div>
                         </div>
                     </div>

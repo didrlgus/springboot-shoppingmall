@@ -27,6 +27,12 @@ public class UserRestController {
         return normalUserService.duplicateCheck(identifier);
     }
 
+    @GetMapping("/me/{id}")
+    public ResponseEntity<?> getProfiles(@PathVariable Long id) {
+
+        return ResponseEntity.ok().body(normalUserService.getProfiles(id));
+    }
+
     @PutMapping("/me/{id}")
     public ResponseEntity<String> modifyProfiles(HttpServletRequest request, @PathVariable Long id,
                                                  @RequestBody @Valid MeRequestDto meRequestDto, BindingResult bindingResult) {

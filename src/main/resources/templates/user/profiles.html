@@ -15,6 +15,25 @@
                     $(".changeable-input").each(function() {
                         that.inputObj[$(this).attr("name")] = $(this).val();
                     })
+
+                    var user = [[${session.user}]],
+                        userId = user.id;
+
+                    $.ajax({
+                        type : "GET",
+                        url  : "/me/" + userId,
+                        contentType: "application/json",
+                        beforeSend	: function(xhr) {
+                            xhr.setRequestHeader(header, token);
+                        },
+                        success: function (data) {
+
+                            $(".savings").text("보유 적립금 : " + data + "원");
+                        },
+                        error : function (e) {
+                            alert(e.responseText);
+                        }
+                    })
                 },
 
                 modifyBtnFnCb   : function () {
@@ -156,70 +175,6 @@
             })
         </script>
 
-        <script sec:authorize="hasAnyAuthority('ROLE_SOCIAL')" th:inline="javascript">
-
-            var socialProfilesObj = {
-
-                socialInputObj : {},
-
-                init    : function() {
-                    var that = this;
-
-                    $(".social-input").each(function() {
-                        that.socialInputObj[$(this).attr("name")] = $(this).val();
-                    })
-                },
-
-                socialModifyBtnCbFn : function() {
-                    var modifiedSocialInputObj = {},
-                        properties             = [];
-
-                    $(".social-input").each(function() {
-                        modifiedSocialInputObj[$(this).attr("name")] = $(this).val();
-                        properties.push($(this).attr("name"));
-                    })
-
-                    var newInputObj = {};
-
-                    properties.forEach(function (value) {
-
-                        if (socialProfilesObj.socialInputObj[value] !== modifiedSocialInputObj[value]) {
-                            newInputObj[value] = modifiedSocialInputObj[value];
-                        }
-                    })
-
-                    if ($.isEmptyObject(newInputObj)) {
-                        alert("수정한 곳이 없습니다.");
-                    } else {
-                        $.ajax({
-                            type : "PUT",
-                            url  : "/oauth/me/" + [[${session.user.getId()}]],
-                            data : JSON.stringify(modifiedSocialInputObj),
-                            contentType : "application/json",
-                            beforeSend	: function(xhr) {
-                                xhr.setRequestHeader(header, token);
-                            },
-                            success : function(data) {
-                                alert(data);
-
-                                location.reload();
-                            },
-                            error   : function (e) {
-                                alert(e);
-                            }
-                        })
-                    }
-                }
-            }
-
-            $(function() {
-
-                socialProfilesObj.init();
-
-                $(".btn-social-modify").on("click", socialProfilesObj.socialModifyBtnCbFn);
-            })
-        </script>
-
         <!-- Section: Normal User -->
         <section sec:authorize="hasAuthority('ROLE_USER')" class="normal-profiles">
             <div class="container">
@@ -273,7 +228,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-md-6">
-                                        <label th:text="@{|보유 적립금 : ${session.user.getSavings()}원|}"></label>
+                                        <label class="savings"></label>
                                     </div>
                                 </div>
                                 <div class="row">

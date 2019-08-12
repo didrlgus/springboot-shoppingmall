@@ -37,9 +37,7 @@ public class UserController {
 
     // 일반유저 회원가입
     @PostMapping("/member")
-    public String registration(@ModelAttribute @Valid NormalUserRequestDto userRequestDto, RedirectAttributes rttr)
-            throws Exception {
-
+    public String registration(@ModelAttribute @Valid NormalUserRequestDto userRequestDto, RedirectAttributes rttr) {
         normalUserService.userRegistration(userRequestDto);
 
         rttr.addFlashAttribute("registerComplete", "회원가입이 완료되었습니다.");

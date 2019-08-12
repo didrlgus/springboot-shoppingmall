@@ -6,6 +6,7 @@ import com.shoppingmall.dto.NormalUserRequestDto;
 import com.shoppingmall.dto.NormalUserResponseDto;
 import com.shoppingmall.dto.UpdatePasswordRequestDto;
 import com.shoppingmall.exception.DuplicatedException;
+import com.shoppingmall.exception.NotExistUserException;
 import com.shoppingmall.exception.UpdatePasswordException;
 import com.shoppingmall.repository.NormalUserRepository;
 import lombok.AllArgsConstructor;
@@ -22,24 +23,14 @@ public class NormalUserService {
     private NormalUserRepository normalUserRepository;
 
     // 일반유저 회원가입
-    public NormalUserResponseDto userRegistration(NormalUserRequestDto userRequestDto) throws Exception {
+    public void userRegistration(NormalUserRequestDto userRequestDto) {
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         userRequestDto.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
         userRequestDto.setAuthorities("ROLE_USER");
 
-        NormalUser normalUser = normalUserRepository.save(userRequestDto.toEntity());
-
-        return NormalUserResponseDto.builder()
-                .id(normalUser.getId())
-                .identifier(normalUser.getIdentifier())
-                .name(normalUser.getName())
-                .email(normalUser.getEmail())
-                .roadAddr(normalUser.getRoadAddr())
-                .buildingName(normalUser.getBuildingName())
-                .detailAddr(normalUser.getDetailAddr())
-                .build();
+        normalUserRepository.save(userRequestDto.toEntity());
     }
 
     public String duplicateCheck(Map<String, Object> identifier) {
@@ -56,10 +47,26 @@ public class NormalUserService {
         return resultStr;
     }
 
+    // 유저 프로필 조회, 적립금 데이터만 반환시켜 줌
+    public int getProfiles(Long id) {
+
+        Optional<NormalUser> userOpt = normalUserRepository.findById(id);
+
+        if (!userOpt.isPresent())
+            throw new NotExistUserException("존재하지 않는 유저입니다.");
+
+        return userOpt.get().getSavings();
+    }
+
     // 일반유저 프로필 수정
     public NormalUserResponseDto updateProfiles(Long id, MeRequestDto meRequestDto) {
 
-        NormalUser normalUser = normalUserRepository.findById(id).get();
+        Optional<NormalUser> userOpt = normalUserRepository.findById(id);
+
+        if (!userOpt.isPresent())
+            throw new NotExistUserException("존재하지 않는 유저입니다.");
+
+        NormalUser normalUser = userOpt.get();
 
         normalUser.setName(meRequestDto.getName());
         normalUser.setEmail(meRequestDto.getEmail());
@@ -74,6 +81,7 @@ public class NormalUserService {
                 .identifier(normalUser.getIdentifier())
                 .name(normalUser.getName())
                 .email(normalUser.getEmail())
+                .savings(normalUser.getSavings())
                 .roadAddr(normalUser.getRoadAddr())
                 .buildingName(normalUser.getBuildingName())
                 .detailAddr(normalUser.getDetailAddr())
@@ -107,5 +115,4 @@ public class NormalUserService {
         } else
             throw new UpdatePasswordException("기존 비밀번호를 잘못 입력하였습니다.");
     }
-
 }

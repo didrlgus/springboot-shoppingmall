@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication
 public class SpringbootWebserviceApplication {
 
-    public static final String APPLICATION_LOCATIONS = "spring.config.location="
+    private static final String APPLICATION_LOCATIONS = "spring.config.location="
             + "classpath:application.yml,"
             + "/home/ec2-user/app/config/springboot-webservice/real-application.yml,"
             + "/home/ec2-user/app/config/springboot-webservice/real-social-set1.yml,"

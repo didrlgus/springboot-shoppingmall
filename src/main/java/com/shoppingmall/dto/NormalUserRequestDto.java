@@ -50,6 +50,7 @@ public class NormalUserRequestDto {
                 .password(this.getPassword())
                 .name(this.getName())
                 .email(this.getEmail())
+                .savings(0)
                 .roadAddr(this.getRoadAddr())
                 .buildingName(this.getBuildingName())
                 .detailAddr(this.getDetailAddr())

@@ -1,12 +1,16 @@
 package com.shoppingmall;
 
 import com.shoppingmall.common.FileUploadProperties;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableJpaAuditing // JPA Auditing 활성화
+@EnableBatchProcessing // 배치 작업에 필요한 빈을 미리 등록
+@EnableScheduling // 스케줄러 사용
 @EnableConfigurationProperties({FileUploadProperties.class})
 @SpringBootApplication
 public class SpringbootWebserviceApplication {

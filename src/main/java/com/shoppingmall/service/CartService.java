@@ -13,18 +13,20 @@ import com.shoppingmall.repository.NormalUserRepository;
 import com.shoppingmall.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -35,6 +37,8 @@ public class CartService {
     private NormalUserRepository normalUserRepository;
     private ProductRepository productRepository;
     private CartRepository cartRepository;
+    private JobLauncher jobLauncher;
+    private Job job;
 
     @Transactional
     public void makeCart(CartRequestDto cartRequestDto) {
@@ -134,7 +138,7 @@ public class CartService {
     }
 
     @Transactional
-    private int getDisPrice(Cart cart) {
+    public int getDisPrice(Cart cart) {
 
         int disPrice = 0;
 
@@ -147,5 +151,18 @@ public class CartService {
         }
 
         return disPrice;
+    }
+
+    // 매일 자정 배치를 작동시켜 7일이 지난 장바구니 데이터를 자동으로 비활성화
+    @Scheduled(cron = "0 0 0 * * *")
+    public void toInvalidityCart() throws Exception {
+
+        log.info("Batch : 유효기간이 지난 장바구니 비활성화");
+
+        Date nowDate = new Date();
+        // job 파라미터 설정
+        JobParameters jobParameters = new JobParametersBuilder().addDate("nowDate", nowDate).toJobParameters();
+        // job 실행
+        jobLauncher.run(job, jobParameters);
     }
 }

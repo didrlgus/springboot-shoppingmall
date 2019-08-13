@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     List<Cart> findAllByNormalUserIdAndUseYnOrderByCreatedDateDesc(Long userId, char useYn);
 
     List<Cart> findAllByNormalUserIdAndProductId(Long userId, Long productId);
+
+    List<Cart> findByCreatedDateBeforeAndUseYnEquals(LocalDateTime minusDays, char y);
 }

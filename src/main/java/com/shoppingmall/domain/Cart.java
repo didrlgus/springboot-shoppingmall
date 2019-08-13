@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Setter
@@ -27,7 +28,7 @@ public class Cart {
     @Column
     private Character useYn;
     @CreatedDate
-    private Date createdDate;
+    private LocalDateTime createdDate;
 
     // 객체들 간의 관계
     @ManyToOne
@@ -52,5 +53,10 @@ public class Cart {
                 .salePrice((int)((((float) 100 - (float) disPrice) / (float)100) * product.getPrice()))
                 .productCount(productCount)
                 .build();
+    }
+
+    public Cart setInvalidity() {
+        useYn = 'N';
+        return this;
     }
 }

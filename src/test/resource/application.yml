@@ -1,0 +1,22 @@
+# Test
+spring:
+  profiles:
+    active: local
+
+# local 환경
+---
+spring:
+  datasource:
+    driverClassName: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3307/shoppingmall
+    username: root
+    password: root
+  jpa:
+    database: mysql
+    properties:
+      show-sql: true
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update

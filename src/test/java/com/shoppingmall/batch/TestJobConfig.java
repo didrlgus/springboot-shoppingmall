@@ -1,3 +1,4 @@
+/*
 package com.shoppingmall.batch;
 
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -15,3 +16,4 @@ public class TestJobConfig {
         return new JobLauncherTestUtils();
     }
 }
+*/

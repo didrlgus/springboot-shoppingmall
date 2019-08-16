@@ -1,4 +1,3 @@
-/*
 package com.shoppingmall.batch;
 
 import com.shoppingmall.repository.CartRepository;
@@ -37,4 +36,3 @@ public class InvalidityCartJobTest {
         assertEquals(0, cartRepository.findByCreatedDateBeforeAndUseYnEquals(LocalDateTime.now().minusDays(7), 'Y').size());
     }
 }
-*/

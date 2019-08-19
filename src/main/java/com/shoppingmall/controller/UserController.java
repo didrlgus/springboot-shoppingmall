@@ -72,4 +72,13 @@ public class UserController {
 
         return "user/login-register";
     }
+
+    // 아이디 중복 로그인
+    @GetMapping("/duplicated-login")
+    public String duplicatedLogin(RedirectAttributes rttr) {
+
+        rttr.addFlashAttribute("duplicatedLogin", "다른 곳에서 로그인 하였습니다.");
+
+        return "/redirect:/";
+    }
 }

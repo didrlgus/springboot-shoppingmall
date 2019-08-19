@@ -1,0 +1,62 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/admin-layout}">
+
+<div class="main-content" layout:fragment="content">
+    <script th:inline="javascript">
+
+
+
+    </script>
+
+    <div class="title-area">
+        <h3>1차 카테고리 등록</h3>
+    </div>
+
+    <div id="LAYER_Frame">
+        <div id="ContentsArea">
+            <div class="con-area">
+                <ul id="PointTxt">
+                    <li>* 표시된 부분은 필수 입력사항입니다.</li>
+                </ul>
+                <fieldset>
+                    <legend>LAYER_메뉴등록</legend>
+                    <div class="con-table">
+                        <form id="menuRegistForm">
+                            <table summary="LAYER_메뉴등록">
+                                <caption>LAYER_메뉴등록</caption>
+                                <colgroup>
+                                    <col width="200" />
+                                    <col />
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <th scope="col" class="bor_top_style1">*카테고리명 <span class="point" title="카테고리명" /></th>
+                                        <td class="bor_top_style1">
+                                            <input type="text" id="menuNm" name="menuNm" class="input_txt" style="width:180px;" placeholder="" title="메뉴명" maxlength="10"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" class="bor_top_style1">*사용 여부 <span class="point" title="사용 여부" /></th>
+                                        <td class="bor_top_style1">
+                                            <input type="radio" id="useYn" name="useYn" class="input_radio" title="YES" checked="checked" value="Y"/> YES &nbsp;&nbsp;
+                                            <input type="radio" id="useYn" name="useYn" class="input_radio" title="NO" value="N"/> NO
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </fieldset>
+            </div>
+            <!--버튼_start-->
+            <div class="txt-center pdt_25">
+                <a href="javascript:void(0);" class="btn-wine-14" onclick="javascript:firstMenuRegistAction();">저장</a>
+                <a href="javascript:void(0);" class="btn-gray-14" onclick="javascript:closeModalPopWindow('layerView');">닫기</a>
+            </div>
+            <!--버튼_end-->
+            <hr />
+        </div>
+    </div>
+</div>
+</html>

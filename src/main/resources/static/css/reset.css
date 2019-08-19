@@ -1,0 +1,12 @@
+@charset "utf-8";
+
+/* reset.css */
+html, body, div, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, address, dl, dt, dd, ol, ul, li, fieldset, form, legend, table, caption, tbody, tfoot, thead, tr, th, td, input, select, textarea, a {margin:0; padding:0;}
+h1, h2, h3, h4, h5, h6 {font-size:100%;}
+img, fieldset {border:none;}
+table {border-collapse:collapse;}
+ul, ol, li {list-style:none;}
+address, em {font-style:normal;}
+li input, li img, object {vertical-align:top;}
+input, select, textarea, form img {vertical-align:middle;}
+td img , span img, span input {vertical-align:middle;}

@@ -1,0 +1,143 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/admin-layout}">
+
+    <div class="main-content" layout:fragment="content">
+        <script th:inline="javascript">
+
+            var adminMenuListObj = {
+
+                firstMenuRegist  : function() {
+                    alert("1차 메뉴 클릭!");
+
+                    location.href = "/adminFirstMenu";
+                }
+            }
+
+        </script>
+
+        <div id="container">
+            <!-- left_menu_start -->
+            <!--<div id="left-navi">
+                <h2><span>메뉴관리</span></h2>
+                <ul id="lnb">
+                    <li class="lnb-on"><a href="#" class="color-white bold" title="메뉴관리">메뉴관리</a></li>
+                </ul>
+            </div>-->
+            <hr />
+            <!-- left_menu_end -->
+            <!-- contents_start -->
+            <div id="contents">
+                <!-- contents_title_start -->
+                <div class="title-area">
+                    <h3>카테고리 관리</h3>
+                </div>
+                <!-- contents_title_end -->
+                <!-- meunu_manager_start -->
+                <div class="con-detail">
+                    <div class="sub-left" style="width:600;">
+                        <div class="txt-bold">1차 카테고리</div>
+                        <div class="sub-tit">
+                            <span class="color_wine" style="float:left">Total : <span>2</span> 건 </span>
+                            <div class="com_table_board-list">
+                                <span><a href="javascript:adminMenuListObj.firstMenuRegist();" class="btn-wine-12">등록</a></span>
+                            </div>
+                        </div>
+                        <div class="sub-table">
+                            <div class="sub-list-style1-th">
+                                <table style="width:309px;" summary="1차카테고리">
+                                    <caption>1차 카테고리</caption>
+                                    <colgroup>
+                                        <col width="50%" /><col width="15%" /><col width="15%" />
+                                    </colgroup>
+                                    <thead>
+                                    <tr>
+                                        <td class="txt-center">카테고리명</td>
+                                        <td class="txt-center">사용여부</td>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+
+                            <div class="sub-list-style1-td" style="height:500px;">
+                                <table style="width:309px;" summary="1차카테고리">
+                                    <caption>1차 카테고리</caption>
+                                    <colgroup>
+                                        <col width="50%" /><col width="15%" /><col width="15%" />
+                                    </colgroup>
+
+                                    <th:block th:if="${#lists.size(catList_L)} > 0" th:each="catList_L : ${catList}">
+                                        <li th:if="${catList_L.getCatLv() eq 1}">
+                                            <tr th:data-id="${catList_L.getId()}" th:data-catCd="${catList_L.getCatCd()}" style="cursor:pointer" ondblclick="javascript:secondMenuList('');">
+                                                <td class="txt-center" th:text="${catList_L.getCatNm()}"></td>
+                                                <td class="txt-center" th:text="${catList_L.getUseYn()}"></td>
+                                            </tr>
+                                        </li>
+                                    </th:block>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sub-left" style="width:600; padding-left:20px;">
+                        <div class="txt-bold">2차 카테고리</div>
+                        <div class="sub-tit">
+                            <span class="color_wine" style="float:left">Total : <span>2</span> 건 </span>
+                            <div class="com_table_board-list">
+                                <span><a href="javascript:menuRegistView('secondMenuRegist.do', '2차 메뉴 등록');" class="btn-wine-12">등록</a></span>
+                            </div>
+                        </div>
+                        <div class="sub-table">
+                            <div class="sub-list-style1-th">
+                                <table style="width:309px;" summary="2차카테고리">
+                                    <caption>2차 카테고리</caption>
+                                    <colgroup>
+                                        <col width="40%" /><col width="40%" /><col width="20%" />
+                                    </colgroup>
+
+                                    <thead>
+                                        <tr>
+                                            <td class="txt-center">카테고리명</td>
+                                            <td class="txt-center">상위 카테고리명</td>
+                                            <td class="txt-center">사용여부</td>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+
+                            <div class="sub-list-style1-td" style="height:500px;">
+                                <table id="SECOND_TABLE" style="width:309px;" summary="2차메뉴">
+                                    <caption>2차카테고리</caption>
+                                    <colgroup>
+                                        <col width="40%" /><col width="40%" /><col width="20%" />
+                                    </colgroup>
+
+                                    <th:block th:if="${#lists.size(catList_S)} > 0" th:each="catList_S : ${catList}">
+                                        <li th:if="${catList_S.getCatLv() eq 2}">
+                                            <tr th:data-id="${catList_S.getId()}" th:data-catCd="${catList_S.getCatCd()}" style="cursor:pointer" ondblclick="javascript:secondMenuList('');">
+                                                <td class="txt-center" th:text="${catList_S.getCatNm()}"></td>
+                                                <th:block th:if="${#lists.size(catList_L)} > 0" th:each="catList_L : ${catList}">
+                                                    <th:block th:if="${catList_S.getUpprCatCd() eq catList_L.getCatCd()}">
+                                                        <td class="txt-center" th:text="${catList_L.getCatNm()}"></td>
+                                                    </th:block>
+                                                </th:block>
+                                                <td class="txt-center"><a href="#" th:text="${catList_S.getUseYn()}"></a></td>
+                                            </tr>
+                                        </li>
+                                    </th:block>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- menu_manager_end -->
+            </div>
+            <!-- contents_end -->
+
+            <hr />
+            <!-- end main-content -->
+        </div>
+    </div>
+</html>

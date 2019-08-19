@@ -1,0 +1,120 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/admin-layout}">
+
+<div class="main-content" layout:fragment="content">
+    <script th:inline="javascript">
+    </script>
+
+    <div id="container">
+        <!-- left_menu_start -->
+        <!--<div id="left-navi">
+            <h2><span>상품</span></h2>
+            <ul id="lnb">
+                <li class="lnb-on"><a href="#" class="color-white bold" title="상품">상품</a></li>
+            </ul>
+        </div>-->
+        <hr />
+        <!-- left_menu_end -->
+        <!-- contents_start -->
+        <div id="contents">
+            <!-- contents_title_start -->
+            <div class="title-area">
+                <h3>상품관리</h3>
+                <!-- navigation_start -->
+                <div class="top_menu_nav">
+                    HOME > 상품 > 상품관리
+                </div>
+                <!-- navigation_end -->
+            </div>
+            <!-- contents_title_end -->
+
+            <!-- searchbox_start -->
+            <div class="con-area">
+                <fieldset class="com_list_input">
+                    <legend>상품조회</legend>
+                    <div class="com_list_input_con">
+                        <label class="label-list">상품명</label>
+                        <input type="text" name="" class="input_txt" value="" placeholder="" title="상품명"/>&nbsp;&nbsp;
+
+                        <p style="height:8px;"><!--공간띄우기--></p>
+
+                        <label class="label-list">상품유형</label>
+                        <select name="" id="" class="input_select" title="상품유형">
+                            <option value="">전체</option>
+                        </select>&nbsp;&nbsp;
+
+                        <label class="label-list">사용유무</label>
+                        <select name="" id="" class="input_select" title="사용유무">
+                            <option value="">전체</option>
+                        </select>&nbsp;&nbsp;
+
+                        <a href="#" class="btn-wine-10" title="조회">조회</a>
+
+                    </div>
+                </fieldset>
+            </div>
+
+            <p style="height:8px"><!--공간띄움--></p>
+            <p style="height:8px"><!--공간띄움--></p>
+
+            <!-- 가로스크롤게시판_start -->
+            <div class="com_table_board">
+                <!-- 게시판상단버튼및검색조회수선택콤보박스_start -->
+                <div class="com_table_board-tit">
+                    <p class="com_table_board-txt">검색결과 <span class="color_wine">1건</span></p>
+                    <div class="com_table_board-list">
+                        <a class="btn-wine-14" href="#" onclick="javascript:goRegist();">등록</a>
+                        <a class="btn-gray-14" href="#" onclick="">선택 항목 삭제</a>
+                    </div>
+                </div>
+                <!-- 게시판상단버튼및검색조회수선택콤보박스_end -->
+                <div class="com_table_board-table scroll">
+                    <table summary="상품 조회결과" class="tbl-fixed">
+                        <caption>상품 조회결과</caption>
+                        <colgroup>
+                            <col width="60px" />
+                            <col width="245px" />
+                            <col width="170px" />
+                            <col width="120px" />
+                            <col width="120px" />
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="" name="" class="input_check" title=""/></th>
+                            <th>상품명</th>
+                            <th>상품유형</th>
+                            <th>노출기간</th>
+                            <th>사용유무</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><input type="checkbox" id="" name="" class="input_check" title=""/></td>
+                            <td class="txt-left">오픈 기념 배너</td>
+                            <td>왼쪽</td>
+                            <td>2019-01-05 ~ 2019-03-31</td>
+                            <td>사용</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" class="com_table_board-info">검색결과가 없습니다.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- 가로스크롤게시판_end -->
+
+            <!-- 페이징_start -->
+            <div class="com_table_board-no">
+                <span class="com_table_board-no-btn"><a href="#"><img src="images/btn-board-prev.gif" /></a></span>
+                <span class="com_table_board-no-sum"><a href="#" class="board-em">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">6</a> <a href="#">7</a> <a href="#">8</a></span>
+                <span class="com_table_board-no-btn"><a href="#"><img src="images/btn-board-next.gif" /></a></span>
+            </div>
+            <!-- 페이징_end -->
+        </div>
+        <!-- contents_end -->
+        <hr />
+    </div>
+</div>
+</html>

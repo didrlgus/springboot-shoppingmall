@@ -122,6 +122,8 @@
                                         $cartListPagination.append(nextLi);
                                     }
                                 }
+                            } else {
+                                $(".cart-table-body").append("<tr class='cart_itme'><td colspan=\"6\"><strong>장바구니가 비었습니다.</strong></td></tr>")
                             }
                             checkoutData.amount = checkoutPrice;
                             $("#checkout-price").text("결제금액 : " + checkoutPrice + "원");
@@ -191,7 +193,7 @@
                         amount : checkoutData.amount,
                         buyer_email : checkoutData.email,
                         buyer_name : checkoutData.name,
-                        buyer_addr : checkoutData.roadAddr + " " + checkoutData.buildingName + " " +  checkoutData.detailAddr
+                        buyer_addr : $("input[name='roadAddr']").val() + " " + $("input[name='buildingName']").val() + " " +  $("input[name='detailAddr']").val()
                     }, function(rsp) {
                         var msg = "";
                         if (rsp.success) {
@@ -203,7 +205,7 @@
                                 orderNumber     : orderNumber,
                                 orderName       : checkoutData.orderName,
                                 deliveryMessage : checkoutData.deliveryMessage,
-                                address         : checkoutData.roadAddr + " " + checkoutData.buildingName + " " +  checkoutData.detailAddr,
+                                address         : $("input[name='roadAddr']").val() + " " + $("input[name='buildingName']").val() + " " +  $("input[name='detailAddr']").val(),
                                 amount          : checkoutData.amount,
                                 useSavings      : checkoutData.useSavings
                             }

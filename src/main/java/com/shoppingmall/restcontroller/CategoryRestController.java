@@ -1,12 +1,16 @@
 package com.shoppingmall.restcontroller;
 
+import com.shoppingmall.dto.CategoryRequestDto;
 import com.shoppingmall.service.CategoryService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Slf4j
 @AllArgsConstructor
@@ -15,9 +19,69 @@ public class CategoryRestController {
 
     private CategoryService categoryService;
 
+    // 전체 카테고리 조회
     @GetMapping("/category")
     public ResponseEntity<?> getCategory() {
 
         return ResponseEntity.ok().body(categoryService.getCategoryList());
     }
+
+    // 1차 카테고리 추가 (관리자 권한)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/category/first")
+    public ResponseEntity<?> addFirstCategory(@RequestBody @Valid CategoryRequestDto.firstCategory firstCategory,
+                                              BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()){
+            String errorMessage = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok().body(categoryService.addFirstCategory(firstCategory));
+    }
+
+    // 2차 카테고리 추가 (관리자 권한)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/category/second")
+    public ResponseEntity<?> addSecondCategory(@RequestBody @Valid CategoryRequestDto.secondCategory secondCategory,
+                                               BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()){
+            String errorMessage = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok().body(categoryService.addSecondCategory(secondCategory));
+    }
+
+    // 1차 or 2차 카테고리 상세 (관리자 권한)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/category/{id}")
+    public ResponseEntity<?> getDetailOfCategory(@PathVariable Long id) {
+
+        return categoryService.getDetailOfCategory(id);
+    }
+
+    // 1차 or 2차 카테고리 수정 (관리자 권한)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/category/{id}")
+    public ResponseEntity<?> updateCategory(@PathVariable Long id, @RequestBody @Valid CategoryRequestDto categoryDto,
+                                            BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()){
+            String errorMessage = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok().body(categoryService.updateCategory(id, categoryDto));
+    }
+
+    // 해당 1차 카테고리에 속하는 2차 카테고리 조회하기
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/category/first/{firstCatCd}/second")
+    public ResponseEntity<?> getSecondCategory(@PathVariable String firstCatCd) {
+
+        return ResponseEntity.ok().body(categoryService.getSecondCategoryList(firstCatCd));
+    }
+
 }

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,4 +56,22 @@ public class ProductRestController {
 
         return ResponseEntity.ok().body(productService.getRelatedProductList(id, smallCatCd));
     }
+
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/productList/{page}")
+    public ResponseEntity<?> getAdminProductList(@PathVariable int page) {
+
+        return ResponseEntity.ok().body(productService.getAdminProductList(page));
+    }
+
+    // 1차 카테고리 코드와 2차 카테고리 코드로 상품 리스트 조회하기
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/productList/{page}/firstCategory/{firstCatCd}/secondCategory/{secondCatCd}")
+    public ResponseEntity<?> getProductListByCatCd(@PathVariable("page") int page, @PathVariable("firstCatCd") String firstCatCd,
+                                                   @PathVariable("secondCatCd") String secondCatCd) {
+
+        return ResponseEntity.ok().body(productService.getProductListByCatCd(page, firstCatCd, secondCatCd));
+    }
+
 }

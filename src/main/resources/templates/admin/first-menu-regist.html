@@ -5,7 +5,40 @@
 <div class="main-content" layout:fragment="content">
     <script th:inline="javascript">
 
+        var firstCategoryObj = {
 
+            firstCategoryRegistAction   : function () {
+
+                var dataObj = {
+                    catNm   : $("#catNm").val(),
+                    useYn   : $("input[type='radio']").val()
+                }
+
+                if (dataObj.catNm === "" || dataObj.useYn === "") {
+                    alert("비어있는 곳이 존재합니다.")
+
+                    return;
+                }
+
+                $.ajax({
+                    type : "POST",
+                    url  : "/category/first",
+                    contentType : "application/json",
+                    data : JSON.stringify(dataObj),
+                    beforeSend	: function(xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success : function (data) {
+                        alert(data);
+
+                        $("#catNm").val("");
+                    },
+                    error   : function (e) {
+                        alert(e.responseText);
+                    }
+                })
+            }
+        }
 
     </script>
 
@@ -33,7 +66,7 @@
                                     <tr>
                                         <th scope="col" class="bor_top_style1">*카테고리명 <span class="point" title="카테고리명" /></th>
                                         <td class="bor_top_style1">
-                                            <input type="text" id="menuNm" name="menuNm" class="input_txt" style="width:180px;" placeholder="" title="메뉴명" maxlength="10"/>
+                                            <input type="text" id="catNm" name="catNm" class="input_txt" style="width:180px;" placeholder="" title="카테고리명" maxlength="10"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -51,8 +84,8 @@
             </div>
             <!--버튼_start-->
             <div class="txt-center pdt_25">
-                <a href="javascript:void(0);" class="btn-wine-14" onclick="javascript:firstMenuRegistAction();">저장</a>
-                <a href="javascript:void(0);" class="btn-gray-14" onclick="javascript:closeModalPopWindow('layerView');">닫기</a>
+                <a href="javascript:void(0);" class="btn-wine-14" onclick="firstCategoryObj.firstCategoryRegistAction();">저장</a>
+                <a href="/admin" class="btn-gray-14">이전으로</a>
             </div>
             <!--버튼_end-->
             <hr />

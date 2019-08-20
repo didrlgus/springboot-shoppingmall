@@ -216,7 +216,7 @@
                         </div>
                         <ul class="cateList">
                             <li class="btn_cate"><input type="radio" name="catCd" value="ALL" checked="checked"/>전체</li>
-                            <th:block th:if="${#lists.size(catList_L)} > 0" th:each="catList_L : ${catList}">
+                            <th:block th:if="${#lists.size(catList_L)} > 0" th:each="catList_L : ${catMapList.get('mainCatList')}">
                                 <li th:if="${catList_L.getCatLv() eq 1}" class="btn_cate">
                                     <input type="radio" name="catCd" th:value="${catList_L.getCatCd()}" th:text="${catList_L.getCatNm()}" />
                                 </li>

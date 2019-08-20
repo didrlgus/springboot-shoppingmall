@@ -31,8 +31,6 @@ public class ProductOrderRestController {
             return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
         }
 
-        log.info("productOrder : {}", productOrderRequestDto);
-
         productOrderService.makeOrder(productOrderRequestDto);
 
         return ResponseEntity.ok().body("결제가 완료되었습니다");

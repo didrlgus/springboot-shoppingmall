@@ -79,9 +79,9 @@
                                         $productOrderPagination.append(nextLi);
                                     }
                                 }
+                            }else {
+                                $(".order-table-body").append("<tr class='cart_itme'><td colspan=\"6\"><strong>주문내역이 없습니다.</strong></td></tr>")
                             }
-
-
                         },
                         error   : function(e) {
                             alert(e.responseText);

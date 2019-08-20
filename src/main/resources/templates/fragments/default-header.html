@@ -13,7 +13,6 @@
             })
 
             $("#" + pageName).addClass("active");
-
         })
 
     </script>
@@ -44,6 +43,9 @@
                             </li>
                             <li sec:authorize="isAuthenticated()" class="m-0 pl-10">
                                 <a href="/logout" class="text-white"><i class="fa fa-user-o mr-5 text-theme-colored2"></i> Logout </a>
+                            </li>
+                            <li sec:authorize="hasAuthority('ROLE_ADMIN')">
+                                <a href="/admin" class="text-white">/ 관리자 페이지로 이동</a>
                             </li>
                         </ul>
                     </div>
@@ -84,10 +86,11 @@
                         <li id="main" class="home"><a href="/"><i class="fa fa-home font-28"></i></a></li>
                         <li><a href="#home">전체카테고리</a>
                             <ul class="dropdown category">
-                                <th:block th:if="${#lists.size(catList_L)} > 0" th:each="catList_L : ${catList}">
-                                    <li th:if="${catList_L.getCatLv() eq 1}"><a href="#" th:text="${catList_L.getCatNm()}"></a>
+                                <th:block th:if="${#lists.size(catList_L)} > 0" th:each="catList_L : ${catMapList.get('mainCatList')}">
+                                    <li th:if="${(catList_L.getCatLv() eq 1)}">
+                                        <a href="#" th:text="${catList_L.getCatNm()}"></a>
                                         <ul class="dropdown">
-                                            <th:block th:if="${#lists.size(catList_S)} > 0" th:each="catList_S : ${catList}">
+                                            <th:block th:if="${#lists.size(catList_S)} > 0" th:each="catList_S : ${catMapList.get('mainCatList')}">
                                                 <li th:if="${(catList_S.getCatLv() eq 2) and (catList_L.getCatCd() eq catList_S.getUpprCatCd())}">
                                                     <a th:href="@{|${catList_S.getCnntUrl()}?catCd=${catList_S.getCatCd()}|}" th:text="${catList_S.getCatNm()}"></a>
                                                 </li>

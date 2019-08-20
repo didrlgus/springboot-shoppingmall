@@ -1,5 +1,6 @@
 package com.shoppingmall.domain;
 
+import com.shoppingmall.dto.CategoryResponseDto;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -45,4 +46,15 @@ public class ProductCat {
 
     @LastModifiedDate
     private LocalDateTime updatedDate;
+
+    public CategoryResponseDto.SecondCategory toSecondCategoryDto() {
+
+        return CategoryResponseDto.SecondCategory.builder()
+                .id(id)
+                .catCd(catCd)
+                .catNm(catNm)
+                .upprCatNm(upprCatCd)
+                .useYn(useYn)
+                .build();
+    }
 }

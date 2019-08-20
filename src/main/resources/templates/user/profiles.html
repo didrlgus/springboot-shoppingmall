@@ -176,7 +176,7 @@
         </script>
 
         <!-- Section: Normal User -->
-        <section sec:authorize="hasAuthority('ROLE_USER')" class="normal-profiles">
+        <section sec:authorize="hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')" class="normal-profiles">
             <div class="container">
                 <div class="section-content">
                     <div class="row">

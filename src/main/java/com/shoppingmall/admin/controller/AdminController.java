@@ -25,4 +25,6 @@ public class AdminController {
         return "admin/first-menu-regist";
     }
 
+    @GetMapping("/adminSecondMenu")
+    public String registSecondMenuInit() { return "admin/second-menu-regist"; }
 }

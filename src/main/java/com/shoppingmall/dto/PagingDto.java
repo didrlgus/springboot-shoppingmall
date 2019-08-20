@@ -11,7 +11,7 @@ import org.springframework.data.domain.PageImpl;
 public class PagingDto {
 
     private int page            = 1;   // 현재 페이지
-    private int scale           = 3;
+    private int scale           = 5;
     private int scaleStartPage  = 1;   // scale 시작 페이지
     private int scaleEndPage    = 1;   // scale 끝 페이지
     private int totPage         = 1;   // 전체 페이지 수

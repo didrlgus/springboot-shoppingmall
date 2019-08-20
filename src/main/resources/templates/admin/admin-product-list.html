@@ -4,6 +4,229 @@
 
 <div class="main-content" layout:fragment="content">
     <script th:inline="javascript">
+
+        var adminProductObj = {
+
+            getProductList  : function (obj) {
+                var page = obj ? $(obj).data("page") : 1;
+
+                $.ajax({
+                    type : "GET",
+                    url  : "/productList/" + page,
+                    contentType : "application/json",
+                    beforeSend	: function(xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success : function(data) {
+                        // 상품 리스트, 페이지 비우기
+                        var $productList     = $("#admin-product-list"),
+                            $productListPagination = $(".com_table_board-no");
+
+                        $productList.empty();
+                        $productListPagination.empty();
+
+                        if (data) {
+                            var productList      = data.adminProductList.content,
+                                productPagingDto = data.adminProductPagingDto
+
+                            // 상품 리스트 그리기
+                            if (productList.length > 0) {
+                                $(".product-count").text(data.adminProductList.totalElements + "건")
+
+                                productList.forEach(function(element) {
+                                    var productTr = "<tr>" +
+                                        "<td><input data-id=" + element.id + " type=\"checkbox\" id=\"product-check-box\" name=\"product-check-box\" class=\"input_check\" /></td>" +
+                                        "<td class=\"txt-left\">" + element.productNm + "</td>" +
+                                        "<td>" + element.price + "원</td>";
+
+                                    if (element.disPrice === 0)
+                                        productTr += "<td>N</td><td>" + element.disPrice + "%</td>";
+                                    else
+                                        productTr += "<td>Y</td><td>" + element.disPrice + "%</td>";
+
+                                    productTr += "<td>" + element.purchaseCount + "개</td>" +
+                                        "<td>" + element.totalCount + "개</td>" +
+                                        "</tr>";
+
+                                    $productList.append(productTr);
+                                })
+                            } else {
+                                $productList.append("<tr><td colspan=\"5\" class=\"com_table_board-info\">상품이 없습니다.</td></tr>");
+                            }
+
+                            // Prev 페이지
+                            if (productPagingDto.scaleStartPage !== 1) {
+                                var prevSpan =
+                                    "<span data-page='" + productPagingDto.prevPage + "' class=\"com_table_board-no-btn\" onclick='adminProductObj.getProductList(this)'><a href=\"javascript:;\"><img src=\"images/btn-board-prev.gif\" /></a></span>"
+
+                                $productListPagination.append(prevSpan);
+                            }
+
+                            $productListPagination.append("<span class=\"com_table_board-no-sum\"></span>");
+
+                            // 중간 페이지
+                            for (var i = productPagingDto.scaleStartPage; i <= productPagingDto.scaleEndPage; i++) {
+                                var pageA = "";
+
+                                if (productPagingDto.page === i) {
+                                    pageA = "<a data-page='" + i + "' href=\"javascript:;\" class=\"board-em\" onclick='adminProductObj.getProductList(this)'>" + i + "</a>";
+                                } else {
+                                    pageA = "<a data-page='" + i + "' href=\"javascript:;\" onclick='adminProductObj.getProductList(this)'>" + i + "</a>";
+                                }
+
+                                $(".com_table_board-no-sum").append(pageA);
+                            }
+
+                            // Next 페이지
+                            if (productPagingDto.scaleEndPage !== productPagingDto.totPage) {
+                                var nextSpan =
+                                    "<span data-page='" + productPagingDto.nextPage + "' class=\"com_table_board-no-btn\" onclick='adminProductObj.getProductList(this)'><a href=\"javascript:;\"><img src=\"images/btn-board-next.gif\" /></a></span>"
+
+                                $productListPagination.append(nextSpan);
+                            }
+                        } else {
+                            $(".product-count").text("0건");
+                            $productList.append("<tr><td colspan=\"7\">검색 결과가 없습니다.</td></tr>");
+                        }
+                    },
+                    error   : function(e) {
+                        alert(e.responseText);
+                    }
+                })
+            },
+
+            getProductListByCatCd   : function (obj) {
+                var page = obj ? $(obj).data("page") : 1;
+
+                $.ajax({
+                    type : "GET",
+                    url  : "/productList/" + page + "/firstCategory/" +
+                        $("#first-category-select-box").val() + "/secondCategory/" + $("#second-category-select-box").val(),
+                    contentType : "application/json",
+                    beforeSend	: function(xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success : function(data) {
+                        // 상품 리스트, 페이지 비우기
+                        var $productList     = $("#admin-product-list"),
+                            $productListPagination = $(".com_table_board-no");
+
+                        $productList.empty();
+                        $productListPagination.empty();
+
+                        if (data) {
+                            var productList      = data.adminProductList.content,
+                                productPagingDto = data.adminProductPagingDto;
+
+                            // 상품 리스트 그리기
+                            if (productList.length > 0) {
+
+                                $(".product-count").text(data.adminProductList.totalElements + "건")
+
+                                productList.forEach(function(element) {
+                                    var productTr = "<tr>" +
+                                        "<td><input data-id=" + element.id + " type=\"checkbox\" id=\"product-check-box\" name=\"product-check-box\" class=\"input_check\" /></td>" +
+                                        "<td class=\"txt-left\">" + element.productNm + "</td>" +
+                                        "<td>" + element.price + "원</td>";
+
+                                    if (element.disPrice === 0)
+                                        productTr += "<td>N</td><td>" + element.disPrice + "%</td>";
+                                    else
+                                        productTr += "<td>Y</td><td>" + element.disPrice + "%</td>";
+
+                                    productTr += "<td>" + element.purchaseCount + "개</td>" +
+                                        "<td>" + element.totalCount + "개</td>" +
+                                        "</tr>";
+
+                                    $productList.append(productTr);
+                                })
+                            } else {
+                                $productList.append("<tr><td colspan=\"5\" class=\"com_table_board-info\">상품이 없습니다.</td></tr>");
+                            }
+
+                            // Prev 페이지
+                            if (productPagingDto.scaleStartPage !== 1) {
+                                var prevSpan =
+                                    "<span data-page='" + productPagingDto.prevPage + "' class=\"com_table_board-no-btn\" onclick='adminProductObj.getProductListByCatCd(this)'><a href=\"javascript:;\"><img src=\"images/btn-board-prev.gif\" /></a></span>"
+
+                                $productListPagination.append(prevSpan);
+                            }
+
+                            $productListPagination.append("<span class=\"com_table_board-no-sum\"></span>");
+
+                            // 중간 페이지
+                            for (var i = productPagingDto.scaleStartPage; i <= productPagingDto.scaleEndPage; i++) {
+                                var pageA = "";
+
+                                if (productPagingDto.page === i) {
+                                    pageA = "<a data-page='" + i + "' href=\"javascript:;\" class=\"board-em\" onclick='adminProductObj.getProductListByCatCd(this)'>" + i + "</a>";
+                                } else {
+                                    pageA = "<a data-page='" + i + "' href=\"javascript:;\" onclick='adminProductObj.getProductListByCatCd(this)'>" + i + "</a>";
+                                }
+
+                                $(".com_table_board-no-sum").append(pageA);
+                            }
+
+                            // Next 페이지
+                            if (productPagingDto.scaleEndPage !== productPagingDto.totPage) {
+                                var nextSpan =
+                                    "<span data-page='" + productPagingDto.nextPage + "' class=\"com_table_board-no-btn\" onclick='adminProductObj.getProductListByCatCd(this)'><a href=\"javascript:;\"><img src=\"images/btn-board-next.gif\" /></a></span>"
+
+                                $productListPagination.append(nextSpan);
+                            }
+                        } else {
+                            $(".product-count").text("0건");
+                            $productList.append("<tr><td colspan=\"7\">검색 결과가 없습니다.</td></tr>");
+                        }
+                    },
+                    error   : function(e) {
+                        alert(e.responseText);
+                    }
+                })
+            }
+        }
+
+        var eventCbObj  = {
+
+            selectBoxCbFn   : function() {
+                var firstCatCd = $(this).val();
+
+                $("#second-category-select-box option").remove();
+
+                $.ajax({
+                    type : "GET",
+                    url : "/category/first/" + firstCatCd + "/second",
+                    contentType : "application/json",
+                    beforeSend	: function(xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success : function(data) {
+                        if (data.length > 0) {
+                            $("#second-category-select-box").append("<option value='ALL'>전체</option>");
+
+                            $.each(data, function(i, item) {
+                                var option = "<option value=" + item.catCd + ">" +
+                                    item.catNm + "</option>"
+
+                                $("#second-category-select-box").append(option);
+                            })
+                        } else {
+                            $("#second-category-select-box").append("<option value='ALL'>전체</option>");
+                        }
+                    },
+                    error   : function (e) {
+                        alert(e.responseText);
+                    }
+                })
+            }
+        }
+
+        $(function () {
+
+            adminProductObj.getProductList();
+
+            $("#first-category-select-box").change(eventCbObj.selectBoxCbFn);
+        })
     </script>
 
     <div id="container">
@@ -34,35 +257,33 @@
                 <fieldset class="com_list_input">
                     <legend>상품조회</legend>
                     <div class="com_list_input_con">
-                        <label class="label-list">상품명</label>
-                        <input type="text" name="" class="input_txt" value="" placeholder="" title="상품명"/>&nbsp;&nbsp;
-
-                        <p style="height:8px;"><!--공간띄우기--></p>
-
-                        <label class="label-list">상품유형</label>
-                        <select name="" id="" class="input_select" title="상품유형">
-                            <option value="">전체</option>
+                        <label class="label-list">1차 카테고리</label>
+                        <select name="" id="first-category-select-box" class="input_select" title="1차 카테고리">
+                            <option value="ALL">전체</option>
+                            <th:block th:if="${#lists.size(catList_L)} > 0" th:each="catList_L : ${catMapList.get('adminCatList')}">
+                                <th:block th:if="${catList_L.getCatLv() eq 1}">
+                                    <option th:data-id="${catList_L.getId()}" th:value="${catList_L.getCatCd()}" th:text="${catList_L.getCatNm()}"></option>
+                                </th:block>
+                            </th:block>
                         </select>&nbsp;&nbsp;
 
-                        <label class="label-list">사용유무</label>
-                        <select name="" id="" class="input_select" title="사용유무">
-                            <option value="">전체</option>
-                        </select>&nbsp;&nbsp;
+                        <label class="label-list">2차 카테고리</label>
+                        <select name="" id="second-category-select-box" class="input_select" title="2차 카테고리">
+                            <option value="ALL">전체</option>
+                        </select>
 
-                        <a href="#" class="btn-wine-10" title="조회">조회</a>
-
+                        <a href="javascript:;" class="btn-wine-10" title="조회" onclick="adminProductObj.getProductListByCatCd()">조회</a>
                     </div>
                 </fieldset>
             </div>
 
-            <p style="height:8px"><!--공간띄움--></p>
             <p style="height:8px"><!--공간띄움--></p>
 
             <!-- 가로스크롤게시판_start -->
             <div class="com_table_board">
                 <!-- 게시판상단버튼및검색조회수선택콤보박스_start -->
                 <div class="com_table_board-tit">
-                    <p class="com_table_board-txt">검색결과 <span class="color_wine">1건</span></p>
+                    <p class="com_table_board-txt">검색결과 <span class="product-count color_wine"></span></p>
                     <div class="com_table_board-list">
                         <a class="btn-wine-14" href="#" onclick="javascript:goRegist();">등록</a>
                         <a class="btn-gray-14" href="#" onclick="">선택 항목 삭제</a>
@@ -74,31 +295,26 @@
                         <caption>상품 조회결과</caption>
                         <colgroup>
                             <col width="60px" />
-                            <col width="245px" />
-                            <col width="170px" />
+                            <col width="295px" />
                             <col width="120px" />
-                            <col width="120px" />
+                            <col width="60px" />
+                            <col width="60px" />
+                            <col width="60px" />
+                            <col width="60px" />
                         </colgroup>
                         <thead>
-                        <tr>
-                            <th><input type="checkbox" id="" name="" class="input_check" title=""/></th>
-                            <th>상품명</th>
-                            <th>상품유형</th>
-                            <th>노출기간</th>
-                            <th>사용유무</th>
-                        </tr>
+                            <tr>
+                                <th><input type="checkbox" id="" name="" class="input_check" title=""/></th>
+                                <th>상품명</th>
+                                <th>상품가격</th>
+                                <th>할인여부</th>
+                                <th>할인(%)</th>
+                                <th>구매수량</th>
+                                <th>재고</th>
+                            </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td><input type="checkbox" id="" name="" class="input_check" title=""/></td>
-                            <td class="txt-left">오픈 기념 배너</td>
-                            <td>왼쪽</td>
-                            <td>2019-01-05 ~ 2019-03-31</td>
-                            <td>사용</td>
-                        </tr>
-                        <tr>
-                            <td colspan="5" class="com_table_board-info">검색결과가 없습니다.</td>
-                        </tr>
+                        <tbody id="admin-product-list">
+
                         </tbody>
                     </table>
                 </div>
@@ -107,9 +323,7 @@
 
             <!-- 페이징_start -->
             <div class="com_table_board-no">
-                <span class="com_table_board-no-btn"><a href="#"><img src="images/btn-board-prev.gif" /></a></span>
-                <span class="com_table_board-no-sum"><a href="#" class="board-em">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">6</a> <a href="#">7</a> <a href="#">8</a></span>
-                <span class="com_table_board-no-btn"><a href="#"><img src="images/btn-board-next.gif" /></a></span>
+
             </div>
             <!-- 페이징_end -->
         </div>

@@ -132,22 +132,26 @@ public class ProductOrderService {
 
         Page<ProductOrder> productOrderPage = productOrderRepository.findAllByNormalUserIdOrderByCreatedDateDesc(userId, pageable);
 
-        List<ProductOrderResponseDto> productOrderResponseDtoList = new ArrayList<>();
+        if (productOrderPage.getTotalElements() > 0) {
+            List<ProductOrderResponseDto> productOrderResponseDtoList = new ArrayList<>();
 
-        for (ProductOrder productOrder : productOrderPage) {
-            productOrderResponseDtoList.add(productOrder.toResponseDto());
+            for (ProductOrder productOrder : productOrderPage) {
+                productOrderResponseDtoList.add(productOrder.toResponseDto());
+            }
+
+            PageImpl<ProductOrderResponseDto> productOrderResponseDtos
+                    = new PageImpl<>(productOrderResponseDtoList, pageable, productOrderPage.getTotalElements());
+
+            PagingDto productOrderPagingDto = new PagingDto();
+            productOrderPagingDto.setPagingInfo(productOrderResponseDtos);
+
+            HashMap<String, Object> resultMap = new HashMap<>();
+            resultMap.put("productOrderList", productOrderResponseDtos);
+            resultMap.put("productOrderPagingDto", productOrderPagingDto);
+
+            return resultMap;
         }
 
-        PageImpl<ProductOrderResponseDto> productOrderResponseDtos
-                = new PageImpl<>(productOrderResponseDtoList, pageable, productOrderPage.getTotalElements());
-
-        PagingDto productOrderPagingDto = new PagingDto();
-        productOrderPagingDto.setPagingInfo(productOrderResponseDtos);
-
-        HashMap<String, Object> resultMap = new HashMap<>();
-        resultMap.put("productOrderList", productOrderResponseDtos);
-        resultMap.put("productOrderPagingDto", productOrderPagingDto);
-
-        return resultMap;
+        return null;
     }
 }

@@ -113,4 +113,18 @@ public class Product {
                 .rateAvg(rateAvg)
                 .build();
     }
+
+    public ProductResponseDto.AdminProductResponseDto toAdminProductResponseDto(int disPrice) {
+
+        return ProductResponseDto.AdminProductResponseDto.builder()
+                .id(id)
+                .productNm(productNm)
+                .titleImg(titleImg)
+                .price(price)
+                .disPrice(disPrice)
+                .purchaseCount(purchaseCount)
+                .totalCount(totalCount)
+                .rateAvg(rateAvg)
+                .build();
+    }
 }

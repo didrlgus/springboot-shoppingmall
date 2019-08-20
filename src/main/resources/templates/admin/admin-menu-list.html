@@ -8,14 +8,162 @@
 
             var adminMenuListObj = {
 
-                firstMenuRegist  : function() {
-                    alert("1차 메뉴 클릭!");
+                id : 0,
+                catNm : "",
+                useYn : "",
 
+                firstMenuRegist  : function() {
                     location.href = "/adminFirstMenu";
+                },
+                secondMenuRegist    : function () {
+                    location.href = "/adminSecondMenu";
+                },
+                CategoryDetail : function (obj) {
+                    $.ajax({
+                        type : "GET",
+                        url  : "/category/" + $(obj).data("id"),
+                        contentType : "application/json",
+                        beforeSend	: function(xhr) {
+                            xhr.setRequestHeader(header, token);
+                        },
+                        success : function (data) {
+                            adminMenuListObj.id = data.id;
+
+                            // 1차 카테고리
+                            if (!data.upprCatNm)
+                                $(".first-category-name").val(data.catNm);
+                            else {    // 2차 카테고리
+                                $(".second-category-name").val(data.catNm);
+                                $(".upper-category-name").val(data.upprCatNm);
+                            }
+
+                            $("input[type='radio']").removeAttr("checked");
+                            $("input[value='" + data.useYn + "']").prop("checked", true);
+
+                            adminMenuListObj.catNm = data.catNm;
+                            adminMenuListObj.useYn = data.useYn;
+                        },
+                        error   : function (e) {
+                            alert(e.responseText);
+                        }
+
+                    })
+                },
+                categoryModify : function (obj) {
+                    var catNm = "";
+                    var useYn = "";
+
+                    if ($(obj).data("type") === "first") {
+                        catNm = $(".first-category-name").val();
+                        useYn = $("#first-cat-useYn:checked").val();
+                    }
+                    else {
+                        catNm = $(".second-category-name").val();
+                        useYn = $("#second-cat-useYn:checked").val();
+                    }
+
+                    if (catNm === this.catNm && useYn === this.useYn) {
+                        alert("수정된 곳이 없습니다.");
+                        return;
+                    }
+
+                    $.ajax({
+                        type : "PUT",
+                        url  : "/category/" + this.id,
+                        contentType: "application/json",
+                        data : JSON.stringify({"catNm" : catNm, "useYn" : useYn}),
+                        beforeSend	: function(xhr) {
+                            xhr.setRequestHeader(header, token);
+                        },
+                        success : function(data) {
+                            alert(data);
+
+                            location.reload();
+                        },
+                        error   : function (e) {
+                            alert(e.responseText);
+                        }
+                    })
                 }
             }
 
+            $(function () {
+
+            })
+
         </script>
+
+        <!-- 1차 카테고리 상세 모달창 -->
+        <div class="modal fade bs-first-category-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myfirstCatModalLabel">First Category</h4>
+                    </div>
+                    <div sec:authorize="hasAuthority('ROLE_ADMIN')" class="modal-body">
+                        <form id="first-category-frm" name="first-category-frm" class="first-category-frm">
+                           <div class="row">
+                                <div class="form-group col-md-6">
+                                    카테고리 명<br>
+                                    <input type="text" class="first-category-name">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    사용여부<br>
+                                    <input type="radio" id="first-cat-useYn" name="useYn" class="input_radio" title="YES" checked="checked" value="Y"/> YES &nbsp;&nbsp;
+                                    <input type="radio" id="first-cat-useYn" name="useYn" class="input_radio" title="NO" value="N"/> NO
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button data-type="first" type="button" class="btn btn-success first-category-modify-btn" onclick="adminMenuListObj.categoryModify(this)">수정</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2차 카테고리 상세 모달창 -->
+        <div class="modal fade bs-second-category-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="mySecondCatModalLabel">Second Category</h4>
+                    </div>
+                    <div sec:authorize="hasAuthority('ROLE_ADMIN')" class="modal-body">
+                        <form id="second-category-frm" name="second-category-frm" class="second-category-frm">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    카테고리 명<br>
+                                    <input type="text" class="second-category-name">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    상위 카테고리 명<br>
+                                    <input type="text" class="upper-category-name" disabled>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    사용여부<br>
+                                    <input type="radio" id="second-cat-useYn" name="useYn" class="input_radio" title="YES" checked="checked" value="Y"/> YES &nbsp;&nbsp;
+                                    <input type="radio" id="second-cat-useYn" name="useYn" class="input_radio" title="NO" value="N"/> NO
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button data-type="second" type="button" class="btn btn-success second-category-modify-btn" onclick="adminMenuListObj.categoryModify(this)">수정</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div id="container">
             <!-- left_menu_start -->
@@ -67,9 +215,9 @@
                                         <col width="50%" /><col width="15%" /><col width="15%" />
                                     </colgroup>
 
-                                    <th:block th:if="${#lists.size(catList_L)} > 0" th:each="catList_L : ${catList}">
+                                    <th:block th:if="${#lists.size(catList_L)} > 0" th:each="catList_L : ${catMapList.get('adminCatList')}">
                                         <li th:if="${catList_L.getCatLv() eq 1}">
-                                            <tr th:data-id="${catList_L.getId()}" th:data-catCd="${catList_L.getCatCd()}" style="cursor:pointer" ondblclick="javascript:secondMenuList('');">
+                                            <tr th:data-id="${catList_L.getId()}" th:data-catCd="${catList_L.getCatCd()}" style="cursor:pointer" data-toggle="modal" data-target=".bs-first-category-modal-sm" onclick="adminMenuListObj.CategoryDetail(this)">
                                                 <td class="txt-center" th:text="${catList_L.getCatNm()}"></td>
                                                 <td class="txt-center" th:text="${catList_L.getUseYn()}"></td>
                                             </tr>
@@ -85,7 +233,7 @@
                         <div class="sub-tit">
                             <span class="color_wine" style="float:left">Total : <span>2</span> 건 </span>
                             <div class="com_table_board-list">
-                                <span><a href="javascript:menuRegistView('secondMenuRegist.do', '2차 메뉴 등록');" class="btn-wine-12">등록</a></span>
+                                <span><a href="javascript:adminMenuListObj.secondMenuRegist();" class="btn-wine-12">등록</a></span>
                             </div>
                         </div>
                         <div class="sub-table">
@@ -113,11 +261,11 @@
                                         <col width="40%" /><col width="40%" /><col width="20%" />
                                     </colgroup>
 
-                                    <th:block th:if="${#lists.size(catList_S)} > 0" th:each="catList_S : ${catList}">
+                                    <th:block th:if="${#lists.size(catList_S)} > 0" th:each="catList_S : ${catMapList.get('adminCatList')}">
                                         <li th:if="${catList_S.getCatLv() eq 2}">
-                                            <tr th:data-id="${catList_S.getId()}" th:data-catCd="${catList_S.getCatCd()}" style="cursor:pointer" ondblclick="javascript:secondMenuList('');">
+                                            <tr th:data-id="${catList_S.getId()}" th:data-catCd="${catList_S.getCatCd()}" style="cursor:pointer" data-toggle="modal" data-target=".bs-second-category-modal-sm" onclick="adminMenuListObj.CategoryDetail(this)">
                                                 <td class="txt-center" th:text="${catList_S.getCatNm()}"></td>
-                                                <th:block th:if="${#lists.size(catList_L)} > 0" th:each="catList_L : ${catList}">
+                                                <th:block th:if="${#lists.size(catList_L)} > 0" th:each="catList_L : ${catMapList.get('adminCatList')}">
                                                     <th:block th:if="${catList_S.getUpprCatCd() eq catList_L.getCatCd()}">
                                                         <td class="txt-center" th:text="${catList_L.getCatNm()}"></td>
                                                     </th:block>

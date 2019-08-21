@@ -34,6 +34,7 @@ spring:
 
 file:
   upload-dir: C:\review-upload-image
+  product-upload-dir : C:\product-upload-image
 
 logging:
   level:
@@ -54,6 +55,7 @@ spring:
 
 file:
   upload-dir: /home/ec2-user/app/images/review-upload-image
+  product-upload-dir : /home/ec2-user/app/images/product-upload-image
 ---
 spring.profiles: set2
 spring.profiles.include: real-db, real-social-set2
@@ -68,3 +70,4 @@ spring:
 
 file:
   upload-dir: /home/ec2-user/app/images/review-upload-image
+  product-upload-dir : /home/ec2-user/app/images/product-upload-image

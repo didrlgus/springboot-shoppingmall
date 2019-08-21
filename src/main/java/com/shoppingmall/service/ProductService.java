@@ -1,30 +1,54 @@
 package com.shoppingmall.service;
 
+import com.shoppingmall.common.FileUploadProperties;
+import com.shoppingmall.common.UploadFileUtils;
 import com.shoppingmall.domain.Product;
 import com.shoppingmall.domain.ProductDisPrc;
+import com.shoppingmall.domain.UploadFile;
+import com.shoppingmall.domain.enums.ProductStatus;
 import com.shoppingmall.dto.PagingDto;
+import com.shoppingmall.dto.ProductRequestDto;
 import com.shoppingmall.dto.ProductResponseDto;
 import com.shoppingmall.exception.NoValidProductSortException;
 import com.shoppingmall.exception.NotExistProductException;
 import com.shoppingmall.exception.ProductListException;
 import com.shoppingmall.repository.ProductDisPrcRepository;
 import com.shoppingmall.repository.ProductRepository;
+import com.shoppingmall.repository.UploadFileRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
-@AllArgsConstructor
 @Service
 public class ProductService {
 
+    private final Path rootLocation;
+
+    @Autowired
+    public ProductService(FileUploadProperties prop) {
+        this.rootLocation = Paths.get(prop.getProductUploadDir())
+                .toAbsolutePath().normalize();
+    }
+
+    @Autowired
     private ProductRepository productRepository;
+    @Autowired
     private ProductDisPrcRepository productDisPrcRepository;
 
     // 전체 상품 혹은 카테고리로 상품 조회
@@ -209,6 +233,25 @@ public class ProductService {
         return null;
     }
 
+    // 상품 추가
+    public String addProduct(ProductRequestDto productRequestDto) {
+
+        productRepository.save(Product.builder()
+                .productNm(productRequestDto.getProductNm())
+                .price(productRequestDto.getPrice())
+                .titleImg(productRequestDto.getTitleImg())
+                .largeCatCd(productRequestDto.getLargeCatCd())
+                .smallCatCd(productRequestDto.getSmallCatCd())
+                .productStatus(ProductStatus.SALE)
+                .purchaseCount(0)
+                .limitCount(productRequestDto.getTotalCount())
+                .totalCount(productRequestDto.getTotalCount())
+                .rateAvg(0)
+                .build());
+
+        return "상품이 추가되었습니다.";
+    }
+
     // adminProductListDto 조회 공통
     private HashMap<String, Object> getAdminProductListMap(Page<Product> productPage, PageRequest pageable) {
         List<ProductResponseDto.AdminProductResponseDto> productResponseDtoList = new ArrayList<>();
@@ -330,5 +373,53 @@ public class ProductService {
                 .build();
     }
 
+    @Transactional
+    public UploadFile uploadProductImage(MultipartFile file) throws Exception {
+        try {
+            if (file.isEmpty()) {
+                throw new Exception("Failed to store empty file " + file.getOriginalFilename());
+            }
 
+            String saveFileName = UploadFileUtils.fileSave(rootLocation.toString(), file);
+
+            if (saveFileName.toCharArray()[0] == '/') {
+                saveFileName = saveFileName.substring(1);
+            }
+
+            Resource resource = loadAsResource(saveFileName);
+
+            UploadFile saveFile = new UploadFile();
+            saveFile.setSaveFileName(saveFileName);
+            saveFile.setFileName(file.getOriginalFilename());
+            saveFile.setContentType(file.getContentType());
+            saveFile.setFilePath(rootLocation.toString().replace(File.separatorChar, '/') + File.separator + saveFileName);
+            saveFile.setSize(resource.contentLength());
+
+            return saveFile;
+        } catch (IOException e) {
+            throw new Exception("Failed to store file " + file.getOriginalFilename(), e);
+        }
+    }
+
+    private Resource loadAsResource(String fileName) throws Exception {
+        try {
+            if (fileName.toCharArray()[0] == '/') {
+                fileName = fileName.substring(1);
+            }
+
+            Path file = loadPath(fileName);
+            Resource resource = new UrlResource(file.toUri());
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            } else {
+                throw new Exception("Could not read file: " + fileName);
+            }
+        } catch (Exception e) {
+            throw new Exception("Could not read file: " + fileName);
+        }
+    }
+
+    private Path loadPath(String fileName) {
+        return rootLocation.resolve(fileName);
+    }
 }

@@ -1,16 +1,21 @@
 package com.shoppingmall.restcontroller;
 
+import com.shoppingmall.domain.UploadFile;
+import com.shoppingmall.dto.ProductRequestDto;
 import com.shoppingmall.service.ProductService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
 
 @Slf4j
 @AllArgsConstructor
@@ -57,7 +62,6 @@ public class ProductRestController {
         return ResponseEntity.ok().body(productService.getRelatedProductList(id, smallCatCd));
     }
 
-
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/productList/{page}")
     public ResponseEntity<?> getAdminProductList(@PathVariable int page) {
@@ -74,4 +78,30 @@ public class ProductRestController {
         return ResponseEntity.ok().body(productService.getProductListByCatCd(page, firstCatCd, secondCatCd));
     }
 
+    // 상품 타이틀 이미지 업로드
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/product/titleImage")
+    public ResponseEntity<?> uploadReviewImage(@RequestParam("file") MultipartFile file) {
+
+        try {
+            UploadFile uploadedFile = productService.uploadProductImage(file);
+            return ResponseEntity.ok().body("product-upload-image/" + uploadedFile.getSaveFileName());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    // 상품 추가
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/product")
+    public ResponseEntity<?> addProduct(@RequestBody @Valid ProductRequestDto productRequestDto,
+                                        BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()){
+            String errorMessage = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok().body(productService.addProduct(productRequestDto));
+    }
 }

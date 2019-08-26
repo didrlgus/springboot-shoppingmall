@@ -8,6 +8,7 @@
 * Spring Boot Security
 * Spring Boot Actuator
 * Spring Data JPA
+* Spring Boot Batch
 * Gradle
 
 #### Database

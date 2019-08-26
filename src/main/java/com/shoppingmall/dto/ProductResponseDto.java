@@ -66,4 +66,20 @@ public class ProductResponseDto {
         private Integer totalCount;
         private Integer rateAvg;
     }
+
+    @Getter
+    @Builder
+    @ToString
+    public static class AdminProductDetailResponseDto {
+        private Long id;
+        private String productNm;
+        private String titleImg;
+        private Integer price;
+        private Integer disPrice;
+        private String disStartDt;
+        private String disEndDt;
+        private String largeCatCd;
+        private String smallCatCd;
+        private Integer totalCount;
+    }
 }

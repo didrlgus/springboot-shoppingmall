@@ -62,6 +62,7 @@ public class ProductRestController {
         return ResponseEntity.ok().body(productService.getRelatedProductList(id, smallCatCd));
     }
 
+    // 상품 리스트 조회 (관리자 권한)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/productList/{page}")
     public ResponseEntity<?> getAdminProductList(@PathVariable int page) {
@@ -69,7 +70,7 @@ public class ProductRestController {
         return ResponseEntity.ok().body(productService.getAdminProductList(page));
     }
 
-    // 1차 카테고리 코드와 2차 카테고리 코드로 상품 리스트 조회하기
+    // 1차 카테고리 코드와 2차 카테고리 코드로 상품 리스트 조회하기 (관리자 권한)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/productList/{page}/firstCategory/{firstCatCd}/secondCategory/{secondCatCd}")
     public ResponseEntity<?> getProductListByCatCd(@PathVariable("page") int page, @PathVariable("firstCatCd") String firstCatCd,
@@ -78,7 +79,7 @@ public class ProductRestController {
         return ResponseEntity.ok().body(productService.getProductListByCatCd(page, firstCatCd, secondCatCd));
     }
 
-    // 상품 타이틀 이미지 업로드
+    // 상품 타이틀 이미지 업로드 (관리자 권한)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/product/titleImage")
     public ResponseEntity<?> uploadReviewImage(@RequestParam("file") MultipartFile file) {
@@ -91,7 +92,7 @@ public class ProductRestController {
         }
     }
 
-    // 상품 추가
+    // 상품 추가 (관리자 권한)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/product")
     public ResponseEntity<?> addProduct(@RequestBody @Valid ProductRequestDto productRequestDto,
@@ -103,5 +104,35 @@ public class ProductRestController {
         }
 
         return ResponseEntity.ok().body(productService.addProduct(productRequestDto));
+    }
+
+    // 상품 상세 (관리자 권한)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/admin/product/{id}")
+    public ResponseEntity<?> getAdminProductDetails(@PathVariable Long id) {
+
+        return ResponseEntity.ok().body(productService.getAdminProductDetails(id));
+    }
+
+    // 상품 수정 (관리자 권한)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/product/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody @Valid ProductRequestDto.UpdateRequestDto updateRequestDto,
+                                           BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()){
+            String errorMessage = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok().body(productService.updateProduct(id, updateRequestDto));
+    }
+
+    // 상품 삭제 (관리자 권한)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/product/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
+
+        return ResponseEntity.ok().body(productService.deleteProduct(id));
     }
 }

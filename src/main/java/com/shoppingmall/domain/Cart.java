@@ -55,6 +55,7 @@ public class Cart {
                 .build();
     }
 
+    // 배치에서 호출하는 메소드
     public Cart setInvalidity() {
         useYn = 'N';
         return this;

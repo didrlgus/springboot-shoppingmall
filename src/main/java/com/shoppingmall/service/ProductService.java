@@ -14,9 +14,6 @@ import com.shoppingmall.exception.NotExistProductException;
 import com.shoppingmall.exception.ProductListException;
 import com.shoppingmall.repository.ProductDisPrcRepository;
 import com.shoppingmall.repository.ProductRepository;
-import com.shoppingmall.repository.UploadFileRepository;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -252,6 +249,78 @@ public class ProductService {
         return "상품이 추가되었습니다.";
     }
 
+    // 상품 상세조회
+    public ProductResponseDto.AdminProductDetailResponseDto getAdminProductDetails(Long id) {
+        Optional<Product> productOpt = productRepository.findById(id);
+
+        if (!productOpt.isPresent())
+            throw new NotExistProductException("존재하지 않는 상품입니다.");
+
+        Product product = productOpt.get();
+
+        int disPrice = 0;
+        List<LocalDateTime> disDateList = new ArrayList<>();
+
+        // 할인중인 상품이라면 if문 수행
+        if (product.getProductDisPrcList().size() > 0) {
+            disPrice = getDisPrice(product);
+            disDateList = getDisDateList(product);  // 할인 시작날짜, 종료날짜가 들어있는 리스트
+        }
+
+        LocalDateTime disStartDate = null;
+        LocalDateTime disEndDate = null;
+
+        if (disDateList.size() > 0) {
+            disStartDate = disDateList.get(0);
+            disEndDate = disDateList.get(1);
+        }
+
+        return ProductResponseDto.AdminProductDetailResponseDto.builder()
+                .id(product.getId())
+                .productNm(product.getProductNm())
+                .price(product.getPrice())
+                .disPrice(disPrice)
+                .disStartDt(disStartDate == null ? "" : disStartDate.getYear() + "-" + disStartDate.getMonthValue() + "-" + disStartDate.getDayOfMonth())
+                .disEndDt(disEndDate == null ? "" : disEndDate.getYear() + "-" + disEndDate.getMonthValue() + "-" + disEndDate.getDayOfMonth())
+                .titleImg(product.getTitleImg())
+                .largeCatCd(product.getLargeCatCd())
+                .smallCatCd(product.getSmallCatCd())
+                .totalCount(product.getTotalCount())
+                .build();
+    }
+
+    // 상품 정보 수정
+    public String updateProduct(Long id, ProductRequestDto.UpdateRequestDto updateRequestDto) {
+        Optional<Product> productOpt = productRepository.findById(id);
+
+        if (!productOpt.isPresent())
+            throw new NotExistProductException("존재하지 않는 상품입니다.");
+
+        Product product = productOpt.get();
+
+        product.setProductNm(updateRequestDto.getProductNm());
+        product.setPrice(updateRequestDto.getPrice());
+        product.setLargeCatCd(updateRequestDto.getLargeCatCd());
+        product.setSmallCatCd(updateRequestDto.getSmallCatCd());
+        product.setTotalCount(updateRequestDto.getTotalCount());
+
+        productRepository.save(product);
+
+        return "상품 정보 수정이 완료되었습니다.";
+    }
+
+    // 상품 삭제
+    public String deleteProduct(Long id) {
+        Optional<Product> productOpt = productRepository.findById(id);
+
+        if (!productOpt.isPresent())
+            throw new NotExistProductException("존재하지 않는 상품입니다.");
+
+        productRepository.delete(productOpt.get());
+
+        return "상품이 삭제되었습니다.";
+    }
+
     // adminProductListDto 조회 공통
     private HashMap<String, Object> getAdminProductListMap(Page<Product> productPage, PageRequest pageable) {
         List<ProductResponseDto.AdminProductResponseDto> productResponseDtoList = new ArrayList<>();
@@ -342,6 +411,23 @@ public class ProductService {
                 .sorted().limit(1).collect(Collectors.toList());
 
         return disprcList.get(0).getDisPrc();
+    }
+
+    private List<LocalDateTime> getDisDateList(Product product) {
+        List<ProductDisPrc> disList
+                = product.getProductDisPrcList().parallelStream()
+                .filter(productDisPrc -> LocalDateTime.now().isAfter(productDisPrc.getStartDt())
+                        && LocalDateTime.now().isBefore(productDisPrc.getEndDt()))
+                .sorted().limit(1).collect(Collectors.toList());
+
+        List<LocalDateTime> disDateList = new ArrayList<>();
+
+        ProductDisPrc productDisPrc = disList.get(0);
+
+        disDateList.add(productDisPrc.getStartDt());
+        disDateList.add(productDisPrc.getEndDt());
+
+        return disDateList;
     }
 
     private HashMap<String, Object> getResultMap(PageImpl<ProductResponseDto> products) {

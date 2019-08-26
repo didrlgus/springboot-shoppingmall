@@ -34,8 +34,7 @@
                                 $(".product-count").text(data.adminProductList.totalElements + "건")
 
                                 productList.forEach(function(element) {
-                                    var productTr = "<tr>" +
-                                        "<td><input data-id=" + element.id + " type=\"checkbox\" id=\"product-check-box\" name=\"product-check-box\" class=\"input_check\" /></td>" +
+                                    var productTr = "<tr data-id=" + element.id + " onclick='adminProductObj.getProductDetails(this)'>" +
                                         "<td class=\"txt-left\">" + element.productNm + "</td>" +
                                         "<td>" + element.price + "원</td>";
 
@@ -124,8 +123,7 @@
                                 $(".product-count").text(data.adminProductList.totalElements + "건")
 
                                 productList.forEach(function(element) {
-                                    var productTr = "<tr>" +
-                                        "<td><input data-id=" + element.id + " type=\"checkbox\" id=\"product-check-box\" name=\"product-check-box\" class=\"input_check\" /></td>" +
+                                    var productTr = "<tr data-id=" + element.id + " onclick='adminProductObj.getProductDetails(this)'>" +
                                         "<td class=\"txt-left\">" + element.productNm + "</td>" +
                                         "<td>" + element.price + "원</td>";
 
@@ -183,6 +181,9 @@
                         alert(e.responseText);
                     }
                 })
+            },
+            getProductDetails   : function (obj) {
+                location.href = "/adminProductDetails?productId=" + $(obj).data("id");
             }
         }
 
@@ -286,7 +287,6 @@
                     <p class="com_table_board-txt">검색결과 <span class="product-count color_wine"></span></p>
                     <div class="com_table_board-list">
                         <a class="btn-wine-14" href="/adminProductRegist">등록</a>
-                        <a class="btn-gray-14" href="#" onclick="">선택 항목 삭제</a>
                     </div>
                 </div>
                 <!-- 게시판상단버튼및검색조회수선택콤보박스_end -->
@@ -294,7 +294,6 @@
                     <table summary="상품 조회결과" class="tbl-fixed">
                         <caption>상품 조회결과</caption>
                         <colgroup>
-                            <col width="60px" />
                             <col width="295px" />
                             <col width="120px" />
                             <col width="60px" />
@@ -304,7 +303,6 @@
                         </colgroup>
                         <thead>
                             <tr>
-                                <th><input type="checkbox" id="" name="" class="input_check" title=""/></th>
                                 <th>상품명</th>
                                 <th>상품가격</th>
                                 <th>할인여부</th>

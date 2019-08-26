@@ -30,4 +30,14 @@ public class AdminController {
 
     @GetMapping("/adminProductRegist")
     public String registProduct() { return "admin/product-regist"; }
+
+    @GetMapping("/adminProductDetails")
+    public String adminProductDetailsInit() {
+        return "admin/admin-product-details";
+    }
+
+    @GetMapping("/adminSalePriceList")
+    public String adminSalePriceListInit() {
+        return "admin/sale-price-list";
+    }
 }

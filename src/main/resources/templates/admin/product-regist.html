@@ -54,8 +54,6 @@
                         xhr.setRequestHeader(header, token);
                     },
                     success: function(data) {
-                        console.log(data);
-
                         productRegistObj.uploadCheckYn = true;
                         productRegistObj.titleImagePath = data;
                         alert("상품 타이틀 이미지 업로드 완료.");

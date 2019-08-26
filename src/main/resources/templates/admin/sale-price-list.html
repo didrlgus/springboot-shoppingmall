@@ -19,15 +19,18 @@
                         xhr.setRequestHeader(header, token)
                     },
                     success : function (data) {
-                        console.log(data);
                         var $saleListTarget = $("#admin-sale-list");
                         $saleListTarget.empty();
 
                         $(".product-name").text(data.productNm);
 
-                        if (!data.applyDiscountProduct) {
-                            $saleListTarget.append("<tr><td colspan=\"6\">할인 리스트가 없습니다.</td></tr>")
-                        } else {
+                        // 할인 리스트가 아예 없을 경우
+                        if (!data.applyDiscountProduct && !data.NoApplyDiscountProductList) {
+                            $saleListTarget.append("<tr><td colspan=\"5\">할인 리스트가 없습니다.</td></tr>")
+                        }
+
+                        // 현재 적용중인 할인 리스트가 있을 경우
+                        if (data.applyDiscountProduct){
                             var applyDiscountProduct = data.applyDiscountProduct;
 
                             var applyDiscountProductTr = "<tr>" +
@@ -39,22 +42,23 @@
                                 "</tr>";
 
                             $saleListTarget.append(applyDiscountProductTr);
+                        }
 
-                            if (data.NoApplyDiscountProductList) {
-                                var noApplyDiscountProductList = data.NoApplyDiscountProductList;
+                        // 현재 적용중이지 않은 할인 리스트가 있을 경우
+                        if (data.NoApplyDiscountProductList) {
+                            var noApplyDiscountProductList = data.NoApplyDiscountProductList;
 
-                                noApplyDiscountProductList.forEach(function (element) {
-                                    var noApplyDiscountProductTr = "<tr>" +
-                                        "<td>" + element.startDt + "</td>" +
-                                        "<td>" + element.endDt + "</td>" +
-                                        "<td>" + element.disPrc + "</td>" +
-                                        "<td>N</td>" +
-                                        "<td><a href=\"javascript:;\" data-id='" + element.id + "' onclick='adminSaleProductListObj.removeSaleList(this)'>&times;</a></td>" +
-                                        "</tr>";
+                            noApplyDiscountProductList.forEach(function (element) {
+                                var noApplyDiscountProductTr = "<tr>" +
+                                    "<td>" + element.startDt + "</td>" +
+                                    "<td>" + element.endDt + "</td>" +
+                                    "<td>" + element.disPrc + "</td>" +
+                                    "<td>N</td>" +
+                                    "<td><a href=\"javascript:;\" data-id='" + element.id + "' onclick='adminSaleProductListObj.removeSaleList(this)'>&times;</a></td>" +
+                                    "</tr>";
 
-                                    $saleListTarget.append(noApplyDiscountProductTr);
-                                })
-                            }
+                                $saleListTarget.append(noApplyDiscountProductTr);
+                            })
                         }
                     },
                     error   : function (e) {
@@ -82,8 +86,6 @@
                 dataObj.startDt = realStartDt;
                 dataObj.endDt = realEndDt;
                 dataObj.disPrc = disPrc;
-
-                console.log(dataObj);
 
                 $.ajax({
                     type : "POST",

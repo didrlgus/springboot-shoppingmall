@@ -147,7 +147,9 @@ public class CartService {
                     = cart.getProduct().getProductDisPrcList().stream().filter(productDisPrc -> LocalDateTime.now().isAfter(productDisPrc.getStartDt())
                     && LocalDateTime.now().isBefore(productDisPrc.getEndDt())).sorted().limit(1).collect(Collectors.toList());
 
-            disPrice = disprcList.get(0).getDisPrc();
+            // getProductDisPrcList의 크기가 0보다 크다 하더라도 할인 기간에 적용되지 않는 리스트는 disprcList에 포함되지 않기 때문에 아래의 if조건을 걸어줘야 함
+            if (disprcList.size() > 0)
+                disPrice = disprcList.get(0).getDisPrc();
         }
 
         return disPrice;

@@ -22,8 +22,6 @@
                         xhr.setRequestHeader(header, token);
                     },
                     success : function(data) {
-                        console.log(data);
-
                         adminProductDetailObj.saleStartDt = data.disStartDt;
                         adminProductDetailObj.saleEndDt = data.disEndDt;
 

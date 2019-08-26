@@ -269,10 +269,19 @@ public class ProductService {
 
         LocalDateTime disStartDate = null;
         LocalDateTime disEndDate = null;
+        String startMonthStr = "";
+        String startDayStr = "";
+        String endMonthStr = "";
+        String endDayStr = "";
 
         if (disDateList.size() > 0) {
             disStartDate = disDateList.get(0);
             disEndDate = disDateList.get(1);
+
+            startMonthStr = disStartDate.getMonthValue() < 10 ? "0" + disStartDate.getMonthValue() : "" + disStartDate.getMonthValue();
+            startDayStr = disStartDate.getDayOfMonth() < 10 ? "0" + disStartDate.getDayOfMonth() : "" + disStartDate.getDayOfMonth();
+            endMonthStr = disEndDate.getMonthValue() < 10 ? "0" + disEndDate.getMonthValue() : "" + disEndDate.getMonthValue();
+            endDayStr = disEndDate.getDayOfMonth() < 10 ? "0" + disEndDate.getDayOfMonth() : "" + disEndDate.getDayOfMonth();
         }
 
         return ProductResponseDto.AdminProductDetailResponseDto.builder()
@@ -280,8 +289,8 @@ public class ProductService {
                 .productNm(product.getProductNm())
                 .price(product.getPrice())
                 .disPrice(disPrice)
-                .disStartDt(disStartDate == null ? "" : disStartDate.getYear() + "-" + disStartDate.getMonthValue() + "-" + disStartDate.getDayOfMonth())
-                .disEndDt(disEndDate == null ? "" : disEndDate.getYear() + "-" + disEndDate.getMonthValue() + "-" + disEndDate.getDayOfMonth())
+                .disStartDt(disStartDate == null ? "" : disStartDate.getYear() + "-" + startMonthStr + "-" + startDayStr)
+                .disEndDt(disEndDate == null ? "" : disEndDate.getYear() + "-" + endMonthStr + "-" + endDayStr)
                 .titleImg(product.getTitleImg())
                 .largeCatCd(product.getLargeCatCd())
                 .smallCatCd(product.getSmallCatCd())
@@ -404,13 +413,18 @@ public class ProductService {
 
     private int getDisPrice(Product product) {
         // 스트림 API를 사용하여 현재 날짜가 할인이 적용되는 날짜 사이에 있는 데이터 중 가장 할인률이 높은 데이터 하나만을 꺼내서 리스트로 저장
+        // 현재 할인이 적용된 리스트 하나를 조회
         List<ProductDisPrc> disprcList
                 = product.getProductDisPrcList().parallelStream()
                 .filter(productDisPrc -> LocalDateTime.now().isAfter(productDisPrc.getStartDt())
                         && LocalDateTime.now().isBefore(productDisPrc.getEndDt()))
                 .sorted().limit(1).collect(Collectors.toList());
 
-        return disprcList.get(0).getDisPrc();
+        // 현재 할인이 적용된 리스트가 없을 수도 있으므로 아래와 같이 if문 처리
+        if (disprcList.size() > 0)
+            return disprcList.get(0).getDisPrc();
+
+        return 0;
     }
 
     private List<LocalDateTime> getDisDateList(Product product) {
@@ -422,10 +436,12 @@ public class ProductService {
 
         List<LocalDateTime> disDateList = new ArrayList<>();
 
-        ProductDisPrc productDisPrc = disList.get(0);
+        if (disList.size() > 0) {
+            ProductDisPrc productDisPrc = disList.get(0);
 
-        disDateList.add(productDisPrc.getStartDt());
-        disDateList.add(productDisPrc.getEndDt());
+            disDateList.add(productDisPrc.getStartDt());
+            disDateList.add(productDisPrc.getEndDt());
+        }
 
         return disDateList;
     }

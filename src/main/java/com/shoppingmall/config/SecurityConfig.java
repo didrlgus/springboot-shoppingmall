@@ -62,6 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .csrf()
                     .ignoringAntMatchers("/h2-console/**")
+                    .ignoringAntMatchers("/swagger-ui.html**")
                 .and()
                     .sessionManagement()
                     .maximumSessions(1)

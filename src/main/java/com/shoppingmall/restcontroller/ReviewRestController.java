@@ -5,6 +5,8 @@ import com.shoppingmall.dto.ReviewRequestDto;
 import com.shoppingmall.repository.CartRepository;
 import com.shoppingmall.service.CartService;
 import com.shoppingmall.service.ReviewService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,12 +20,14 @@ import java.util.HashMap;
 
 @Slf4j
 @AllArgsConstructor
+@Api(tags = "review", description = "리뷰")
 @RestController
 public class ReviewRestController {
 
     private ReviewService reviewService;
     private CartService cartService;
 
+    @ApiOperation(value = "리뷰 이미지 업로드")
     @PostMapping("/review/image")
     public ResponseEntity<?> uploadReviewImage(@RequestParam("file") MultipartFile file) {
 
@@ -37,6 +41,7 @@ public class ReviewRestController {
     }
 
     // 리뷰를 작성할 수 있는 회원인지 파악 (해당 상품을 결제한 유저는 리뷰작성 가능)
+    @ApiOperation(value = "리뷰 권한 파악")
     @GetMapping("/review/authority")
     public ResponseEntity<?> checkReviewAuthority(@RequestParam HashMap<String, Object> paramMap) {
 
@@ -44,6 +49,7 @@ public class ReviewRestController {
     }
 
     // 리뷰 추가
+    @ApiOperation(value = "리뷰 생성")
     @PostMapping("/review")
     public ResponseEntity<?> makeReview(@RequestBody @Valid ReviewRequestDto reviewRequestDto,
                                         BindingResult bindingResult) {
@@ -59,6 +65,7 @@ public class ReviewRestController {
     }
 
     // 리뷰리스트 조회
+    @ApiOperation(value = "리뷰 조회")
     @GetMapping("/product/{productId}/review/{page}")
     public ResponseEntity<?> getReviewList(@PathVariable("productId") Long productId,
                                            @PathVariable("page") int page) {
@@ -67,6 +74,7 @@ public class ReviewRestController {
     }
 
     // 리뷰 상세 조회
+    @ApiOperation(value = "리뷰 상세")
     @GetMapping("/review/{id}")
     public ResponseEntity<?> getReviewDetail(@PathVariable Long id) {
 

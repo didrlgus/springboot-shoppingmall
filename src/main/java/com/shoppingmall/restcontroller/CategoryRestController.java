@@ -2,6 +2,8 @@ package com.shoppingmall.restcontroller;
 
 import com.shoppingmall.dto.CategoryRequestDto;
 import com.shoppingmall.service.CategoryService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -14,12 +16,14 @@ import javax.validation.Valid;
 
 @Slf4j
 @AllArgsConstructor
+@Api(tags = "category", description = "카테고리")
 @RestController
 public class CategoryRestController {
 
     private CategoryService categoryService;
 
     // 전체 카테고리 조회
+    @ApiOperation(value = "전체 카테고리 조회")
     @GetMapping("/category")
     public ResponseEntity<?> getCategory() {
 
@@ -27,6 +31,7 @@ public class CategoryRestController {
     }
 
     // 1차 카테고리 추가 (관리자 권한)
+    @ApiOperation(value = "1차 카테고리 추가 (관리자 권한)")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/category/first")
     public ResponseEntity<?> addFirstCategory(@RequestBody @Valid CategoryRequestDto.firstCategory firstCategory,
@@ -41,6 +46,7 @@ public class CategoryRestController {
     }
 
     // 2차 카테고리 추가 (관리자 권한)
+    @ApiOperation(value = "2차 카테고리 추가 (관리자 권한)")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/category/second")
     public ResponseEntity<?> addSecondCategory(@RequestBody @Valid CategoryRequestDto.secondCategory secondCategory,
@@ -55,6 +61,7 @@ public class CategoryRestController {
     }
 
     // 1차 or 2차 카테고리 상세 (관리자 권한)
+    @ApiOperation(value = "1, 2차 카테고리 상세 (관리자 권한)")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/category/{id}")
     public ResponseEntity<?> getDetailOfCategory(@PathVariable Long id) {
@@ -63,6 +70,7 @@ public class CategoryRestController {
     }
 
     // 1차 or 2차 카테고리 수정 (관리자 권한)
+    @ApiOperation(value = "1, 2차 카테고리 수정 (관리자 권한)")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/category/{id}")
     public ResponseEntity<?> updateCategory(@PathVariable Long id, @RequestBody @Valid CategoryRequestDto categoryDto,
@@ -77,11 +85,11 @@ public class CategoryRestController {
     }
 
     // 해당 1차 카테고리에 속하는 2차 카테고리 조회하기
+    @ApiOperation(value = "1차 카테고리에 속한 2차 카테고리 조회 (관리자 권한)")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/category/first/{firstCatCd}/second")
     public ResponseEntity<?> getSecondCategory(@PathVariable String firstCatCd) {
 
         return ResponseEntity.ok().body(categoryService.getSecondCategoryList(firstCatCd));
     }
-
 }

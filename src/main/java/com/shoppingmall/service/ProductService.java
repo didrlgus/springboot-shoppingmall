@@ -319,7 +319,7 @@ public class ProductService {
     }
 
     // 상품 삭제
-    public String deleteProduct(Long id) {
+    /*public String deleteProduct(Long id) {
         Optional<Product> productOpt = productRepository.findById(id);
 
         if (!productOpt.isPresent())
@@ -328,7 +328,7 @@ public class ProductService {
         productRepository.delete(productOpt.get());
 
         return "상품이 삭제되었습니다.";
-    }
+    }*/
 
     // adminProductListDto 조회 공통
     private HashMap<String, Object> getAdminProductListMap(Page<Product> productPage, PageRequest pageable) {

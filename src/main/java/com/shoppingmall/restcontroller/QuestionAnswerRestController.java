@@ -2,6 +2,8 @@ package com.shoppingmall.restcontroller;
 
 import com.shoppingmall.dto.QuestionAnswerRequestDto;
 import com.shoppingmall.service.QuestionAnswerService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -16,12 +18,14 @@ import javax.validation.Valid;
 
 @Slf4j
 @AllArgsConstructor
+@Api(tags = "questionAnswer", description = "댓글")
 @RestController
 public class QuestionAnswerRestController {
 
     private QuestionAnswerService questionAnswerService;
 
     // 댓글 조회
+    @ApiOperation(value = "댓글 조회")
     @GetMapping("/question/{questionId}/answer/{page}")
     public ResponseEntity<?> getAnswer(@PathVariable("questionId") Long questionId, @PathVariable("page") int page,
                                        @PageableDefault(size = 3, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
@@ -31,6 +35,7 @@ public class QuestionAnswerRestController {
     }
 
     // 댓글 추가
+    @ApiOperation(value = "댓글 생성")
     @PostMapping("/question/{questionId}/answer")
     public ResponseEntity<?> makeAnswer(@RequestBody @Valid QuestionAnswerRequestDto questionAnswerRequestDto,
                                           @PathVariable Long questionId,

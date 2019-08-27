@@ -3,6 +3,8 @@ package com.shoppingmall.restcontroller;
 import com.shoppingmall.dto.MeRequestDto;
 import com.shoppingmall.dto.UpdatePasswordRequestDto;
 import com.shoppingmall.service.NormalUserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,23 +18,27 @@ import java.util.Map;
 
 @Slf4j
 @AllArgsConstructor
+@Api(tags = "user", description = "회원")
 @RestController
 public class UserRestController {
 
     private NormalUserService normalUserService;
 
+    @ApiOperation(value = "회원 중복 확인")
     @GetMapping("/duplicateCheck")
     public String duplicateCheck(@RequestParam Map<String, Object> identifier) {
 
         return normalUserService.duplicateCheck(identifier);
     }
 
+    @ApiOperation(value = "회원 상세")
     @GetMapping("/me/{id}")
     public ResponseEntity<?> getProfiles(@PathVariable Long id) {
 
         return ResponseEntity.ok().body(normalUserService.getProfiles(id));
     }
 
+    @ApiOperation(value = "회원 프로필 수정")
     @PutMapping("/me/{id}")
     public ResponseEntity<String> modifyProfiles(HttpServletRequest request, @PathVariable Long id,
                                                  @RequestBody @Valid MeRequestDto meRequestDto, BindingResult bindingResult) {
@@ -47,6 +53,7 @@ public class UserRestController {
         return ResponseEntity.ok("프로필 수정이 완료되었습니다!");
     }
 
+    @ApiOperation(value = "회원 삭제")
     @DeleteMapping("/me/{id}")
     public ResponseEntity<String> deleteProfiles(@PathVariable Long id) {
 
@@ -55,6 +62,7 @@ public class UserRestController {
         return ResponseEntity.ok().body("탈퇴가 완료되었습니다.");
     }
 
+    @ApiOperation(value = "회원 비밀번호 수정")
     @PutMapping("/me/{id}/password")
     public ResponseEntity<String> updatePassword(@PathVariable Long id,
                                                  @RequestBody @Valid UpdatePasswordRequestDto passwordRequestDto,

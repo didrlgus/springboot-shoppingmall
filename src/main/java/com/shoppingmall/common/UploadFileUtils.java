@@ -73,8 +73,6 @@ public class UploadFileUtils {
 
         makeDir(uploadPath, yearPath, monthPath, datePath);
 
-        log.info(datePath);
-
         return datePath;
     }
 

@@ -3,6 +3,8 @@ package com.shoppingmall.restcontroller;
 import com.shoppingmall.dto.ProductOrderRequestDto;
 import com.shoppingmall.dto.ProductOrderResponseDto;
 import com.shoppingmall.service.ProductOrderService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -17,11 +19,13 @@ import javax.validation.Valid;
 
 @Slf4j
 @AllArgsConstructor
+@Api(tags = "productOrder", description = "상품 주문")
 @RestController
 public class ProductOrderRestController {
 
     private ProductOrderService productOrderService;
 
+    @ApiOperation(value = "주문 생성")
     @PostMapping("/order")
     public ResponseEntity<?> makeOrder(@RequestBody @Valid ProductOrderRequestDto productOrderRequestDto,
                                        BindingResult bindingResult) {
@@ -36,12 +40,14 @@ public class ProductOrderRestController {
         return ResponseEntity.ok().body("결제가 완료되었습니다");
     }
 
+    @ApiOperation(value = "주문 상세")
     @GetMapping("/order/{orderId}")
     public ResponseEntity<?> getOrderDetails(@PathVariable Long orderId) {
 
         return ResponseEntity.ok().body(productOrderService.getOrderDetails(orderId));
     }
 
+    @ApiOperation(value = "전체 주문 조회")
     @GetMapping("/user/{userId}/order/{page}")
     public ResponseEntity<?> getAllOrder(@PathVariable("userId") Long userId, @PathVariable("page") int page,
                                          @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {

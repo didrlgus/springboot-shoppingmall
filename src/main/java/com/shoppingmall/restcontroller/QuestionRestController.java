@@ -3,6 +3,8 @@ package com.shoppingmall.restcontroller;
 
 import com.shoppingmall.dto.QuestionRequestDto;
 import com.shoppingmall.service.QuestionService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -17,11 +19,13 @@ import javax.validation.Valid;
 
 @Slf4j
 @AllArgsConstructor
+@Api(tags = "question", description = "질문")
 @RestController
 public class QuestionRestController {
 
     private QuestionService questionService;
 
+    @ApiOperation(value = "질문 생성")
     @PostMapping("/question")
     public ResponseEntity<?> makeQuestion(@RequestBody @Valid QuestionRequestDto questionRequestDto,
                                           BindingResult bindingResult,
@@ -34,11 +38,10 @@ public class QuestionRestController {
 
         questionService.makeQuestion(questionRequestDto, pageable);
 
-        log.info("#### question {}", questionRequestDto);
-
         return ResponseEntity.ok("문의가 등록되었습니다.");
     }
 
+    @ApiOperation(value = "질문 조회")
     @GetMapping("/product/{id}/question/{page}")
     public ResponseEntity<?> getQuestionList(@PathVariable("id") Long productId, @PathVariable("page") int page,
                                              @PageableDefault(size = 3, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
@@ -46,6 +49,7 @@ public class QuestionRestController {
         return ResponseEntity.ok().body(questionService.getQuestionList(productId, page, pageable));
     }
 
+    @ApiOperation(value = "질문 수정")
     @PutMapping("/question/{id}")
     public ResponseEntity<?> updateQuestion(@RequestBody @Valid QuestionRequestDto.Update questionRequestDto,
                                             @PathVariable Long id,
@@ -61,6 +65,7 @@ public class QuestionRestController {
         return ResponseEntity.ok().body("문의가 수정되었습니다.");
     }
 
+    @ApiOperation(value = "질문 삭제")
     @DeleteMapping("/question/{id}")
     public ResponseEntity<?> deleteQuestion(@PathVariable Long id) {
 
@@ -68,5 +73,4 @@ public class QuestionRestController {
 
         return ResponseEntity.ok().body("삭제되었습니다.");
     }
-
 }

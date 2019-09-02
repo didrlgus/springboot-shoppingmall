@@ -12,10 +12,12 @@ public class InvalidityJobListener implements JobExecutionListener {
     @Override
     public void beforeJob(JobExecution jobExecution) {
         log.info("Before Batch Job");
+        log.info("Job 시작시간 : {}", jobExecution.getStartTime());
     }
 
     @Override
     public void afterJob(JobExecution jobExecution) {
         log.info("After Batch Job");
+        log.info("Job 종료시간 : {}", jobExecution.getEndTime());
     }
 }

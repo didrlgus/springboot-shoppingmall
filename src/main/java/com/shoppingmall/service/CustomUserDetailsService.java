@@ -17,7 +17,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
-
 @AllArgsConstructor
 @Service
 public class CustomUserDetailsService implements UserDetailsService {

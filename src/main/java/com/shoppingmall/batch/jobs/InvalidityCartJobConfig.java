@@ -1,6 +1,7 @@
 package com.shoppingmall.batch.jobs;
 
 import com.shoppingmall.batch.jobs.listener.InvalidityJobListener;
+import com.shoppingmall.config.ThreadConfig;
 import com.shoppingmall.domain.Cart;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.TaskExecutor;
 
 import javax.persistence.EntityManagerFactory;
 import java.time.LocalDateTime;
@@ -72,7 +74,7 @@ public class InvalidityCartJobConfig {
 
         jpaPagingItemReader.setParameterValues(map);
         jpaPagingItemReader.setEntityManagerFactory(entityManagerFactory);
-        jpaPagingItemReader.setPageSize(chunkSize);       // 한번에 15개씩 읽어옴
+        jpaPagingItemReader.setPageSize(chunkSize);       // 한번에 10개씩 읽어옴
 
         return jpaPagingItemReader;
     }

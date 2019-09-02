@@ -22,7 +22,7 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 
         // 관리자로 로그인할 경우
         if (authentication.getAuthorities().stream()
-                .anyMatch(athority -> ((GrantedAuthority) athority).getAuthority().equals("ROLE_ADMIN"))) {
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
             String redirectUrl = "/admin";
 
             getRedirectStrategy().sendRedirect(request, response, redirectUrl);

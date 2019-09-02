@@ -1,11 +1,12 @@
-# 스프링 부트로 만드는 쇼핑몰 프로젝트
+# 스프링 부트로 만드는 쇼핑몰 프로젝트 [![Build Status](https://travis-ci.org/didrlgus/springboot-shoppingmall.svg?branch=master)](https://travis-ci.org/didrlgus/springboot-shoppingmall)
 
-### 개발환경
+## 개발환경
 * IntelliJ
 * Postman
-* HediSql
+* HeidiSql
 * Sourcetree
 * GitHub
+
 
 ## 사용 기술
 ### 백엔드
@@ -38,6 +39,8 @@
 * Thymeleaf
 * jQuery
 
+
+
 ## 주요 키워드
 * REST API
 * 시큐리티
@@ -53,8 +56,11 @@
 * AWS EC2 배포
 * Nginx 무중단 배포 (리버스 프록시)
 
+
+
 ## 시스템 구조
-<img width="1000" alt="system-structure" src="https://user-images.githubusercontent.com/40568894/63693784-e9ae5a00-c84f-11e9-909f-df6a3cc7304c.png">
+<img width="1000" alt="system-structure" src="https://user-images.githubusercontent.com/40568894/63998445-13130280-cb3c-11e9-9f3b-1b378af6946a.PNG">
+
 
 ## Rest API 설계
 ![RestAPI1](https://user-images.githubusercontent.com/40568894/63762957-bbd41e80-c8fe-11e9-998f-5f73114dabf3.png)

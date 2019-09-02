@@ -19,5 +19,4 @@ public class CommonController {
                 .findFirst()
                 .orElse("");
     }
-
 }

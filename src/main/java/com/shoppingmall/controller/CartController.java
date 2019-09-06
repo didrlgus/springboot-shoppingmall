@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class CartController {
 
-    @GetMapping("/cart")
+    @GetMapping("/carts")
     public String initCart(Model model) {
 
         model.addAttribute("pageName", "cart");

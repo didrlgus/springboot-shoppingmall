@@ -17,7 +17,7 @@ public class ReviewController {
     private ProductService productService;
     private CartService cartService;
 
-    @GetMapping("/review")
+    @GetMapping("/reviews")
     public String initReview(@RequestParam Long userId, @RequestParam Long productId, Model model) {
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("userId", userId);

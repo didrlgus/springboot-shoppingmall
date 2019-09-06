@@ -16,7 +16,7 @@
             getProductDetail    : function (productId) {
                 $.ajax({
                     type : "GET",
-                    url  : "/admin/product/" + productId,
+                    url  : "/admin/products/" + productId,
                     contentType : "application/json",
                     beforeSend	: function(xhr) {
                         xhr.setRequestHeader(header, token);
@@ -101,7 +101,7 @@
 
                 $.ajax({
                     type : "PUT",
-                    url  : "/product/" + productId,
+                    url  : "/products/" + productId,
                     contentType : "application/json",
                     data : JSON.stringify(productObj),
                     beforeSend  : function (xhr) {
@@ -128,7 +128,7 @@
 
                 $.ajax({
                     type : "GET",
-                    url : "/category/first/" + firstCatCd + "/second",
+                    url : "/categories/first/" + firstCatCd + "/second",
                     contentType : "application/json",
                     beforeSend	: function(xhr) {
                         xhr.setRequestHeader(header, token);

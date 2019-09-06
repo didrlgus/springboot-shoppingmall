@@ -15,7 +15,7 @@
                 // 상품 상세 페이지 처음 로딩 시 호출
                 $.ajax({
                     type : "GET",
-                    url  : "/product/" + productId,
+                    url  : "/products/" + productId,
                     contentType: "application/json",
                     beforeSend	: function(xhr) {
                         xhr.setRequestHeader(header, token);
@@ -49,7 +49,7 @@
 
                 $.ajax({
                     type : "get",
-                    url  : "/product/" + productId + "/question/" + page,
+                    url  : "/products/" + productId + "/questions/" + page,
                     contentType: "application/json",
                     beforeSend	: function(xhr) {
                         xhr.setRequestHeader(header, token);
@@ -184,7 +184,7 @@
 
                 $.ajax({
                     type : "GET",
-                    url  : "/question/" + questionId + "/answer/" + page,
+                    url  : "/questions/" + questionId + "/answers/" + page,
                     contentType : "application/json",
 
                     success : function (data) {
@@ -284,7 +284,7 @@
                 }
 
                 if (type === "NORMAL") {
-                    url = "/question/" + questionId + "/answer";
+                    url = "/questions/" + questionId + "/answers";
                 } else {
                 }
 
@@ -340,7 +340,7 @@
 
                 $.ajax({
                     type : "POST",
-                    url  : "/cart",
+                    url  : "/carts",
                     contentType : "application/json",
                     data        : JSON.stringify(data),
                     beforeSend  : function (xhr) {
@@ -370,7 +370,7 @@
                 // 리뷰를 작성할 수 있는 회원인지 파악
                 $.ajax({
                     type : "GET",
-                    url  : "/review/authority",
+                    url  : "/reviews/authority",
                     data : {userId : userId, productId : productId},
                     contentType : "application/json",
                     beforeSend  : function (xhr) {
@@ -378,7 +378,7 @@
                     },
                     success : function (data) {
 
-                        location.href = "/review?userId=" + userId + "&" + "productId=" + productId;
+                        location.href = "/reviews?userId=" + userId + "&" + "productId=" + productId;
                     },
                     error   : function (e) {
                         alert(e.responseText);
@@ -395,7 +395,7 @@
 
                 $.ajax({
                     type : "GET",
-                    url : "/product/" + productId + "/review/" + page,
+                    url : "/products/" + productId + "/reviews/" + page,
                     contentType : "application/json",
                     success : function (data) {
                         // 상품의 전체 평점 값 설정하기
@@ -477,7 +477,7 @@
 
                 $.ajax({
                     type : "GET",
-                    url  : "/review/" + reviewId,
+                    url  : "/reviews/" + reviewId,
                     contentType : "application/json",
                     beforeSend  : function (xhr) {
                         xhr.setRequestHeader(header, token);
@@ -504,7 +504,7 @@
 
                 $.ajax({
                     type : "GET",
-                    url  : "/product/" + id + "/relation/" + smallCatCd,
+                    url  : "/products/" + id + "/relation/" + smallCatCd,
                     contentType : "application/json",
                     success : function(data) {
                         var $relatedProductList = $("#related-product-list");
@@ -565,7 +565,7 @@
 
                 $.ajax({
                     type : "POST",
-                    url  : "/question",
+                    url  : "/questions",
                     data : JSON.stringify(data),
                     contentType: "application/json",
                     beforeSend	: function(xhr) {
@@ -586,7 +586,7 @@
                     type   = $this.data("type"),
                     data   = {};
 
-                var url = type ? "/question/social/" + questionId : "/question/" + questionId;
+                var url = type ? "/questions/social/" + questionId : "/questions/" + questionId;
 
                 if (!type)
                     data["message"] = $("#questionModifyArea").val();

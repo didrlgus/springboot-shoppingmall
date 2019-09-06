@@ -26,7 +26,7 @@ public class ProductOrderRestController {
     private ProductOrderService productOrderService;
 
     @ApiOperation(value = "주문 생성")
-    @PostMapping("/order")
+    @PostMapping("/orders")
     public ResponseEntity<?> makeOrder(@RequestBody @Valid ProductOrderRequestDto productOrderRequestDto,
                                        BindingResult bindingResult) {
 
@@ -41,14 +41,14 @@ public class ProductOrderRestController {
     }
 
     @ApiOperation(value = "주문 상세")
-    @GetMapping("/order/{orderId}")
+    @GetMapping("/orders/{orderId}")
     public ResponseEntity<?> getOrderDetails(@PathVariable Long orderId) {
 
         return ResponseEntity.ok().body(productOrderService.getOrderDetails(orderId));
     }
 
     @ApiOperation(value = "전체 주문 조회")
-    @GetMapping("/user/{userId}/order/{page}")
+    @GetMapping("/users/{userId}/orders/{page}")
     public ResponseEntity<?> getAllOrder(@PathVariable("userId") Long userId, @PathVariable("page") int page,
                                          @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
 

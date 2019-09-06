@@ -14,7 +14,7 @@
 
                     $.ajax({
                         type : "GET",
-                        url  : "/user/" + userId + "/order/" + page,
+                        url  : "/users/" + userId + "/orders/" + page,
                         contentType : "application/json",
                         beforeSend	: function(xhr) {
                             xhr.setRequestHeader(header, token);
@@ -92,7 +92,7 @@
 
                     $.ajax({
                         type : "GET",
-                        url : "/order/" + $(obj).data("orderId"),
+                        url : "/orders/" + $(obj).data("orderId"),
                         contentType : "application/json",
                         beforeSend	: function(xhr) {
                             xhr.setRequestHeader(header, token);

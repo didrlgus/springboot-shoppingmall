@@ -27,7 +27,7 @@
 
                     $.ajax({
                         type : "GET",
-                        url  : "/user/" + userId + "/cart/" + page,
+                        url  : "/users/" + userId + "/carts/" + page,
                         contentType : "application/json",
                         beforeSend	: function(xhr) {
                             xhr.setRequestHeader(header, token);
@@ -142,7 +142,7 @@
 
                         $.ajax({
                             type : "DELETE",
-                            url  : "/cart/" + cartId,
+                            url  : "/carts/" + cartId,
                             contentType : "application/json",
                             beforeSend  : function(xhr) {
                                 xhr.setRequestHeader(header, token);
@@ -212,7 +212,7 @@
 
                             $.ajax({
                                 type : "POST",
-                                url  : "/order",
+                                url  : "/orders",
                                 contentType : "application/json",
                                 data        : JSON.stringify(orderData),
                                 beforeSend  : function(xhr) {
@@ -231,7 +231,7 @@
 
                             alert(msg);
 
-                            location.href = "/order";
+                            location.href = "/orders";
                         } else {
                             msg += '결제에 실패하였습니다.\n';
                             msg += '에러내용 : ' + rsp.error_msg;

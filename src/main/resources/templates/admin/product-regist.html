@@ -44,7 +44,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: '/product/titleImage',
+                    url: '/products/titleImage',
                     cache: false,
                     contentType: false,
                     enctype: 'multipart/form-data',
@@ -129,7 +129,7 @@
 
                 $.ajax({
                     type : "GET",
-                    url : "/category/first/" + firstCatCd + "/second",
+                    url : "/categories/first/" + firstCatCd + "/second",
                     contentType : "application/json",
                     beforeSend	: function(xhr) {
                         xhr.setRequestHeader(header, token);

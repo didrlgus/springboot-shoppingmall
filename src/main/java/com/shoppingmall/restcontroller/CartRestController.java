@@ -26,7 +26,7 @@ public class CartRestController {
 
     // 카트 조회
     @ApiOperation(value = "장바구니 조회")
-    @GetMapping("/user/{userId}/cart/{page}")
+    @GetMapping("/users/{userId}/carts/{page}")
     public ResponseEntity<?> getCartList(@PathVariable("userId") Long userId, @PathVariable("page") int page,
                                          @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
@@ -35,7 +35,7 @@ public class CartRestController {
 
     // 카트 추가
     @ApiOperation(value = "장바구니 추가")
-    @PostMapping("/cart")
+    @PostMapping("/carts")
     public ResponseEntity<?> makeCart(@RequestBody @Valid CartRequestDto cartRequestDto,
                                       BindingResult bindingResult) {
 
@@ -51,7 +51,7 @@ public class CartRestController {
 
     // 카트 삭제
     @ApiOperation(value = "장바구니 삭제")
-    @DeleteMapping("/cart/{id}")
+    @DeleteMapping("/carts/{id}")
     public ResponseEntity<?> removeCart(@PathVariable Long id) {
 
         cartService.removeCart(id);

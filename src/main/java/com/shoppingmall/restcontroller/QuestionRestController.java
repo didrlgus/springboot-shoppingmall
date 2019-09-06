@@ -26,7 +26,7 @@ public class QuestionRestController {
     private QuestionService questionService;
 
     @ApiOperation(value = "질문 생성")
-    @PostMapping("/question")
+    @PostMapping("/questions")
     public ResponseEntity<?> makeQuestion(@RequestBody @Valid QuestionRequestDto questionRequestDto,
                                           BindingResult bindingResult,
                                           @PageableDefault(size = 3, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
@@ -42,7 +42,7 @@ public class QuestionRestController {
     }
 
     @ApiOperation(value = "질문 조회")
-    @GetMapping("/product/{id}/question/{page}")
+    @GetMapping("/products/{id}/questions/{page}")
     public ResponseEntity<?> getQuestionList(@PathVariable("id") Long productId, @PathVariable("page") int page,
                                              @PageableDefault(size = 3, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
@@ -50,7 +50,7 @@ public class QuestionRestController {
     }
 
     @ApiOperation(value = "질문 수정")
-    @PutMapping("/question/{id}")
+    @PutMapping("/questions/{id}")
     public ResponseEntity<?> updateQuestion(@RequestBody @Valid QuestionRequestDto.Update questionRequestDto,
                                             @PathVariable Long id,
                                             BindingResult bindingResult) {
@@ -66,7 +66,7 @@ public class QuestionRestController {
     }
 
     @ApiOperation(value = "질문 삭제")
-    @DeleteMapping("/question/{id}")
+    @DeleteMapping("/questions/{id}")
     public ResponseEntity<?> deleteQuestion(@PathVariable Long id) {
 
         questionService.deleteQuestion(id);

@@ -21,7 +21,7 @@
                 CategoryDetail : function (obj) {
                     $.ajax({
                         type : "GET",
-                        url  : "/category/" + $(obj).data("id"),
+                        url  : "/categories/" + $(obj).data("id"),
                         contentType : "application/json",
                         beforeSend	: function(xhr) {
                             xhr.setRequestHeader(header, token);
@@ -69,7 +69,7 @@
 
                     $.ajax({
                         type : "PUT",
-                        url  : "/category/" + this.id,
+                        url  : "/categories/" + this.id,
                         contentType: "application/json",
                         data : JSON.stringify({"catNm" : catNm, "useYn" : useYn}),
                         beforeSend	: function(xhr) {

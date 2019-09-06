@@ -31,7 +31,7 @@
                     $.ajax({
                         data: form_data,
                         type: "POST",
-                        url: '/review/image',
+                        url: '/reviews/image',
                         cache: false,
                         contentType: false,
                         enctype: 'multipart/form-data',
@@ -86,7 +86,7 @@
 
                     $.ajax({
                         type : "POST",
-                        url  : "/review",
+                        url  : "/reviews",
                         contentType : "application/json",
                         data : JSON.stringify(data),
                         beforeSend	: function(xhr) {
@@ -124,7 +124,7 @@
         <section>
             <div class="container">
                 <div>
-                    <form id="articleForm" role="form" action="/review" method="post">
+                    <form id="articleForm" role="form" action="/reviews" method="post">
                         <h3>Review</h3><hr>
                         <div class="form-group">
                             <span>상품</span><p th:text="${productNm}"></p>

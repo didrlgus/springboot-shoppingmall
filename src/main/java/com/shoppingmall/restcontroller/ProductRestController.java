@@ -36,7 +36,7 @@ public class ProductRestController {
     }
 
     @ApiOperation(value = "상품 상세")
-    @GetMapping("/product/{id}")
+    @GetMapping("/products/{id}")
     public ResponseEntity<?> getProductDetails(@PathVariable Long id) {
 
         return ResponseEntity.ok().body(productService.getProductDetails(id));
@@ -65,7 +65,7 @@ public class ProductRestController {
     }
 
     @ApiOperation(value = "관련 상품 조회")
-    @GetMapping("/product/{id}/relation/{smallCatCd}")
+    @GetMapping("/products/{id}/relation/{smallCatCd}")
     public ResponseEntity<?> getRelatedProductList(@PathVariable("id") Long id, @PathVariable("smallCatCd") String smallCatCd) {
 
         return ResponseEntity.ok().body(productService.getRelatedProductList(id, smallCatCd));
@@ -93,7 +93,7 @@ public class ProductRestController {
     // 상품 타이틀 이미지 업로드 (관리자 권한)
     @ApiOperation(value = "상품 타이틀 이미지 업로드 (관리자 권한)")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/product/titleImage")
+    @PostMapping("/products/titleImage")
     public ResponseEntity<?> uploadReviewImage(@RequestParam("file") MultipartFile file) {
 
         try {
@@ -107,7 +107,7 @@ public class ProductRestController {
     // 상품 추가 (관리자 권한)
     @ApiOperation(value = "상품 추가 (관리자 권한)")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/product")
+    @PostMapping("/products")
     public ResponseEntity<?> addProduct(@RequestBody @Valid ProductRequestDto productRequestDto,
                                         BindingResult bindingResult) {
 
@@ -122,7 +122,7 @@ public class ProductRestController {
     // 상품 상세 (관리자 권한)
     @ApiOperation(value = "상품 상세 (관리자 권한)")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/admin/product/{id}")
+    @GetMapping("/admin/products/{id}")
     public ResponseEntity<?> getAdminProductDetails(@PathVariable Long id) {
 
         return ResponseEntity.ok().body(productService.getAdminProductDetails(id));
@@ -131,7 +131,7 @@ public class ProductRestController {
     // 상품 수정 (관리자 권한)
     @ApiOperation(value = "상품 수정 (관리자 권한)")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/product/{id}")
+    @PutMapping("/products/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody @Valid ProductRequestDto.UpdateRequestDto updateRequestDto,
                                            BindingResult bindingResult) {
 
@@ -146,7 +146,7 @@ public class ProductRestController {
     // 상품 삭제 (관리자 권한)
     /*@ApiOperation(value = "상품 삭제 (관리자 권한)")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/product/{id}")
+    @DeleteMapping("/products/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
 
         return ResponseEntity.ok().body(productService.deleteProduct(id));

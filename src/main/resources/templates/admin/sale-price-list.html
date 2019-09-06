@@ -13,7 +13,7 @@
             getProductDiscountList : function() {
                 $.ajax({
                     type : "GET",
-                    url  : "/product/" + productId + "/discounts",
+                    url  : "/products/" + productId + "/discounts",
                     contentType : "application/json",
                     beforeSend : function (xhr) {
                         xhr.setRequestHeader(header, token)

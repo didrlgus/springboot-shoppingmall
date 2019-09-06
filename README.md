@@ -63,7 +63,7 @@
 
 
 ## Rest API 설계
-![RestAPI1](https://user-images.githubusercontent.com/40568894/63762957-bbd41e80-c8fe-11e9-998f-5f73114dabf3.png)
-![RestAPI2](https://user-images.githubusercontent.com/40568894/63763008-dad2b080-c8fe-11e9-8990-afd07b813e13.png)
-![RestAPI3](https://user-images.githubusercontent.com/40568894/63763013-ddcda100-c8fe-11e9-93ac-0cedddf8fb09.png)
-![RestAPI4](https://user-images.githubusercontent.com/40568894/63763016-df976480-c8fe-11e9-8985-b1ef305aec91.png)
+![REST API1](https://user-images.githubusercontent.com/40568894/64402718-d3569880-d0b0-11e9-90df-e14b1a5389bd.png)
+![REST API2](https://user-images.githubusercontent.com/40568894/64402722-d6518900-d0b0-11e9-90d3-6a31dbd4f0dd.png)
+![REST API3](https://user-images.githubusercontent.com/40568894/64402726-d8b3e300-d0b0-11e9-863f-8f654f3df4d6.png)
+![REST API4](https://user-images.githubusercontent.com/40568894/64402728-d9e51000-d0b0-11e9-895f-450f3dae64db.png)

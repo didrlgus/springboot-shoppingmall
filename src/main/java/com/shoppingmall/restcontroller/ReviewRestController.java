@@ -28,7 +28,7 @@ public class ReviewRestController {
     private CartService cartService;
 
     @ApiOperation(value = "리뷰 이미지 업로드")
-    @PostMapping("/review/image")
+    @PostMapping("/reviews/image")
     public ResponseEntity<?> uploadReviewImage(@RequestParam("file") MultipartFile file) {
 
         try {
@@ -42,7 +42,7 @@ public class ReviewRestController {
 
     // 리뷰를 작성할 수 있는 회원인지 파악 (해당 상품을 결제한 유저는 리뷰작성 가능)
     @ApiOperation(value = "리뷰 권한 파악")
-    @GetMapping("/review/authority")
+    @GetMapping("/reviews/authority")
     public ResponseEntity<?> checkReviewAuthority(@RequestParam HashMap<String, Object> paramMap) {
 
         return ResponseEntity.ok().body(cartService.checkReviewAuthority(paramMap));
@@ -50,7 +50,7 @@ public class ReviewRestController {
 
     // 리뷰 추가
     @ApiOperation(value = "리뷰 생성")
-    @PostMapping("/review")
+    @PostMapping("/reviews")
     public ResponseEntity<?> makeReview(@RequestBody @Valid ReviewRequestDto reviewRequestDto,
                                         BindingResult bindingResult) {
 
@@ -66,7 +66,7 @@ public class ReviewRestController {
 
     // 리뷰리스트 조회
     @ApiOperation(value = "리뷰 조회")
-    @GetMapping("/product/{productId}/review/{page}")
+    @GetMapping("/products/{productId}/reviews/{page}")
     public ResponseEntity<?> getReviewList(@PathVariable("productId") Long productId,
                                            @PathVariable("page") int page) {
 
@@ -75,7 +75,7 @@ public class ReviewRestController {
 
     // 리뷰 상세 조회
     @ApiOperation(value = "리뷰 상세")
-    @GetMapping("/review/{id}")
+    @GetMapping("/reviews/{id}")
     public ResponseEntity<?> getReviewDetail(@PathVariable Long id) {
 
         return ResponseEntity.ok().body(reviewService.getReviewDetail(id));

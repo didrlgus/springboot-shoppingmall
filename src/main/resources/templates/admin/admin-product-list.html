@@ -85,7 +85,7 @@
                             }
                         } else {
                             $(".product-count").text("0건");
-                            $productList.append("<tr><td colspan=\"7\">검색 결과가 없습니다.</td></tr>");
+                            $productList.append("<tr><td colspan=\"6\">검색 결과가 없습니다.</td></tr>");
                         }
                     },
                     error   : function(e) {
@@ -174,7 +174,7 @@
                             }
                         } else {
                             $(".product-count").text("0건");
-                            $productList.append("<tr><td colspan=\"7\">검색 결과가 없습니다.</td></tr>");
+                            $productList.append("<tr><td colspan=\"6\">검색 결과가 없습니다.</td></tr>");
                         }
                     },
                     error   : function(e) {
@@ -196,7 +196,7 @@
 
                 $.ajax({
                     type : "GET",
-                    url : "/category/first/" + firstCatCd + "/second",
+                    url : "/categories/first/" + firstCatCd + "/second",
                     contentType : "application/json",
                     beforeSend	: function(xhr) {
                         xhr.setRequestHeader(header, token);

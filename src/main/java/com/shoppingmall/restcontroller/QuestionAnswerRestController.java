@@ -26,7 +26,7 @@ public class QuestionAnswerRestController {
 
     // 댓글 조회
     @ApiOperation(value = "댓글 조회")
-    @GetMapping("/question/{questionId}/answer/{page}")
+    @GetMapping("/questions/{questionId}/answers/{page}")
     public ResponseEntity<?> getAnswer(@PathVariable("questionId") Long questionId, @PathVariable("page") int page,
                                        @PageableDefault(size = 3, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
@@ -36,7 +36,7 @@ public class QuestionAnswerRestController {
 
     // 댓글 추가
     @ApiOperation(value = "댓글 생성")
-    @PostMapping("/question/{questionId}/answer")
+    @PostMapping("/questions/{questionId}/answers")
     public ResponseEntity<?> makeAnswer(@RequestBody @Valid QuestionAnswerRequestDto questionAnswerRequestDto,
                                           @PathVariable Long questionId,
                                           BindingResult bindingResult) {

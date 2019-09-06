@@ -25,7 +25,7 @@ public class ProductDiscountRestController {
     // 상품 할인 리스트 조회 (관리자 권한)
     @ApiOperation(value = "상품 할인 조회 (관리자 권한)")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/product/{id}/discounts")
+    @GetMapping("/products/{id}/discounts")
     public ResponseEntity<?> getProductDiscountList(@PathVariable Long id) {
 
         return ResponseEntity.ok().body(productDiscountService.getDiscountList(id));

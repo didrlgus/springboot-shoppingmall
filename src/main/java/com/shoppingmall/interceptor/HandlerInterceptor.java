@@ -1,6 +1,5 @@
 package com.shoppingmall.interceptor;
 
-import com.shoppingmall.domain.ProductCat;
 import com.shoppingmall.service.CategoryService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +10,6 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
-import java.util.List;
 
 @Slf4j
 @AllArgsConstructor

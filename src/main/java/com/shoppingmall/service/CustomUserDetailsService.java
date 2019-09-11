@@ -7,6 +7,7 @@ import com.shoppingmall.exception.DeleteUserException;
 import com.shoppingmall.exception.NotExistUserException;
 import com.shoppingmall.repository.NormalUserRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,12 +18,13 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private NormalUserRepository normalUserRepository;
+    private final NormalUserRepository normalUserRepository;
 
+    // 사용자가 입력한 identifier을 통해 디비에 저장된 유저 객체를 가져와서 UserDetails 객체로 변환하여 돌려주는 메소드
     @Override
     public UserDetails loadUserByUsername(String identifier) throws UsernameNotFoundException {
         // 컨텍스트 홀더
@@ -43,7 +45,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         normalUserResponseDto = normalUser.get().toResponseDto(normalUser.get());
         request.getSession().setAttribute("user", normalUserResponseDto);
 
-        return Optional.of(normalUser)
-                .map(SecurityNormalUser::new).get();
+        return new SecurityNormalUser(normalUser.get());
     }
 }

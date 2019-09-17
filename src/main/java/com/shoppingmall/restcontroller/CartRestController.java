@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,7 @@ public class CartRestController {
 
     // 카트 조회
     @ApiOperation(value = "장바구니 조회")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/users/{userId}/carts/{page}")
     public ResponseEntity<?> getCartList(@PathVariable("userId") Long userId, @PathVariable("page") int page,
                                          @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
@@ -35,6 +37,7 @@ public class CartRestController {
 
     // 카트 추가
     @ApiOperation(value = "장바구니 추가")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @PostMapping("/carts")
     public ResponseEntity<?> makeCart(@RequestBody @Valid CartRequestDto cartRequestDto,
                                       BindingResult bindingResult) {
@@ -51,6 +54,7 @@ public class CartRestController {
 
     // 카트 삭제
     @ApiOperation(value = "장바구니 삭제")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @DeleteMapping("/carts/{id}")
     public ResponseEntity<?> removeCart(@PathVariable Long id) {
 

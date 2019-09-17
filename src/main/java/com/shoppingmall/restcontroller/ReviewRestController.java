@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +29,7 @@ public class ReviewRestController {
     private CartService cartService;
 
     @ApiOperation(value = "리뷰 이미지 업로드")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @PostMapping("/reviews/image")
     public ResponseEntity<?> uploadReviewImage(@RequestParam("file") MultipartFile file) {
 
@@ -42,6 +44,7 @@ public class ReviewRestController {
 
     // 리뷰를 작성할 수 있는 회원인지 파악 (해당 상품을 결제한 유저는 리뷰작성 가능)
     @ApiOperation(value = "리뷰 권한 파악")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/reviews/authority")
     public ResponseEntity<?> checkReviewAuthority(@RequestParam HashMap<String, Object> paramMap) {
 
@@ -50,6 +53,7 @@ public class ReviewRestController {
 
     // 리뷰 추가
     @ApiOperation(value = "리뷰 생성")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @PostMapping("/reviews")
     public ResponseEntity<?> makeReview(@RequestBody @Valid ReviewRequestDto reviewRequestDto,
                                         BindingResult bindingResult) {

@@ -20,5 +20,4 @@ public class ExceptionRestControllerHandler {
 
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
-
 }

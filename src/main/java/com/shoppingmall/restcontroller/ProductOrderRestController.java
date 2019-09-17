@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,7 @@ public class ProductOrderRestController {
     private ProductOrderService productOrderService;
 
     @ApiOperation(value = "주문 생성")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @PostMapping("/orders")
     public ResponseEntity<?> makeOrder(@RequestBody @Valid ProductOrderRequestDto productOrderRequestDto,
                                        BindingResult bindingResult) {
@@ -41,6 +43,7 @@ public class ProductOrderRestController {
     }
 
     @ApiOperation(value = "주문 상세")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/orders/{orderId}")
     public ResponseEntity<?> getOrderDetails(@PathVariable Long orderId) {
 
@@ -48,6 +51,7 @@ public class ProductOrderRestController {
     }
 
     @ApiOperation(value = "전체 주문 조회")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/users/{userId}/orders/{page}")
     public ResponseEntity<?> getAllOrder(@PathVariable("userId") Long userId, @PathVariable("page") int page,
                                          @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {

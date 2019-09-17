@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +33,7 @@ public class UserRestController {
     }
 
     @ApiOperation(value = "회원 상세")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/me/{id}")
     public ResponseEntity<?> getProfiles(@PathVariable Long id) {
 
@@ -39,6 +41,7 @@ public class UserRestController {
     }
 
     @ApiOperation(value = "회원 프로필 수정")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @PutMapping("/me/{id}")
     public ResponseEntity<String> modifyProfiles(HttpServletRequest request, @PathVariable Long id,
                                                  @RequestBody @Valid MeRequestDto meRequestDto, BindingResult bindingResult) {
@@ -54,6 +57,7 @@ public class UserRestController {
     }
 
     @ApiOperation(value = "회원 삭제")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @DeleteMapping("/me/{id}")
     public ResponseEntity<String> deleteProfiles(@PathVariable Long id) {
 
@@ -63,6 +67,7 @@ public class UserRestController {
     }
 
     @ApiOperation(value = "회원 비밀번호 수정")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @PutMapping("/me/{id}/password")
     public ResponseEntity<String> updatePassword(@PathVariable Long id,
                                                  @RequestBody @Valid UpdatePasswordRequestDto passwordRequestDto,

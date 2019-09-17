@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,7 @@ public class QuestionRestController {
     private QuestionService questionService;
 
     @ApiOperation(value = "질문 생성")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @PostMapping("/questions")
     public ResponseEntity<?> makeQuestion(@RequestBody @Valid QuestionRequestDto questionRequestDto,
                                           BindingResult bindingResult,
@@ -50,6 +52,7 @@ public class QuestionRestController {
     }
 
     @ApiOperation(value = "질문 수정")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @PutMapping("/questions/{id}")
     public ResponseEntity<?> updateQuestion(@RequestBody @Valid QuestionRequestDto.Update questionRequestDto,
                                             @PathVariable Long id,
@@ -66,6 +69,7 @@ public class QuestionRestController {
     }
 
     @ApiOperation(value = "질문 삭제")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @DeleteMapping("/questions/{id}")
     public ResponseEntity<?> deleteQuestion(@PathVariable Long id) {
 

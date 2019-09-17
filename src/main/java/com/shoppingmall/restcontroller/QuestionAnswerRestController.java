@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,7 @@ public class QuestionAnswerRestController {
 
     // 댓글 추가
     @ApiOperation(value = "댓글 생성")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @PostMapping("/questions/{questionId}/answers")
     public ResponseEntity<?> makeAnswer(@RequestBody @Valid QuestionAnswerRequestDto questionAnswerRequestDto,
                                           @PathVariable Long questionId,

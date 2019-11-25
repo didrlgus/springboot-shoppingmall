@@ -1,6 +1,7 @@
 package com.shoppingmall.controller;
 
 import com.shoppingmall.dto.NormalUserRequestDto;
+import com.shoppingmall.exception.DuplicatedException;
 import com.shoppingmall.service.NormalUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,9 +29,12 @@ public class UserController {
     private NormalUserService normalUserService;
 
     @GetMapping("/login")
-    public String login(HttpServletRequest request) {
+    public String login(HttpServletRequest request, Authentication authentication) {
         String referrer = request.getHeader("Referer");
         request.getSession().setAttribute("prevPage", referrer);
+
+        if(authentication != null && authentication.isAuthenticated())
+            return "redirect:/";
 
         return "user/login-register";
     }

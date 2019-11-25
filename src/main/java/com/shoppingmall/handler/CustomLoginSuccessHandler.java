@@ -1,7 +1,9 @@
 package com.shoppingmall.handler;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import javax.servlet.ServletException;
@@ -34,7 +36,7 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         if (session != null) {
             String redirectUrl = (String) session.getAttribute("prevPage");
 
-            if (redirectUrl != null) {
+            if (redirectUrl != null && !redirectUrl.equals("/login")) {
                 session.removeAttribute("prevPage");
                 //session.setAttribute("user", authentication);
                 getRedirectStrategy().sendRedirect(request, response, redirectUrl);

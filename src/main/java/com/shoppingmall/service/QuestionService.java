@@ -59,8 +59,6 @@ public class QuestionService {
                 .build();
 
         questionRepository.save(question);
-
-        Page<Question> questionList = questionRepository.findAllByProductIdOrderByCreatedDateDesc(product.get().getId(), pageable);
     }
 
     public HashMap<String, Object> getQuestionList(Long productId, int page, Pageable pageable) {

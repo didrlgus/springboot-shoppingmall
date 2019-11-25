@@ -171,6 +171,4 @@ public class CategoryService {
 
         return catCd;
     }
-
-
 }

@@ -79,7 +79,7 @@ public class InvalidityCartJobConfig {
         return jpaPagingItemReader;
     }
 
-
+    // 7일 지난 장바구니를 비활성화
     public ItemProcessor<Cart, Cart> invalidityCartProcessor() {
         return Cart::setInvalidity;
         /*return new ItemProcessor<Cart, Cart>() {

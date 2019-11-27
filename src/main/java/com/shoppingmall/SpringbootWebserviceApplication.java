@@ -1,7 +1,6 @@
 package com.shoppingmall;
 
 import com.shoppingmall.common.FileUploadProperties;
-import com.shoppingmall.common.ImpProperties;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;

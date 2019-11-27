@@ -197,7 +197,10 @@
                     }, function(rsp) {
                         var msg = "";
                         if (rsp.success) {
+                            // console.log(rsp);
+
                             var orderNumber = rsp.merchant_uid;
+                            var impUid = rsp.imp_uid;
                             checkoutData.deliveryMessage = $("#delivery-message-area").val();
 
                             var orderData = {
@@ -207,7 +210,8 @@
                                 deliveryMessage : checkoutData.deliveryMessage,
                                 address         : $("input[name='roadAddr']").val() + " " + $("input[name='buildingName']").val() + " " +  $("input[name='detailAddr']").val(),
                                 amount          : checkoutData.amount,
-                                useSavings      : checkoutData.useSavings
+                                useSavings      : checkoutData.useSavings,
+                                impUid          : impUid
                             }
 
                             $.ajax({
@@ -223,15 +227,15 @@
                                 error       : function(e) {
                                     alert(e.responseText);
                                 }
+                            }).done(function () {
+                                msg += '결제가 완료되었습니다.\n';
+                                msg += '주문번호 : ' + orderNumber + "\n";
+                                msg += '결제 금액 : ' + rsp.paid_amount;
+
+                                alert(msg);
+
+                                location.href = "/orders";
                             })
-
-                            msg += '결제가 완료되었습니다.\n';
-                            msg += '주문번호 : ' + orderNumber + "\n";
-                            msg += '결제 금액 : ' + rsp.paid_amount;
-
-                            alert(msg);
-
-                            location.href = "/orders";
                         } else {
                             msg += '결제에 실패하였습니다.\n';
                             msg += '에러내용 : ' + rsp.error_msg;

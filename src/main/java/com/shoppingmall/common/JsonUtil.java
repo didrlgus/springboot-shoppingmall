@@ -1,4 +1,4 @@
-package egovframework.example.cmmn;
+package com.shoppingmall.common;
 
 import java.util.ArrayList;
 import java.util.HashMap;

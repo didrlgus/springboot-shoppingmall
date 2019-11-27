@@ -1,4 +1,11 @@
 package com.shoppingmall.exception;
 
-public class PaymentsException {
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.FORBIDDEN)
+public class PaymentsException extends RuntimeException {
+    public PaymentsException(String message) {
+        super(message);
+    }
 }

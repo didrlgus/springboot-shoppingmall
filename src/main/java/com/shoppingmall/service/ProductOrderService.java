@@ -15,8 +15,6 @@ import com.shoppingmall.repository.CartRepository;
 import com.shoppingmall.repository.NormalUserRepository;
 import com.shoppingmall.repository.ProductOrderRepository;
 import com.shoppingmall.repository.ProductRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,8 +55,6 @@ public class ProductOrderService {
         Map<String, Object> requestMap = new HashMap<>();
         requestMap.put("imp_key", imp_key);
         requestMap.put("imp_secret", imp_secret);
-
-        // log.info(imp_secret);
 
         ResponseEntity<String> responseAccessToken = restTemplate.postForEntity(getTokenUrl, requestMap, String.class);
 

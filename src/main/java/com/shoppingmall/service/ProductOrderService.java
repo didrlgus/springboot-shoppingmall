@@ -58,6 +58,8 @@ public class ProductOrderService {
         requestMap.put("imp_key", imp_key);
         requestMap.put("imp_secret", imp_secret);
 
+        // log.info(imp_secret);
+
         ResponseEntity<String> responseAccessToken = restTemplate.postForEntity(getTokenUrl, requestMap, String.class);
 
         Map<String, Object> responseMap;

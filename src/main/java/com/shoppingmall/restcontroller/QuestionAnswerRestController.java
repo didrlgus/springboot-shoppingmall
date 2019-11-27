@@ -6,7 +6,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -16,8 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Slf4j
@@ -33,6 +30,7 @@ public class QuestionAnswerRestController {
     @GetMapping("/questions/{questionId}/answers/{page}")
     public ResponseEntity<?> getAnswer(@PathVariable("questionId") Long questionId, @PathVariable("page") int page,
                                        @PageableDefault(size = 3, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+
 
         return ResponseEntity.ok().body(questionAnswerService.getAnswer(questionId, page, pageable));
     }

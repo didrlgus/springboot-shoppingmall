@@ -1,5 +1,8 @@
 package com.shoppingmall.service;
 
+import com.google.gson.internal.LinkedTreeMap;
+import com.shoppingmall.common.ImpProperties;
+import com.shoppingmall.common.JsonUtil;
 import com.shoppingmall.domain.Cart;
 import com.shoppingmall.domain.NormalUser;
 import com.shoppingmall.domain.Product;
@@ -8,10 +11,7 @@ import com.shoppingmall.domain.enums.OrderStatus;
 import com.shoppingmall.dto.PagingDto;
 import com.shoppingmall.dto.ProductOrderRequestDto;
 import com.shoppingmall.dto.ProductOrderResponseDto;
-import com.shoppingmall.exception.NotExistCartException;
-import com.shoppingmall.exception.NotExistOrderException;
-import com.shoppingmall.exception.NotExistUserException;
-import com.shoppingmall.exception.SavingsException;
+import com.shoppingmall.exception.*;
 import com.shoppingmall.repository.CartRepository;
 import com.shoppingmall.repository.NormalUserRepository;
 import com.shoppingmall.repository.ProductOrderRepository;
@@ -23,8 +23,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -33,13 +38,13 @@ import java.util.*;
 @Service
 public class ProductOrderService {
 
-
     private final CartRepository cartRepository;
     private final NormalUserRepository normalUserRepository;
     private final ProductOrderRepository productOrderRepository;
     private final ProductRepository productRepository;
 
-    // private final ImpProperties impProperties;
+    /*private final RestTemplate restTemplate;
+    private final ImpProperties impProperties;*/
 
     /*@Value("${custom.imp.key}")
     private String imp_key;
@@ -53,6 +58,12 @@ public class ProductOrderService {
         Map<String, Object> requestMap = new HashMap<>();
         requestMap.put("imp_key", "1649704139434851");
         requestMap.put("imp_secret", "VVn6B6yIM3Ev83Gs3bNw5nGHiLRCp8Tl4gsGm0o942Ec6lFawtHBQnj99aLzjEVnVn3inssrv6ECskNZ");
+
+        String getTokenUrl = "https://api.iamport.kr/users/getToken";
+
+        Map<String, Object> requestMap = new HashMap<>();
+        requestMap.put("imp_key", impProperties.getKey());
+        requestMap.put("imp_secret", impProperties.getSecret());
 
         ResponseEntity<String> responseAccessToken = restTemplate.postForEntity(getTokenUrl, requestMap, String.class);
 
@@ -86,6 +97,7 @@ public class ProductOrderService {
 
         Map<String, Object> response = (LinkedTreeMap<String, Object>) responsePaymentInfoMap.get("response");
         String paymentStatus = (String) response.get("status");
+
 
         if(!paymentStatus.equals("paid")) throw new PaymentsException("결제에러 입니다.");*/
 

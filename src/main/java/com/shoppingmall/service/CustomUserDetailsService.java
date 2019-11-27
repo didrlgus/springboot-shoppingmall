@@ -8,8 +8,6 @@ import com.shoppingmall.exception.NotExistUserException;
 import com.shoppingmall.repository.NormalUserRepository;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         Optional<NormalUser> normalUser = normalUserRepository.findByIdentifier(identifier);
 
         if (!normalUser.isPresent()) {
-            throw new NotExistUserException("로그인에 실패하였습니다!!!");
+            throw new NotExistUserException("로그인에 실패하였습니다.");
         }
 
         NormalUserResponseDto normalUserResponseDto;

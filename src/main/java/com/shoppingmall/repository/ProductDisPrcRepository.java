@@ -13,6 +13,12 @@ import java.util.Map;
 @Repository
 public interface ProductDisPrcRepository extends JpaRepository<ProductDisPrc, Long> {
 
+    @Query("SELECT new Map(pdp.product AS product," +
+            "MAX(pdp.disPrc) AS disPrc) " +
+            "FROM ProductDisPrc pdp " +
+            "WHERE NOW() BETWEEN pdp.startDt AND pdp.endDt ")
+    Map<String, Object> getBestSaleProduct();
+
     @Query("SELECT new Map(pdp.id AS id, pdp.product AS product," +
             "MAX(pdp.disPrc) AS disPrc) " +
             "FROM ProductDisPrc pdp " +

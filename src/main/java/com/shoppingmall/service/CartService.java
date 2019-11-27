@@ -23,11 +23,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManagerFactory;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -43,7 +40,7 @@ public class CartService {
     private JobLauncher jobLauncher;
     private Job job;
 
-    @Transactional(rollbackFor = {SQLException.class,RuntimeException.class}, propagation = Propagation.REQUIRED)
+    @Transactional
     public void makeCart(CartRequestDto cartRequestDto) {
         Optional<NormalUser> user = normalUserRepository.findById(cartRequestDto.getUserId());
 
@@ -142,13 +139,13 @@ public class CartService {
 
     @Transactional
     public int getDisPrice(Cart cart) {
+
         int disPrice = 0;
 
         if (cart.getProduct().getProductDisPrcList().size() > 0) {
             List<ProductDisPrc> disprcList
-                    = cart.getProduct().getProductDisPrcList().stream().filter(productDisPrc
-                        -> {LocalDateTime nowDate = LocalDateTime.now();
-                            return nowDate.isAfter(productDisPrc.getStartDt()) && nowDate.isBefore(productDisPrc.getEndDt());}).sorted().limit(1).collect(Collectors.toList());
+                    = cart.getProduct().getProductDisPrcList().stream().filter(productDisPrc -> LocalDateTime.now().isAfter(productDisPrc.getStartDt())
+                    && LocalDateTime.now().isBefore(productDisPrc.getEndDt())).sorted().limit(1).collect(Collectors.toList());
 
             // getProductDisPrcList의 크기가 0보다 크다 하더라도 할인 기간에 적용되지 않는 리스트는 disprcList에 포함되지 않기 때문에 아래의 if조건을 걸어줘야 함
             if (disprcList.size() > 0)

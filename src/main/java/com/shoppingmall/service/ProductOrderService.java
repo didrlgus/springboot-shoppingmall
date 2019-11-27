@@ -1,6 +1,7 @@
 package com.shoppingmall.service;
 
 import com.google.gson.internal.LinkedTreeMap;
+import com.shoppingmall.common.ImpProperties;
 import com.shoppingmall.common.JsonUtil;
 import com.shoppingmall.domain.Cart;
 import com.shoppingmall.domain.NormalUser;
@@ -42,19 +43,20 @@ public class ProductOrderService {
     private final ProductOrderRepository productOrderRepository;
     private final ProductRepository productRepository;
     private final RestTemplate restTemplate;
+    private final ImpProperties impProperties;
 
-    @Value("${custom.imp.key}")
+    /*@Value("${custom.imp.key}")
     private String imp_key;
     @Value("${custom.imp.secret}")
-    private String imp_secret;
+    private String imp_secret;*/
 
     @Transactional
     public void makeOrder(ProductOrderRequestDto productOrderRequestDto) {
         String getTokenUrl = "https://api.iamport.kr/users/getToken";
 
         Map<String, Object> requestMap = new HashMap<>();
-        requestMap.put("imp_key", imp_key);
-        requestMap.put("imp_secret", imp_secret);
+        requestMap.put("imp_key", impProperties.getKey());
+        requestMap.put("imp_secret", impProperties.getSecret());
 
         ResponseEntity<String> responseAccessToken = restTemplate.postForEntity(getTokenUrl, requestMap, String.class);
 
@@ -86,7 +88,7 @@ public class ProductOrderService {
             throw new PaymentsException("결제에러 입니다.");
         }
 
-        LinkedTreeMap<String, Object> response = (LinkedTreeMap<String, Object>) responsePaymentInfoMap.get("response");
+        Map<String, Object> response = (LinkedTreeMap<String, Object>) responsePaymentInfoMap.get("response");
         String paymentStatus = (String) response.get("status");
 
         if(!paymentStatus.equals("paid")) throw new PaymentsException("결제에러 입니다.");

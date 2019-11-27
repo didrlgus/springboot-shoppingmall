@@ -28,7 +28,6 @@ public class SpringbootWebserviceApplication {
             + "C:\\config\\real-social-set1.yml,"
             + "C:\\config\\real-social-set2.yml";*/
 
-
     public static void main(String[] args) {
         new SpringApplicationBuilder(SpringbootWebserviceApplication.class)
                 .properties(APPLICATION_LOCATIONS)

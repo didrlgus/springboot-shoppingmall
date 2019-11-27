@@ -1,6 +1,7 @@
 package com.shoppingmall.service;
 
 import com.google.gson.internal.LinkedTreeMap;
+import com.shoppingmall.common.ImpProperties;
 import com.shoppingmall.common.JsonUtil;
 import com.shoppingmall.domain.Cart;
 import com.shoppingmall.domain.NormalUser;
@@ -41,9 +42,8 @@ public class ProductOrderService {
     private final NormalUserRepository normalUserRepository;
     private final ProductOrderRepository productOrderRepository;
     private final ProductRepository productRepository;
-
-    /*private final RestTemplate restTemplate;
-    private final ImpProperties impProperties;*/
+    private final RestTemplate restTemplate;
+    private final ImpProperties impProperties;
 
     /*@Value("${custom.imp.key}")
     private String imp_key;
@@ -52,12 +52,6 @@ public class ProductOrderService {
 
     @Transactional
     public void makeOrder(ProductOrderRequestDto productOrderRequestDto) {
-        /*String getTokenUrl = "https://api.iamport.kr/users/getToken";
-
-        Map<String, Object> requestMap = new HashMap<>();
-        requestMap.put("imp_key", "1649704139434851");
-        requestMap.put("imp_secret", "VVn6B6yIM3Ev83Gs3bNw5nGHiLRCp8Tl4gsGm0o942Ec6lFawtHBQnj99aLzjEVnVn3inssrv6ECskNZ");
-
         String getTokenUrl = "https://api.iamport.kr/users/getToken";
 
         Map<String, Object> requestMap = new HashMap<>();
@@ -98,7 +92,7 @@ public class ProductOrderService {
         String paymentStatus = (String) response.get("status");
 
 
-        if(!paymentStatus.equals("paid")) throw new PaymentsException("결제에러 입니다.");*/
+        if(!paymentStatus.equals("paid")) throw new PaymentsException("결제에러 입니다.");
 
         // 해당 유저의 장바구니 조회
         List<Long> cartIdList = productOrderRequestDto.getCartIdList();

@@ -1,4 +1,3 @@
-/*
 package com.shoppingmall.common;
 
 import lombok.Getter;
@@ -12,4 +11,3 @@ public class ImpProperties {
     private String key;
     private String secret;
 }
-*/

@@ -2,8 +2,11 @@ package com.shoppingmall.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.ArrayList;
@@ -17,6 +20,7 @@ public class SecurityNormalUser extends User {
     private static final long serialVersionUID = 1L;
 
     public SecurityNormalUser(NormalUser user) {
+        // id, password, authorities
         super(user.getIdentifier(), user.getPassword(), makeGrantedAuthority(user.getAuthorities()));
     }
 

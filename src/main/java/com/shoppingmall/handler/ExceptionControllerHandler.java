@@ -3,7 +3,6 @@ package com.shoppingmall.handler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice(annotations = Controller.class)
 public class ExceptionControllerHandler {
 
-    @ExceptionHandler(Exception.class)
+    @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
     public ModelAndView defaultExceptionHandler(HttpServletRequest request, Exception exception) {
 
         ModelAndView mv = new ModelAndView("error/404");

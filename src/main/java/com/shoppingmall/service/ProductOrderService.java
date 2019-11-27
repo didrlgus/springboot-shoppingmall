@@ -1,7 +1,6 @@
 package com.shoppingmall.service;
 
 import com.google.gson.internal.LinkedTreeMap;
-import com.shoppingmall.common.ImpProperties;
 import com.shoppingmall.common.JsonUtil;
 import com.shoppingmall.domain.Cart;
 import com.shoppingmall.domain.NormalUser;

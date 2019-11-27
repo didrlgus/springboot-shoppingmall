@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableBatchProcessing // 배치 작업에 필요한 빈을 미리 등록
 @EnableScheduling // 스케줄러 사용
 @EnableAspectJAutoProxy // AOP 사용, 스프링이 자동으로 개발자의 메서드를 호출하기 전에 가로챌 수 있게 하는 옵션.
-@EnableConfigurationProperties({FileUploadProperties.class, ImpProperties.class})
+@EnableConfigurationProperties({FileUploadProperties.class/*, ImpProperties.class*/})
 @SpringBootApplication
 public class SpringbootWebserviceApplication {
 
@@ -23,7 +23,6 @@ public class SpringbootWebserviceApplication {
             + "/home/ec2-user/app/config/springboot-webservice/real-application.yml,"
             + "/home/ec2-user/app/config/springboot-webservice/real-social-set1.yml,"
             + "/home/ec2-user/app/config/springboot-webservice/real-social-set2.yml";
-
             /*+ "C:\\config\\real-application.yml,"
             + "C:\\config\\local-social.yml,"
             + "C:\\config\\real-social-set1.yml,"

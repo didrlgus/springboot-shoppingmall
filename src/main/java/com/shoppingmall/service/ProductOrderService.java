@@ -1,6 +1,7 @@
 package com.shoppingmall.service;
 
 import com.google.gson.internal.LinkedTreeMap;
+import com.shoppingmall.common.ImpProperties;
 import com.shoppingmall.common.JsonUtil;
 import com.shoppingmall.domain.Cart;
 import com.shoppingmall.domain.NormalUser;
@@ -10,10 +11,7 @@ import com.shoppingmall.domain.enums.OrderStatus;
 import com.shoppingmall.dto.PagingDto;
 import com.shoppingmall.dto.ProductOrderRequestDto;
 import com.shoppingmall.dto.ProductOrderResponseDto;
-import com.shoppingmall.exception.NotExistCartException;
-import com.shoppingmall.exception.NotExistOrderException;
-import com.shoppingmall.exception.NotExistUserException;
-import com.shoppingmall.exception.SavingsException;
+import com.shoppingmall.exception.*;
 import com.shoppingmall.repository.CartRepository;
 import com.shoppingmall.repository.NormalUserRepository;
 import com.shoppingmall.repository.ProductOrderRepository;
@@ -44,7 +42,7 @@ public class ProductOrderService {
     private final ProductOrderRepository productOrderRepository;
     private final ProductRepository productRepository;
     private final RestTemplate restTemplate;
-    // private final ImpProperties impProperties;
+    private final ImpProperties impProperties;
 
     /*@Value("${custom.imp.key}")
     private String imp_key;
@@ -56,8 +54,8 @@ public class ProductOrderService {
         String getTokenUrl = "https://api.iamport.kr/users/getToken";
 
         Map<String, Object> requestMap = new HashMap<>();
-        requestMap.put("imp_key", "1649704139434851");
-        requestMap.put("imp_secret", "VVn6B6yIM3Ev83Gs3bNw5nGHiLRCp8Tl4gsGm0o942Ec6lFawtHBQnj99aLzjEVnVn3inssrv6ECskNZ");
+        requestMap.put("imp_key", impProperties.getKey());
+        requestMap.put("imp_secret", impProperties.getSecret());
 
         ResponseEntity<String> responseAccessToken = restTemplate.postForEntity(getTokenUrl, requestMap, String.class);
 

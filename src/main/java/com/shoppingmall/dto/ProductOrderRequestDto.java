@@ -23,4 +23,5 @@ public class ProductOrderRequestDto {
     private String address;
     private Integer amount;
     private Integer useSavings;
+    private String impUid;
 }

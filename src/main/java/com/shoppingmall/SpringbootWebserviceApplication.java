@@ -22,6 +22,7 @@ public class SpringbootWebserviceApplication {
             + "/home/ec2-user/app/config/springboot-webservice/real-application.yml,"
             + "/home/ec2-user/app/config/springboot-webservice/real-social-set1.yml,"
             + "/home/ec2-user/app/config/springboot-webservice/real-social-set2.yml";
+
             /*+ "C:\\config\\real-application.yml,"
             + "C:\\config\\local-social.yml,"
             + "C:\\config\\real-social-set1.yml,"

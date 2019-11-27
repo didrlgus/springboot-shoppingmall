@@ -1,5 +1,7 @@
 package com.shoppingmall.service;
 
+import com.google.gson.internal.LinkedTreeMap;
+import com.shoppingmall.common.JsonUtil;
 import com.shoppingmall.domain.Cart;
 import com.shoppingmall.domain.NormalUser;
 import com.shoppingmall.domain.Product;
@@ -16,32 +18,83 @@ import com.shoppingmall.repository.CartRepository;
 import com.shoppingmall.repository.NormalUserRepository;
 import com.shoppingmall.repository.ProductOrderRepository;
 import com.shoppingmall.repository.ProductRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class ProductOrderService {
 
-    private CartRepository cartRepository;
-    private NormalUserRepository normalUserRepository;
-    private ProductOrderRepository productOrderRepository;
-    private ProductRepository productRepository;
+    private final CartRepository cartRepository;
+    private final NormalUserRepository normalUserRepository;
+    private final ProductOrderRepository productOrderRepository;
+    private final ProductRepository productRepository;
+    private final RestTemplate restTemplate;
+    // private final ImpProperties impProperties;
+
+    /*@Value("${custom.imp.key}")
+    private String imp_key;
+    @Value("${custom.imp.secret}")
+    private String imp_secret;*/
 
     @Transactional
     public void makeOrder(ProductOrderRequestDto productOrderRequestDto) {
+        String getTokenUrl = "https://api.iamport.kr/users/getToken";
+
+        Map<String, Object> requestMap = new HashMap<>();
+        requestMap.put("imp_key", "1649704139434851");
+        requestMap.put("imp_secret", "VVn6B6yIM3Ev83Gs3bNw5nGHiLRCp8Tl4gsGm0o942Ec6lFawtHBQnj99aLzjEVnVn3inssrv6ECskNZ");
+
+        ResponseEntity<String> responseAccessToken = restTemplate.postForEntity(getTokenUrl, requestMap, String.class);
+
+        Map<String, Object> responseMap;
+
+        if(responseAccessToken.getStatusCode() == HttpStatus.OK) {
+            responseMap = JsonUtil.JsonToMap(JsonUtil.JsonToMap(responseAccessToken.getBody()).get("response").toString());
+        } else {
+            throw new PaymentsException("결제에러 입니다.");
+        }
+
+        String impAccessToken = (String) responseMap.get("access_token");
+        String impUid = productOrderRequestDto.getImpUid();
+        String getPaymentInfoUrl = "https://api.iamport.kr/payments/" + impUid;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/json");
+        headers.add("Authorization", "Bearer "+impAccessToken);
+
+        HttpEntity<String> request = new HttpEntity<>(headers);
+
+        Map<String, Object> responsePaymentInfoMap;
+
+        ResponseEntity<String> responsePaymentInfo = restTemplate.postForEntity(getPaymentInfoUrl, request, String.class);
+
+        if (responsePaymentInfo.getStatusCode() == HttpStatus.OK) {
+            responsePaymentInfoMap = JsonUtil.JsonToMap(responsePaymentInfo.getBody());
+        } else {
+            throw new PaymentsException("결제에러 입니다.");
+        }
+
+        Map<String, Object> response = (LinkedTreeMap<String, Object>) responsePaymentInfoMap.get("response");
+        String paymentStatus = (String) response.get("status");
+
+        if(!paymentStatus.equals("paid")) throw new PaymentsException("결제에러 입니다.");
+
+        // 해당 유저의 장바구니 조회
         List<Long> cartIdList = productOrderRequestDto.getCartIdList();
 
         Optional<Cart> cartOpt = cartRepository.findById(cartIdList.get(0));

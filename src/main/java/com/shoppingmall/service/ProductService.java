@@ -105,7 +105,7 @@ public class ProductService {
 
     public List<ProductResponseDto.MainProductResponseDto> getBestProductList() {
 
-        List<Product> bestProducts = productRepository.findTop10ByOrderByPurchaseCountDesc();
+        List<Product> bestProducts = productRepository.findBestProductList();
 
         List<ProductResponseDto.MainProductResponseDto> bestProductResponseList = new ArrayList<>();
 
@@ -116,6 +116,8 @@ public class ProductService {
             }
             bestProductResponseList.add(product.toMainProductResponseDto(disPrice));
         }
+
+        log.info("##### 여기까지!!");
 
         return bestProductResponseList;
     }

@@ -41,7 +41,7 @@ public class ProductDisPrc implements Comparable<ProductDisPrc> {
     @LastModifiedDate
     private LocalDateTime updatedDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     @JsonIgnore
     private Product product;

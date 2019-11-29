@@ -7,4 +7,6 @@ import java.util.List;
 public interface ProductRepositoryCustom {
 
     List<Product> getRelatedProductList(Long id, String smallCatCd);
+
+    List<Product> findBestProductList();
 }

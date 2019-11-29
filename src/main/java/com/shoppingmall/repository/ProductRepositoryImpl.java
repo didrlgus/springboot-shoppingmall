@@ -1,8 +1,6 @@
 package com.shoppingmall.repository;
 
 
-import com.querydsl.core.QueryResults;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.shoppingmall.domain.Product;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +28,21 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                 .distinct()
                 .limit(4)
                 .fetchResults().getResults();
+    }
+
+    @Override
+    public List<Product> findBestProductList() {
+
+        return queryFactory
+                .selectFrom(product)
+                .leftJoin(product.productDisPrcList, productDisPrc).fetchJoin()
+                .orderBy(product.purchaseCount.desc())
+                .distinct()
+                .limit(10)
+                .fetchResults().getResults();
+
+        /*return products.stream()
+                .map(p -> new Family(p.getName(), p.getChildren()))
+                .collect(Collectors.toList());*/
     }
 }

@@ -2,14 +2,11 @@ package com.shoppingmall.repository;
 
 import com.shoppingmall.domain.Product;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, ProductRepositoryCustom {
@@ -20,6 +17,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
 
     Page<Product> findAllByLargeCatCd(String largeCatCd, Pageable pageable);
 
+    // N+1 문제 발생
     List<Product> findTop10ByOrderByPurchaseCountDesc();
 
     List<Product> findTop8ByOrderByCreatedDateDesc();

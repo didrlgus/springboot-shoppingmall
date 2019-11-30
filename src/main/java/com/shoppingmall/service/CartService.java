@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class CartService {
-
     private NormalUserRepository normalUserRepository;
     private ProductRepository productRepository;
     private CartRepository cartRepository;

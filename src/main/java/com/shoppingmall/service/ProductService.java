@@ -105,7 +105,12 @@ public class ProductService {
 
     public List<ProductResponseDto.MainProductResponseDto> getBestProductList() {
 
-        List<Product> bestProducts = productRepository.findBestProductList();
+        // @EntityGraph paging 처리 방법
+        /*Pageable pageable = PageRequest.of(0, 10, new Sort(Sort.Direction.DESC, "purchaseCount"));
+        Page<Product> bestProducts = productRepository.findTop10ByOrderByPurchaseCountDesc(pageable);*/
+
+        List<Product> bestProducts = productRepository.findTop10ByOrderByPurchaseCountDesc();
+        bestProducts = bestProducts.stream().limit(10).collect(Collectors.toList());
 
         List<ProductResponseDto.MainProductResponseDto> bestProductResponseList = new ArrayList<>();
 

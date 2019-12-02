@@ -177,6 +177,10 @@ public class ProductService {
         resultMap.put("saleProductList", saleProductResponseDtoPage);
         resultMap.put("saleProductPagingDto", saleProductPagingDto);
 
+        log.info("###### 여기");
+        Page<Product> productList = productRepository.findSaleProductList(pageable);
+        log.info("###### 여기");
+
         return resultMap;
     }
 
@@ -423,8 +427,12 @@ public class ProductService {
         // 현재 할인이 적용된 리스트 하나를 조회
         List<ProductDisPrc> disprcList
                 = product.getProductDisPrcList().parallelStream()
-                .filter(productDisPrc -> LocalDateTime.now().isAfter(productDisPrc.getStartDt())
-                        && LocalDateTime.now().isBefore(productDisPrc.getEndDt()))
+                .filter(productDisPrc -> {
+                    LocalDateTime now = LocalDateTime.now();
+
+                    return now.isAfter(productDisPrc.getStartDt())
+                            && now.isBefore(productDisPrc.getEndDt());
+                })
                 .sorted().limit(1).collect(Collectors.toList());
 
         // 현재 할인이 적용된 리스트가 없을 수도 있으므로 아래와 같이 if문 처리

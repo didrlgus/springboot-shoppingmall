@@ -426,7 +426,7 @@ public class ProductService {
         // 스트림 API를 사용하여 현재 날짜가 할인이 적용되는 날짜 사이에 있는 데이터 중 가장 할인률이 높은 데이터 하나만을 꺼내서 리스트로 저장
         // 현재 할인이 적용된 리스트 하나를 조회
         List<ProductDisPrc> disprcList
-                = product.getProductDisPrcList().parallelStream()
+                = product.getProductDisPrcList().stream()
                 .filter(productDisPrc -> {
                     LocalDateTime now = LocalDateTime.now();
 
@@ -444,7 +444,7 @@ public class ProductService {
 
     private List<LocalDateTime> getDisDateList(Product product) {
         List<ProductDisPrc> disList
-                = product.getProductDisPrcList().parallelStream()
+                = product.getProductDisPrcList().stream()
                 .filter(productDisPrc -> LocalDateTime.now().isAfter(productDisPrc.getStartDt())
                         && LocalDateTime.now().isBefore(productDisPrc.getEndDt()))
                 .sorted().limit(1).collect(Collectors.toList());

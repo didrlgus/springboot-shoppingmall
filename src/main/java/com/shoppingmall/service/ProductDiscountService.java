@@ -46,7 +46,7 @@ public class ProductDiscountService {
 
         if (productDisPrcListSize > 0) {
             // 현재 할인 적용 데이터
-            List<ProductDisPrc> applyDiscountProductList = productDisPrcList.parallelStream()
+            List<ProductDisPrc> applyDiscountProductList = productDisPrcList.stream()
                     .filter(productDisPrc -> LocalDateTime.now().isAfter(productDisPrc.getStartDt())
                             && LocalDateTime.now().isBefore(productDisPrc.getEndDt()))
                     .sorted().limit(1).collect(Collectors.toList());
@@ -69,7 +69,7 @@ public class ProductDiscountService {
             Long finalApplyDiscountProductId = applyDiscountProductId;
 
             List<ProductDisPrcResponseDto> NoApplyDiscountProductResponseDtoList
-                    = productDisPrcList.parallelStream().map(ProductDisPrc::toResponseDto)
+                    = productDisPrcList.stream().map(ProductDisPrc::toResponseDto)
                     .filter(productDisPrcResponseDto -> !productDisPrcResponseDto.getId().equals(finalApplyDiscountProductId))
                     .collect(Collectors.toList());
 

@@ -27,28 +27,24 @@ public class QuestionRestController {
     private QuestionService questionService;
 
     @ApiOperation(value = "질문 생성")
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @PostMapping("/questions")
     public ResponseEntity<?> makeQuestion(@RequestBody @Valid QuestionRequestDto questionRequestDto,
-                                          BindingResult bindingResult,
-                                          @PageableDefault(size = 3, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
-
+                                          BindingResult bindingResult) {
         if (bindingResult.hasErrors()){
             String errorMessage = bindingResult.getAllErrors().get(0).getDefaultMessage();
             return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
         }
 
-        questionService.makeQuestion(questionRequestDto, pageable);
+        questionService.makeQuestion(questionRequestDto);
 
         return ResponseEntity.ok("문의가 등록되었습니다.");
     }
 
     @ApiOperation(value = "질문 조회")
-    @GetMapping("/products/{id}/questions/{page}")
-    public ResponseEntity<?> getQuestionList(@PathVariable("id") Long productId, @PathVariable("page") int page,
-                                             @PageableDefault(size = 3, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+    @GetMapping("/products/{id}/questions")
+    public ResponseEntity<?> getQuestionList(@PathVariable("id") Long productId, @RequestParam("page") int page) {
 
-        return ResponseEntity.ok().body(questionService.getQuestionList(productId, page, pageable));
+        return ResponseEntity.ok().body(questionService.getQuestionList(productId, page));
     }
 
     @ApiOperation(value = "질문 수정")

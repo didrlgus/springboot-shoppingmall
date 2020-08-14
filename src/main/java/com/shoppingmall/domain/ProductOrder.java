@@ -1,8 +1,8 @@
 package com.shoppingmall.domain;
 
+import com.shoppingmall.common.BaseTimeEntity;
 import com.shoppingmall.domain.enums.OrderStatus;
 import com.shoppingmall.dto.ProductOrderResponseDto;
-import com.shoppingmall.dto.ProductResponseDto;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -19,7 +19,7 @@ import java.util.List;
 @Builder
 @Entity
 @EntityListeners(value = {AuditingEntityListener.class})
-public class ProductOrder {
+public class ProductOrder extends BaseTimeEntity  {
 
     @Id     // primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,19 +38,16 @@ public class ProductOrder {
     private Character refundState;
     @Column
     private Integer amount;
-    @CreatedDate
-    private LocalDateTime createdDate;
-    @LastModifiedDate
-    private LocalDateTime updatedDate;
 
     @ManyToOne
-    @JoinColumn(name = "normal_user_id", referencedColumnName = "id")
-    private NormalUser normalUser;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     @OneToMany(mappedBy = "productOrder", cascade = CascadeType.ALL)
     private List<Cart> carts;
 
     public ProductOrderResponseDto toResponseDto() {
+        LocalDateTime createdDate = this.getModifiedDate();
 
         return ProductOrderResponseDto.builder()
                 .id(id)

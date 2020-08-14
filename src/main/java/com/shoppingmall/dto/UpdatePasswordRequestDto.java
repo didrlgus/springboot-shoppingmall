@@ -1,15 +1,13 @@
 package com.shoppingmall.dto;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Getter
-@Setter
-@ToString
+@Builder
 public class UpdatePasswordRequestDto {
 
     @NotBlank(message = "기존 비밀번호를 작성하세요.")

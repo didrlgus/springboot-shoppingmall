@@ -1,10 +1,9 @@
 package com.shoppingmall.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.shoppingmall.common.BaseTimeEntity;
 import com.shoppingmall.dto.QuestionResponseDto;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -18,7 +17,7 @@ import java.util.List;
 @Builder
 @Entity(name = "question")
 @EntityListeners(value = {AuditingEntityListener.class})
-public class Question {
+public class Question extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,15 +25,11 @@ public class Question {
     private String message;
     private boolean answerState;
     private Integer answerCount;
-    @CreatedDate
-    private LocalDateTime createdDate;
-    @LastModifiedDate
-    private LocalDateTime updatedDate;
 
     // 객체들 간의 관계
     @ManyToOne
-    @JoinColumn(name = "normalUser_id", referencedColumnName = "id")
-    private NormalUser normalUser;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
@@ -46,18 +41,19 @@ public class Question {
     private List<QuestionAnswer> answers;
 
     public QuestionResponseDto toResponseDto() {
+        LocalDateTime createdDate = this.getCreatedDate();
+        LocalDateTime modifiedDate = this.getModifiedDate();
 
         return QuestionResponseDto.builder()
                 .id(id)
-                .normalUser(normalUser)
-                .product(product)
+                .questionUserResponseDto(user.toQuestionResponseDto(user))
                 .message(message)
                 .answerCount(answerCount)
                 .answerState(answerState)
                 .createdDate(createdDate.getYear() + "-" + createdDate.getMonthValue() + "-"
                         + createdDate.getDayOfMonth() + " " + createdDate.getHour() + ":" + createdDate.getMinute() + ":"
                         + createdDate.getSecond())
-                .updatedDate(updatedDate)
+                .modifiedDate(modifiedDate)
                 .build();
     }
 }

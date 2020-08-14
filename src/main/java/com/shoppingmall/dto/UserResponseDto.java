@@ -7,7 +7,7 @@ import lombok.ToString;
 
 @Builder
 @Getter
-public class NormalUserResponseDto {
+public class UserResponseDto {
 
     private Long   id;
     private String identifier;
@@ -23,6 +23,13 @@ public class NormalUserResponseDto {
     @Builder
     @ToString
     public static class ReviewUserResponseDto {
+        private String identifier;
+    }
+
+    @Getter
+    @Builder
+    public static class QuestionUserResponseDto {
+        private Long id;
         private String identifier;
     }
 

@@ -1,5 +1,6 @@
 package com.shoppingmall.domain;
 
+import com.shoppingmall.common.BaseTimeEntity;
 import com.shoppingmall.dto.CategoryResponseDto;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ToString
 @EntityListeners(AuditingEntityListener.class)
-public class ProductCat {
+public class ProductCat extends BaseTimeEntity  {
 
     @Id     // primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,12 +41,6 @@ public class ProductCat {
 
     @Column
     private String cnntUrl;
-
-    @CreatedDate
-    private LocalDateTime createdDate;
-
-    @LastModifiedDate
-    private LocalDateTime updatedDate;
 
     public CategoryResponseDto.SecondCategory toSecondCategoryDto() {
 

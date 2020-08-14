@@ -1,6 +1,6 @@
 package com.shoppingmall.service;
 
-import com.shoppingmall.domain.NormalUser;
+import com.shoppingmall.domain.User;
 import com.shoppingmall.domain.Question;
 import com.shoppingmall.domain.QuestionAnswer;
 import com.shoppingmall.dto.PagingDto;
@@ -8,7 +8,7 @@ import com.shoppingmall.dto.QuestionAnswerRequestDto;
 import com.shoppingmall.dto.QuestionAnswerResponseDto;
 import com.shoppingmall.exception.NotExistQuestionException;
 import com.shoppingmall.exception.NotExistUserException;
-import com.shoppingmall.repository.NormalUserRepository;
+import com.shoppingmall.repository.UserRepository;
 import com.shoppingmall.repository.QuestionAnswerRepository;
 import com.shoppingmall.repository.QuestionRepository;
 import lombok.AllArgsConstructor;
@@ -30,7 +30,7 @@ import java.util.Optional;
 @Service
 public class QuestionAnswerService {
 
-    private NormalUserRepository normalUserRepository;
+    private UserRepository userRepository;
     private QuestionRepository questionRepository;
     private QuestionAnswerRepository questionAnswerRepository;
 
@@ -63,7 +63,7 @@ public class QuestionAnswerService {
     @Transactional
     public void makeAnswer(Long questionId, QuestionAnswerRequestDto questionAnswerRequestDto) {
 
-        Optional<NormalUser> normalUser = normalUserRepository.findById(questionAnswerRequestDto.getUserId());
+        Optional<User> normalUser = userRepository.findById(questionAnswerRequestDto.getUserId());
 
         if (!normalUser.isPresent())
             throw new NotExistUserException("존재하지 않는 유저입니다.");
@@ -82,7 +82,7 @@ public class QuestionAnswerService {
         questionRepository.save(updateQuestion);
 
         questionAnswerRepository.save(QuestionAnswer.builder()
-                .normalUser(normalUser.get())
+                .user(normalUser.get())
                 .question(question.get())
                 .message(questionAnswerRequestDto.getMessage())
                 .build());

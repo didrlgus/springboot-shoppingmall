@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductOrderRepository extends JpaRepository<ProductOrder, Long> {
-    Page<ProductOrder> findAllByNormalUserIdOrderByCreatedDateDesc(Long userId, Pageable pageable);
+    Page<ProductOrder> findAllByUserIdOrderByCreatedDateDesc(Long userId, Pageable pageable);
 }

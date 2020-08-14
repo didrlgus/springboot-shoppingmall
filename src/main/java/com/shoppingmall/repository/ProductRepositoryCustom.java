@@ -13,5 +13,4 @@ public interface ProductRepositoryCustom {
 
     Page<Product> findSaleProductList(PageRequest pageable);
 
-    // List<Product> findSaleProducts(Pageable pageable);
 }

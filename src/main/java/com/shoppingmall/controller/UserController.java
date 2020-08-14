@@ -1,7 +1,7 @@
 package com.shoppingmall.controller;
 
-import com.shoppingmall.dto.NormalUserRequestDto;
-import com.shoppingmall.service.NormalUserService;
+import com.shoppingmall.dto.UserRequestDto;
+import com.shoppingmall.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -25,7 +25,7 @@ import javax.validation.Valid;
 @Controller
 public class UserController {
 
-    private NormalUserService normalUserService;
+    private UserService userService;
 
     @GetMapping("/login")
     public String login(HttpServletRequest request) {
@@ -37,8 +37,8 @@ public class UserController {
 
     // 일반유저 회원가입
     @PostMapping("/member")
-    public String registration(@ModelAttribute @Valid NormalUserRequestDto userRequestDto, RedirectAttributes rttr) {
-        normalUserService.userRegistration(userRequestDto);
+    public String registration(@ModelAttribute @Valid UserRequestDto userRequestDto, RedirectAttributes rttr) {
+        userService.userRegistration(userRequestDto);
 
         rttr.addFlashAttribute("registerComplete", "회원가입이 완료되었습니다.");
 

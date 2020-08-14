@@ -1,6 +1,6 @@
 package com.shoppingmall.service;
 
-import com.shoppingmall.domain.NormalUser;
+import com.shoppingmall.domain.User;
 import com.shoppingmall.domain.Product;
 import com.shoppingmall.domain.Question;
 import com.shoppingmall.exception.NotExistQuestionException;
@@ -9,7 +9,7 @@ import com.shoppingmall.dto.QuestionRequestDto;
 import com.shoppingmall.dto.QuestionResponseDto;
 import com.shoppingmall.exception.NotExistProductException;
 import com.shoppingmall.exception.NotExistUserException;
-import com.shoppingmall.repository.NormalUserRepository;
+import com.shoppingmall.repository.UserRepository;
 import com.shoppingmall.repository.ProductRepository;
 import com.shoppingmall.repository.QuestionRepository;
 import lombok.AllArgsConstructor;
@@ -31,42 +31,33 @@ import java.util.Optional;
 @Service
 public class QuestionService {
 
-    private NormalUserRepository normalUserRepository;
+    private UserRepository userRepository;
     private ProductRepository productRepository;
     private QuestionRepository questionRepository;
 
     @Transactional
-    public void makeQuestion(QuestionRequestDto questionRequestDto, Pageable pageable) {
-        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        pageable = PageRequest.of(page, 3);
+    public void makeQuestion(QuestionRequestDto questionRequestDto) {
+        User user = userRepository.findById(questionRequestDto.getUserId()).orElseThrow(()
+                -> new NotExistUserException("존재하지 않는 유저입니다."));
 
-        Optional<NormalUser> normalUser = normalUserRepository.findById(questionRequestDto.getNormalUserId());
-
-        if (!normalUser.isPresent())
-            throw new NotExistUserException("존재하지 않는 유저입니다.");
-
-        Optional<Product> product = productRepository.findById(questionRequestDto.getProductId());
-
-        if (!product.isPresent())
-            throw new NotExistProductException("존재하지 않는 상품입니다.");
+        Product product = productRepository.findById(questionRequestDto.getProductId()).orElseThrow(()
+                -> new NotExistProductException("존재하지 않는 상품입니다."));
 
         Question question = Question.builder()
-                .normalUser(normalUser.get())
-                .product(product.get())
+                .user(user)
+                .product(product)
                 .message(questionRequestDto.getMessage())
                 .answerCount(0)
                 .answerState(false)
                 .build();
 
         questionRepository.save(question);
-
-        Page<Question> questionList = questionRepository.findAllByProductIdOrderByCreatedDateDesc(product.get().getId(), pageable);
     }
 
-    public HashMap<String, Object> getQuestionList(Long productId, int page, Pageable pageable) {
+    public HashMap<String, Object> getQuestionList(Long productId, int page) {
         // 페이지가 0부터 시작하므로 1을 빼주어야 함
         int realPage = (page == 0) ? 0 : (page - 1);
-        pageable = PageRequest.of(realPage, 3);
+        Pageable pageable = PageRequest.of(realPage, 3);
 
         Page<Question> questionList = questionRepository.findAllByProductIdOrderByCreatedDateDesc(productId, pageable);
 

@@ -1,6 +1,6 @@
 package com.shoppingmall.dto;
 
-import com.shoppingmall.domain.NormalUser;
+import com.shoppingmall.domain.User;
 import com.shoppingmall.domain.Product;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +18,6 @@ public class QuestionResponseDto {
     private boolean answerState;
     private Integer answerCount;
     private String createdDate;
-    private LocalDateTime updatedDate;
-    private NormalUser normalUser;
-    private Product product;
+    private LocalDateTime modifiedDate;
+    private UserResponseDto.QuestionUserResponseDto questionUserResponseDto;
 }

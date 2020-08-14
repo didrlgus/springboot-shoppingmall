@@ -11,7 +11,7 @@ import lombok.ToString;
 public class ReviewResponseDto {
 
     private Long id;
-    private NormalUserResponseDto.ReviewUserResponseDto userIdentifier;
+    private UserResponseDto.ReviewUserResponseDto userIdentifier;
     private String title;
     private int rate;
     private String createdDate;

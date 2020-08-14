@@ -28,11 +28,10 @@ public class ProductRestController {
     private ProductService productService;
 
     @ApiOperation(value = "상품 전체 조회")
-    @GetMapping("/productList/{page}/catCd/{catCd}")
-    public ResponseEntity<?> getProductList(@PathVariable("page") int page, @PathVariable("catCd") String catCd,
-                                            @PageableDefault(size = 9, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+    @GetMapping("/productList/catCd/{catCd}")
+    public ResponseEntity<?> getProductList(@PathVariable("catCd") String catCd, @RequestParam("page") int page) {
 
-        return ResponseEntity.ok().body(productService.getProductListByCategory(catCd, pageable, page));
+        return ResponseEntity.ok().body(productService.getProductListByCategory(catCd, page));
     }
 
     @ApiOperation(value = "상품 상세")

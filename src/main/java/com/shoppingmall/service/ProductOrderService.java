@@ -4,7 +4,7 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.shoppingmall.common.ImpProperties;
 import com.shoppingmall.common.JsonUtil;
 import com.shoppingmall.domain.Cart;
-import com.shoppingmall.domain.NormalUser;
+import com.shoppingmall.domain.User;
 import com.shoppingmall.domain.Product;
 import com.shoppingmall.domain.ProductOrder;
 import com.shoppingmall.domain.enums.OrderStatus;
@@ -13,10 +13,9 @@ import com.shoppingmall.dto.ProductOrderRequestDto;
 import com.shoppingmall.dto.ProductOrderResponseDto;
 import com.shoppingmall.exception.*;
 import com.shoppingmall.repository.CartRepository;
-import com.shoppingmall.repository.NormalUserRepository;
+import com.shoppingmall.repository.UserRepository;
 import com.shoppingmall.repository.ProductOrderRepository;
 import com.shoppingmall.repository.ProductRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -39,7 +38,7 @@ import java.util.*;
 public class ProductOrderService {
 
     private final CartRepository cartRepository;
-    private final NormalUserRepository normalUserRepository;
+    private final UserRepository userRepository;
     private final ProductOrderRepository productOrderRepository;
     private final ProductRepository productRepository;
     private final RestTemplate restTemplate;
@@ -104,18 +103,18 @@ public class ProductOrderService {
         }
 
         Cart cart = cartOpt.get();
-        Long userId = cart.getNormalUser().getId();
+        Long userId = cart.getUser().getId();
 
-        Optional<NormalUser> userOpt = normalUserRepository.findById(userId);
+        Optional<User> userOpt = userRepository.findById(userId);
 
         if (!userOpt.isPresent()) {
             throw new NotExistUserException("존재하지 않는 유저 입니다.");
         }
 
-        NormalUser user = userOpt.get();
+        User user = userOpt.get();
 
         ProductOrder productOrder = productOrderRepository.save(ProductOrder.builder()
-                .normalUser(user)
+                .user(user)
                 .orderNumber(productOrderRequestDto.getOrderNumber())
                 .orderName(productOrderRequestDto.getOrderName())
                 .amount(productOrderRequestDto.getAmount())
@@ -166,7 +165,7 @@ public class ProductOrderService {
         int addSavings = (int)((((float) 3 / (float)100) * productOrderRequestDto.getAmount()));
 
         user.setSavings(user.getSavings() - productOrderRequestDto.getUseSavings() + addSavings);
-        normalUserRepository.save(user);
+        userRepository.save(user);
     }
 
     public ProductOrderResponseDto getOrderDetails(Long orderId) {
@@ -183,7 +182,7 @@ public class ProductOrderService {
         int realPage = (page == 0) ? 0 : (page - 1);
         pageable = PageRequest.of(realPage, 5);
 
-        Page<ProductOrder> productOrderPage = productOrderRepository.findAllByNormalUserIdOrderByCreatedDateDesc(userId, pageable);
+        Page<ProductOrder> productOrderPage = productOrderRepository.findAllByUserIdOrderByCreatedDateDesc(userId, pageable);
 
         if (productOrderPage.getTotalElements() > 0) {
             List<ProductOrderResponseDto> productOrderResponseDtoList = new ArrayList<>();

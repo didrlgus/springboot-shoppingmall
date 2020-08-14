@@ -52,14 +52,14 @@
                                 }
 
                                 // 유저 정보는 모든 카트 정보에서 공통
-                                checkoutData.buyer_name = cartList[0].normalUser.name;
-                                checkoutData.email = cartList[0].normalUser.email;
-                                checkoutData.roadAddr = cartList[0].normalUser.roadAddr;
-                                checkoutData.buildingName = cartList[0].normalUser.buildingName;
-                                checkoutData.detailAddr = cartList[0].normalUser.detailAddr;
+                                checkoutData.buyer_name = cartList[0].user.name;
+                                checkoutData.email = cartList[0].user.email;
+                                checkoutData.roadAddr = cartList[0].user.roadAddr;
+                                checkoutData.buildingName = cartList[0].user.buildingName;
+                                checkoutData.detailAddr = cartList[0].user.detailAddr;
 
 
-                                checkoutData.userSavings = cartList[0].normalUser.savings;
+                                checkoutData.userSavings = cartList[0].user.savings;
                                 $(".savings p.user-savings").text(checkoutData.userSavings + "원 보유 (5000원 이상 결제 시 사용가능)");
 
                                 checkoutData.cartId = [];

@@ -1,6 +1,7 @@
 package com.shoppingmall.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.shoppingmall.common.BaseTimeEntity;
 import com.shoppingmall.domain.enums.ProductStatus;
 import com.shoppingmall.dto.ProductResponseDto;
 import lombok.*;
@@ -21,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @EntityListeners(AuditingEntityListener.class)
-public class Product {
+public class Product extends BaseTimeEntity  {
 
     @Id     // primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,12 +59,6 @@ public class Product {
     @ColumnDefault("0") //default 0
     private Integer rateAvg;
 
-    @CreatedDate
-    private LocalDateTime createdDate;
-
-    @LastModifiedDate
-    private LocalDateTime updatedDate;
-
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductImg> productImgList;
 
@@ -97,7 +92,6 @@ public class Product {
                 .productStatus(productStatus)
                 .rateAvg(rateAvg)
                 .titleImg(titleImg)
-                .questions(questions)
                 .build();
     }
 

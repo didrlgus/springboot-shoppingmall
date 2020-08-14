@@ -1,5 +1,6 @@
 package com.shoppingmall.domain;
 
+import com.shoppingmall.common.BaseTimeEntity;
 import com.shoppingmall.dto.QuestionAnswerResponseDto;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,29 +16,28 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @EntityListeners(value = {AuditingEntityListener.class})
-public class QuestionAnswer {
+public class QuestionAnswer extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String message;
-    @CreatedDate
-    private LocalDateTime createdDate;
 
     // 객체들 간의 관계
     @ManyToOne
-    @JoinColumn(name = "normal_user_id", referencedColumnName = "id")
-    private NormalUser normalUser;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "question_id", referencedColumnName = "id")
     private Question question;
 
     public QuestionAnswerResponseDto toDto() {
+        LocalDateTime createdDate = this.getCreatedDate();
 
         return QuestionAnswerResponseDto.builder()
                 .id(id)
-                .normalUser(normalUser)
+                .user(user)
                 .question(question)
                 .message(message)
                 .createdDate(createdDate.getYear() + "-" + createdDate.getMonthValue() + "-"

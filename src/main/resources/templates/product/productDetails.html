@@ -49,7 +49,7 @@
 
                 $.ajax({
                     type : "get",
-                    url  : "/products/" + productId + "/questions/" + page,
+                    url  : "/products/" + productId + "/questions?page=" + page,
                     contentType: "application/json",
                     beforeSend	: function(xhr) {
                         xhr.setRequestHeader(header, token);
@@ -57,7 +57,7 @@
                     success     : function(data) {
                         var questionPaigingDto = data.questionPagingDto,
                             questionList       = [],
-                            normalUserId = 0;
+                            userId = 0;
 
                         // 문의 리스트, 페이지 비우기
                         $("#questionList").empty();
@@ -70,13 +70,13 @@
                         // 문의 리스트, 페이지 그리기
                         questionList.forEach(function (element) {
                             var question =
-                                "<li data-id='" + element.normalUser.id + "' data-question-id='" + element.id  + "' class='comment question'>" +
+                                "<li data-id='" + element.questionUserResponseDto.id + "' data-question-id='" + element.id  + "' class='comment question'>" +
                                 "<div class='media'>" +
                                 "<a href='#' class='media-left'><img class='img-circle' alt='' src='https://placehold.it/75x75' width='75'></a>" +
                                 "<div class='media-body'>" +
                                 "<ul class='review_text list-inline'>" +
                                 "<li>" +
-                                "<h5 class='media-heading meta'><span class='author'><strong>" + element.normalUser.identifier + "</strong></span> / " + element.createdDate  + "</h5>" +
+                                "<h5 class='media-heading meta'><span class='author'><strong>" + element.questionUserResponseDto.identifier + "</strong></span> / " + element.createdDate  + "</h5>" +
                                 "</li>" +
                                 "</ul>" +
                                 element.message +
@@ -90,14 +90,14 @@
                         // 로그인이 되어있는지 session을 통해 파악
                         if ([[${session.user}]]) {
                             var userObj = [[${session.user}]];
-                            normalUserId = userObj.id;
+                            userId = userObj.id;
                         }
 
                         // 로그인 시 해당 유저가 작성한 문의의 수정버튼 띄우기
                         $("#questionList li.question").each(function(index) {
                             var questionId = $(this).data("questionId");
 
-                            if ($(this).data("id") === normalUserId) {
+                            if ($(this).data("id") === userId) {
                                 $(this).find(".media").append("<button data-question-id='" + questionId
                                     + "' class='btn-modify pull-right btn btn-default' data-toggle='modal' data-target='.bs-question-modify-modal-sm' onclick='productDetails.setQuestionIdFn(this)'>수정</button>");
                             }
@@ -211,13 +211,13 @@
                         // 문의 리스트, 페이지 그리기
                         answerList.forEach(function (element) {
                             var answer =
-                                "<li data-id='" + element.normalUser.id + "' data-answer-id='" + element.id  + "' class='comment answer'>" +
+                                "<li data-id='" + element.user.id + "' data-answer-id='" + element.id  + "' class='comment answer'>" +
                                 "<div class='media'>" +
                                 "<a href='#' class='media-left'><img class='img-circle' alt='' src='https://placehold.it/75x75' width='75'></a>" +
                                 "<div class='media-body'>" +
                                 "<ul class='review_text list-inline'>" +
                                 "<li>" +
-                                "<h5 class='media-heading meta'><span class='author'><strong>" + element.normalUser.identifier + "</strong></span> / " + element.createdDate  + "</h5>" +
+                                "<h5 class='media-heading meta'><span class='author'><strong>" + element.user.identifier + "</strong></span> / " + element.createdDate  + "</h5>" +
                                 "</li>" +
                                 "</ul>" +
                                 element.message +
@@ -558,7 +558,7 @@
             makeQuestionEventCb : function () {
 
                 var data = {
-                    "normalUserId" : $("input[name='nomalUserId']").val(),
+                    "userId" : $("input[name='nomalUserId']").val(),
                     "productId"    : $("input[name='productId']").val(),
                     "message"      : $("#questionArea").val()
                 }

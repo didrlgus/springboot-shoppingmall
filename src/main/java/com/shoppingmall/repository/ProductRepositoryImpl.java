@@ -57,7 +57,7 @@ public class ProductRepositoryImpl extends QuerydslRepositorySupport implements 
     public Page<Product> findSaleProductList(PageRequest pageable) {
         JPQLQuery<Product> query
                 = from(product).innerJoin(product.productDisPrcList, productDisPrc).fetchJoin()
-                  .where().orderBy(product.updatedDate.desc()).distinct();
+                  .where().orderBy(product.modifiedDate.desc()).distinct();
 
         /*List<Product> query = queryFactory
                 .selectFrom(product)

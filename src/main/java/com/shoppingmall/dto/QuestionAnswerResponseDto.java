@@ -1,12 +1,10 @@
 package com.shoppingmall.dto;
 
-import com.shoppingmall.domain.NormalUser;
+import com.shoppingmall.domain.User;
 import com.shoppingmall.domain.Question;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -14,7 +12,7 @@ import java.time.LocalDateTime;
 public class QuestionAnswerResponseDto {
 
     private Long id;
-    private NormalUser normalUser;
+    private User user;
     private Question question;
     private String message;
     private String createdDate;

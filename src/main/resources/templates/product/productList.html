@@ -130,7 +130,7 @@
 
                     $.ajax({
                         type : "GET",
-                        url  : "/productList/" + page + "/catCd/" + catCd,
+                        url  : "/productList/catCd/" + catCd + "?page=" + page,
                         contentType : "application/json",
                         success : function(data) {
                             productListObj.getProductListCmmn(data);

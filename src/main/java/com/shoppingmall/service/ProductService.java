@@ -49,10 +49,9 @@ public class ProductService {
     private ProductDisPrcRepository productDisPrcRepository;
 
     // 전체 상품 혹은 카테고리로 상품 조회
-    public HashMap<String, Object> getProductListByCategory(String catCd, Pageable pageable, int page) {
+    public HashMap<String, Object> getProductListByCategory(String catCd, int page) {
         int realPage = page - 1;
-
-        pageable = PageRequest.of(realPage, 9, new Sort(Sort.Direction.DESC, "createdDate"));
+        Pageable pageable = PageRequest.of(realPage, 9, new Sort(Sort.Direction.DESC, "createdDate"));
 
         Page<Product> productList;
 
@@ -73,26 +72,21 @@ public class ProductService {
         }
 
         PageImpl<ProductResponseDto> products = new PageImpl<>(productResponseDtoList, pageable, productList.getTotalElements());
-        
+
         return getResultMap(products);
     }
 
     // 상품 상세
     public ProductResponseDto getProductDetails(Long id) {
-        Optional<Product> productDetails = productRepository.findById(id);
+        Product product = productRepository.findById(id).orElseThrow(()
+                -> new NotExistProductException("존재하지 않는 상품입니다."));
 
-        if (productDetails.isPresent()) {
-            Product product = productDetails.get();
-
-            int disPrice = 0;
-            if (product.getProductDisPrcList().size() > 0) {
-                disPrice = getDisPrice(product);
-            }
-
-            return product.toResponseDto(disPrice);
+        int disPrice = 0;
+        if (product.getProductDisPrcList().size() > 0) {
+            disPrice = getDisPrice(product);
         }
-        else
-            throw new NotExistProductException("존재하지 않는 상품입니다.");
+
+        return product.toResponseDto(disPrice);
     }
 
     public HashMap<String, Object> getProductListByKeyword(int page, String largeCatCd, String sortCd) {

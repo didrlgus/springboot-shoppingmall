@@ -23,9 +23,9 @@ public class ProductResponseDto {
     private ProductStatus productStatus;
     private Integer rateAvg;
 
+    @ToString
     @Getter
     @Builder
-    @ToString
     public static class MainProductResponseDto {
         private Long id;
         private String productNm;

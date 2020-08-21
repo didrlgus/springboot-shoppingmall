@@ -57,6 +57,14 @@ public class ReviewService {
     @Autowired
     private ReviewRepository reviewRepository;
 
+    public String initReview(Long productId) {
+
+        Product product = productRepository.findById(productId).orElseThrow(()
+                -> new NotExistProductException("존재하지 않는 상품입니다."));
+
+        return product.getProductNm();
+    }
+
     @Transactional
     public UploadFile uploadReviewImage(MultipartFile file) throws Exception {
 

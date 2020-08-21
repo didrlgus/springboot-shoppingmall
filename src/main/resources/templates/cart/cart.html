@@ -182,6 +182,9 @@
                         return;
                     }
 
+                    // TODO: 상품의 재고 확인
+
+
                     var IMP = window.IMP; // 생략가능
                     IMP.init('imp69013622');
 
@@ -190,15 +193,13 @@
                         pay_method : 'card',
                         merchant_uid : new Date().getTime(),
                         name : checkoutData.orderName,
-                        amount : checkoutData.amount,
+                        amount : checkoutData.amount,           // 상품 가격
                         buyer_email : checkoutData.email,
                         buyer_name : checkoutData.name,
                         buyer_addr : $("input[name='roadAddr']").val() + " " + $("input[name='buildingName']").val() + " " +  $("input[name='detailAddr']").val()
                     }, function(rsp) {
                         var msg = "";
                         if (rsp.success) {
-                            // console.log(rsp);
-
                             var orderNumber = rsp.merchant_uid;
                             var impUid = rsp.imp_uid;
                             checkoutData.deliveryMessage = $("#delivery-message-area").val();

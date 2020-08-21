@@ -5,9 +5,7 @@
 
 <div class="main-content" layout:fragment="content">
     <script th:inline="javascript">
-        var paramArr = [[${param.productId}]],
-            productId = paramArr[0],
-            questionId = 0;
+        var questionId = 0;
 
         var productDetails = {
 
@@ -15,32 +13,31 @@
                 // 상품 상세 페이지 처음 로딩 시 호출
                 $.ajax({
                     type : "GET",
-                    url  : "/products/" + productId,
+                    url  : "/products/" + [[${productId}]],
                     contentType: "application/json",
                     beforeSend	: function(xhr) {
                         xhr.setRequestHeader(header, token);
-                    },
-                    success: function (data) {
-                        $(".zoom-gallery a").attr("href", data.titleImg).attr("title", data.productNm);
-                        $(".zoom-gallery img").attr("src", data.titleImg);
-                        $(".product-name").text(data.productNm);
-
-                        if (data.disPrice !== 0) {
-                            $(".detail-product-price").prepend("<del><span class=\"real-price amount\">" + data.price + "원</span></del>")
-                        }
-                        // $(".real-price").text(data.price + "원");
-                        $(".sale-price").text(data.price * ((100 - data.disPrice) / 100) + "원");
-                        $(".limit-count").text(data.limitCount + "개");
-                        $(".purchase-count").text(data.purchaseCount + "개");
-
-                        // 문의 리스트 가져오기
-                        productDetails.normalUserQuestionListFn();
-                        // 리뷰 리스트 가져오기
-                        productDetails.getReviewListFn();
-                        // 관련 상품 리스트 가져오기
-                        productDetails.getRelatedProductListFn(data.id, data.smallCatCd);
                     }
+                }).done(function(data) {
+                    $(".zoom-gallery a").attr("href", data.titleImg).attr("title", data.productNm);
+                    $(".zoom-gallery img").attr("src", data.titleImg);
+                    $(".product-name").text(data.productNm);
+
+                    if (data.disPrice !== 0) {
+                        $(".detail-product-price").prepend("<del><span class=\"real-price amount\">" + data.price + "원</span></del>")
+                    }
+                    // $(".real-price").text(data.price + "원");
+                    $(".sale-price").text(data.price * ((100 - data.disPrice) / 100) + "원");
+                    $(".limit-count").text(data.limitCount + "개");
+                    $(".purchase-count").text(data.purchaseCount + "개");
                 })
+
+                // 문의 리스트 가져오기
+                productDetails.normalUserQuestionListFn();
+                // 리뷰 리스트 가져오기
+                productDetails.getReviewListFn();
+                // 관련 상품 리스트 가져오기
+                productDetails.getRelatedProductListFn(data.id, data.smallCatCd);
             },
             normalUserQuestionListFn    :  function(obj) {
                 var page = obj ? $(obj).data("page") : 1;
@@ -49,7 +46,7 @@
 
                 $.ajax({
                     type : "get",
-                    url  : "/products/" + productId + "/questions?page=" + page,
+                    url  : "/products/" + [[${productId}]] + "/questions?page=" + page,
                     contentType: "application/json",
                     beforeSend	: function(xhr) {
                         xhr.setRequestHeader(header, token);
@@ -334,7 +331,7 @@
 
                 var data = {
                     "userId"       : userId,
-                    "productId"    : productId,
+                    "productId"    : [[${productId}]],
                     "productCount" : productCount
                 }
 
@@ -371,14 +368,14 @@
                 $.ajax({
                     type : "GET",
                     url  : "/reviews/authority",
-                    data : {userId : userId, productId : productId},
+                    data : {userId : userId, productId : [[${productId}]]},
                     contentType : "application/json",
                     beforeSend  : function (xhr) {
                         xhr.setRequestHeader(header, token);
                     },
                     success : function (data) {
 
-                        location.href = "/reviews?userId=" + userId + "&" + "productId=" + productId;
+                        location.href = "/reviews?userId=" + userId + "&" + "productId=" + [[${productId}]];
                     },
                     error   : function (e) {
                         alert(e.responseText);
@@ -395,7 +392,7 @@
 
                 $.ajax({
                     type : "GET",
-                    url : "/products/" + productId + "/reviews/" + page,
+                    url : "/products/" + [[${productId}]] + "/reviews?page=" + page,
                     contentType : "application/json",
                     success : function (data) {
                         // 상품의 전체 평점 값 설정하기
@@ -619,10 +616,8 @@
         }
 
         $(function() {
-
             // 상품상세 페이지 로딩
             productDetails.init();
-
             // 일반유저 문의 생성하기
             $("#questionModalBtn").on("click", callback.makeQuestionEventCb);
 

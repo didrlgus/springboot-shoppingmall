@@ -1,8 +1,10 @@
 package com.shoppingmall.controller;
 
 import com.shoppingmall.dto.UserRequestDto;
+import com.shoppingmall.service.CategoryService;
 import com.shoppingmall.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,16 +23,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Controller
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
+    private final CategoryService categoryService;
 
     @GetMapping("/login")
-    public String login(HttpServletRequest request) {
+    public String login(HttpServletRequest request, Model model) {
         String referrer = request.getHeader("Referer");
         request.getSession().setAttribute("prevPage", referrer);
+        model.addAttribute("catMapList", categoryService.getCategoryList());
 
         return "user/login-register";
     }
@@ -49,6 +53,7 @@ public class UserController {
     public String profiles(Model model) {
 
         model.addAttribute("pageName", "profiles");
+        model.addAttribute("catMapList", categoryService.getCategoryList());
 
         return "user/profiles";
     }

@@ -23,8 +23,8 @@ spring:
   jpa:
     database: mysql
     properties:
-      show-sql: true
       hibernate:
+        format_sql: true
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
     generate-ddl: true
     hibernate:
@@ -42,10 +42,6 @@ logging:
     org.hibernate.SQL: debug
     org.hibernate.type.descriptor.sql.BasicBinder: trace
 
-custom:
-  imp:
-    key: 1649704139434851
-    secret: VVn6B6yIM3Ev83Gs3bNw5nGHiLRCp8Tl4gsGm0o942Ec6lFawtHBQnj99aLzjEVnVn3inssrv6ECskNZ
 ---
 spring.profiles: set1
 spring.profiles.include: real-db, real-social-set1

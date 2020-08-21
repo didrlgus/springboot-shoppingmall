@@ -2,8 +2,8 @@ package com.shoppingmall.repository;
 
 import com.shoppingmall.domain.Product;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -20,13 +20,16 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
     Page<Product> findAllByLargeCatCd(String largeCatCd, Pageable pageable);
 
     // N+1 문제 발생
-    // @EntityGraph로 해결 -> left outer join 이 가능
-    // fetch join은 inner join 이므로 여기서는 사용 x
-    @EntityGraph(attributePaths = {"productDisPrcList"})
-    @Query("select p from Product p order by p.purchaseCount desc")
-    List<Product> findTop10ByOrderByPurchaseCountDesc();
+    // 1. fetch join
+    // 2. @EntityGraph로 해결 가능, @EntityGraph(attributePaths = {"productDisPrcList"})
+    // 3. BatchSize로 해결 가능 (batch size만큼의 product를 미리 가져옴)
+    // 1,2번은 paging 처리에서 문제 발생, 그래서 3번 선택
+    @Query("select p from Product p")
+    Page<Product> findBestTop10Products(Pageable pageable);
 
-    List<Product> findTop8ByOrderByCreatedDateDesc();
+    @Query("select p from Product p")
+    Page<Product> findNewTop8Products(Pageable pageable);
 
     Page<Product> findByLargeCatCdAndSmallCatCdOrderByCreatedDateDesc(String firstCatCd, String secondCatCd, Pageable pageable);
+
 }

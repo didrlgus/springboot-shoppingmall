@@ -44,11 +44,6 @@ public class ProductOrderService {
     private final RestTemplate restTemplate;
     private final ImpProperties impProperties;
 
-    /*@Value("${custom.imp.key}")
-    private String imp_key;
-    @Value("${custom.imp.secret}")
-    private String imp_secret;*/
-
     @Transactional
     public void makeOrder(ProductOrderRequestDto productOrderRequestDto) {
         String getTokenUrl = "https://api.iamport.kr/users/getToken";
@@ -96,22 +91,12 @@ public class ProductOrderService {
         // 해당 유저의 장바구니 조회
         List<Long> cartIdList = productOrderRequestDto.getCartIdList();
 
-        Optional<Cart> cartOpt = cartRepository.findById(cartIdList.get(0));
+        Cart cart = cartRepository.findById(cartIdList.get(0)).orElseThrow(() ->
+                new NotExistCartException("존재하지 않는 장바구니 입니다."));
 
-        if (!cartOpt.isPresent()) {
-            throw new NotExistCartException("존재하지 않는 장바구니 입니다.");
-        }
-
-        Cart cart = cartOpt.get();
         Long userId = cart.getUser().getId();
 
-        Optional<User> userOpt = userRepository.findById(userId);
-
-        if (!userOpt.isPresent()) {
-            throw new NotExistUserException("존재하지 않는 유저 입니다.");
-        }
-
-        User user = userOpt.get();
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotExistUserException("존재하지 않는 유저 입니다."));
 
         ProductOrder productOrder = productOrderRepository.save(ProductOrder.builder()
                 .user(user)
@@ -127,23 +112,19 @@ public class ProductOrderService {
         List<HashMap<String, Object>> productMapList = new ArrayList<>();
 
         for (Long cartId : cartIdList) {
-            cartOpt = cartRepository.findById(cartId);
+            cart = cartRepository.findById(cartId).orElseThrow(()
+                    -> new NotExistCartException("존재하지 않는 장바구니 입니다."));
 
-            if(cartOpt.isPresent()) {
-                // 사용한 장바구니 비활성화
-                cart = cartOpt.get();
-                cart.setProductOrder(productOrder);
-                cart.setUseYn('N');
+            // 사용한 장바구니 비활성화
+            cart.setProductOrder(productOrder);
+            cart.setUseYn('N');
 
-                HashMap<String, Object> productMap = new HashMap<>();
-                productMap.put("product", cart.getProduct());
-                productMap.put("productCount", cart.getProductCount());
-                productMapList.add(productMap);
+            HashMap<String, Object> productMap = new HashMap<>();
+            productMap.put("product", cart.getProduct());
+            productMap.put("productCount", cart.getProductCount());
+            productMapList.add(productMap);
 
-                cartRepository.save(cart);
-            } else {
-                throw new NotExistCartException("존재하지 않는 장바구니 입니다.");
-            }
+            cartRepository.save(cart);
         }
 
         // 상품의 재고 수정

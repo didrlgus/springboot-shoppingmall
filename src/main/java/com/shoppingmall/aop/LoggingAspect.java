@@ -20,29 +20,29 @@ import java.util.Arrays;
 @Aspect
 @Component
 public class LoggingAspect {
-
-    // 모든 핵심업무 호출 전에 수행
-    @Before("execution(* com.shoppingmall.service..*Service.*(..))")
-    public void initLogging(JoinPoint jp) {
-
-        // 핵심업무(서비스)의 클래스, 메서드, 매개변수 로깅처리
-        log.info("### 핵심업무 코드정보 : " + jp.getSignature());
-        log.info("### 메서드 : " + jp.getSignature().getName());
-        log.info("### 매개변수 : " + Arrays.toString(jp.getArgs()));
-    }
-
-    // 모든 Rest api 요청 시 실행 됨
-    @Around("execution(* com.shoppingmall..*RestController.*(..))")
-    public Object timeLogging(ProceedingJoinPoint pjp) throws Throwable {
-        // 핵심업무 실행 전 시간
-        long start = System.currentTimeMillis();
-        // 핵심업무 실행
-        Object result = pjp.proceed();
-        // 핵심업무 실행 후 시간
-        long end = System.currentTimeMillis();
-
-        log.info("### " + pjp.getSignature().getName() + " 메서드 실행시간 : {}", (end - start) + "ms");
-
-        return result;
-    }
+//
+//    // 모든 핵심업무 호출 전에 수행
+//    @Before("execution(* com.shoppingmall.service..*Service.*(..))")
+//    public void initLogging(JoinPoint jp) {
+//
+//        // 핵심업무(서비스)의 클래스, 메서드, 매개변수 로깅처리
+//        log.info("### 핵심업무 코드정보 : " + jp.getSignature());
+//        log.info("### 메서드 : " + jp.getSignature().getName());
+//        log.info("### 매개변수 : " + Arrays.toString(jp.getArgs()));
+//    }
+//
+//    // 모든 Rest api 요청 시 실행 됨
+//    @Around("execution(* com.shoppingmall..*RestController.*(..))")
+//    public Object timeLogging(ProceedingJoinPoint pjp) throws Throwable {
+//        // 핵심업무 실행 전 시간
+//        long start = System.currentTimeMillis();
+//        // 핵심업무 실행
+//        Object result = pjp.proceed();
+//        // 핵심업무 실행 후 시간
+//        long end = System.currentTimeMillis();
+//
+//        log.info("### " + pjp.getSignature().getName() + " 메서드 실행시간 : {}", (end - start) + "ms");
+//
+//        return result;
+//    }
 }

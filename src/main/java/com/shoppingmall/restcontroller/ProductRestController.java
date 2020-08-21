@@ -5,11 +5,8 @@ import com.shoppingmall.dto.ProductRequestDto;
 import com.shoppingmall.service.ProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,19 +16,22 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
-@Slf4j
-@AllArgsConstructor
 @Api(tags = "product", description = "상품")
+@Slf4j
+@RequiredArgsConstructor
 @RestController
 public class ProductRestController {
 
-    private ProductService productService;
+    private final ProductService productService;
 
-    @ApiOperation(value = "상품 전체 조회")
-    @GetMapping("/productList/catCd/{catCd}")
-    public ResponseEntity<?> getProductList(@PathVariable("catCd") String catCd, @RequestParam("page") int page) {
+    @ApiOperation(value = "상품 조회")
+    @GetMapping("/products")
+    public ResponseEntity<?> getProductList(@RequestParam(value = "catCd", required = false) String catCd,
+                                            @RequestParam(value = "page", required = false) int page,
+                                            @RequestParam(value = "sortCd", required = false) String sortCd,
+                                            @RequestParam(value = "saleCd", required = false) String saleCd) throws Exception {
 
-        return ResponseEntity.ok().body(productService.getProductListByCategory(catCd, page));
+        return ResponseEntity.ok().body(productService.getProductList(catCd, sortCd, saleCd, page));
     }
 
     @ApiOperation(value = "상품 상세")
@@ -39,28 +39,6 @@ public class ProductRestController {
     public ResponseEntity<?> getProductDetails(@PathVariable Long id) {
 
         return ResponseEntity.ok().body(productService.getProductDetails(id));
-    }
-
-    @ApiOperation(value = "키워드로 상품 조회")
-    @GetMapping("/productList/{page}/catCd/{catCd}/sortCd/{sortCd}")
-    public ResponseEntity<?> getProductListByKeyword(@PathVariable("page") int page, @PathVariable("catCd") String catCd,
-                                                     @PathVariable("sortCd") String sortCd) {
-
-        return ResponseEntity.ok().body(productService.getProductListByKeyword(page, catCd, sortCd));
-    }
-
-    @ApiOperation(value = "인기 상품 조회")
-    @GetMapping("/productList/best")
-    public ResponseEntity<?> getBestProductList() {
-
-        return ResponseEntity.ok().body(productService.getBestProductList());
-    }
-
-    @ApiOperation(value = "할인 상품 조회")
-    @GetMapping("/productList/sale/{page}")
-    public ResponseEntity<?> getSaleProductList(@PathVariable int page) {
-
-        return ResponseEntity.ok().body(productService.getSaleProductList(page));
     }
 
     @ApiOperation(value = "관련 상품 조회")
@@ -142,12 +120,4 @@ public class ProductRestController {
         return ResponseEntity.ok().body(productService.updateProduct(id, updateRequestDto));
     }
 
-    // 상품 삭제 (관리자 권한)
-    /*@ApiOperation(value = "상품 삭제 (관리자 권한)")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/products/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
-
-        return ResponseEntity.ok().body(productService.deleteProduct(id));
-    }*/
 }

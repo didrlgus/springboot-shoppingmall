@@ -6,6 +6,7 @@ import com.shoppingmall.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +16,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-@Slf4j
-@AllArgsConstructor
 @Api(tags = "user", description = "회원")
+@Slf4j
+@RequiredArgsConstructor
 @RestController
 public class UserRestController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @ApiOperation(value = "회원 중복 확인")
     @GetMapping("/duplicateCheck")

@@ -70,9 +70,9 @@ public class ReviewRestController {
 
     // 리뷰리스트 조회
     @ApiOperation(value = "리뷰 조회")
-    @GetMapping("/products/{productId}/reviews/{page}")
+    @GetMapping("/products/{productId}/reviews")
     public ResponseEntity<?> getReviewList(@PathVariable("productId") Long productId,
-                                           @PathVariable("page") int page) {
+                                           @RequestParam("page") int page) {
 
         return ResponseEntity.ok().body(reviewService.getReviewList(productId, page));
     }

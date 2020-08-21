@@ -1,6 +1,7 @@
 package com.shoppingmall.service;
 
 import com.shoppingmall.domain.ProductCat;
+import com.shoppingmall.domain.enums.Role;
 import com.shoppingmall.dto.CategoryRequestDto;
 import com.shoppingmall.dto.CategoryResponseDto;
 import com.shoppingmall.exception.CatCdException;
@@ -9,6 +10,8 @@ import com.shoppingmall.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @AllArgsConstructor
@@ -28,9 +32,18 @@ public class CategoryService {
 
         HashMap<String, Object> resultMap = new HashMap<>();
 
-        resultMap.put("mainCatList", categoryRepository.findAllByUseYn('Y'));
-        resultMap.put("adminCatList", categoryRepository.findAll());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(String.valueOf(authentication.getAuthorities()).contains(Role.ADMIN.getKey())) {
+            List<ProductCat> allCategoryList = categoryRepository.findAll();
 
+            resultMap.put("adminCatList", allCategoryList);
+            resultMap.put("mainCatList", allCategoryList.stream().
+                    filter(productCat -> productCat.getUseYn() == 'Y').collect(Collectors.toList()));
+
+            return resultMap;
+        }
+
+        resultMap.put("mainCatList", categoryRepository.findAllByUseYn('Y'));
         return resultMap;
     }
 

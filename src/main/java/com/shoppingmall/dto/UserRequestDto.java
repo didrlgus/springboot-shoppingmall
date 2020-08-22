@@ -7,6 +7,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -45,6 +46,7 @@ public class UserRequestDto {
     public User toEntity() {
 
         return User.builder()
+                .id(UUID.randomUUID().toString())
                 .authorities(this.getAuthorities())
                 .identifier(this.getIdentifier())
                 .password(this.getPassword())

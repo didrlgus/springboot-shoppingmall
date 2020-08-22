@@ -94,7 +94,7 @@ public class ProductOrderService {
         Cart cart = cartRepository.findById(cartIdList.get(0)).orElseThrow(() ->
                 new NotExistCartException("존재하지 않는 장바구니 입니다."));
 
-        Long userId = cart.getUser().getId();
+        String userId = cart.getUser().getId();
 
         User user = userRepository.findById(userId).orElseThrow(() -> new NotExistUserException("존재하지 않는 유저 입니다."));
 
@@ -159,7 +159,7 @@ public class ProductOrderService {
         return orderOpt.get().toResponseDto();
     }
 
-    public HashMap<String, Object> getAllOrder(Long userId, int page, Pageable pageable) {
+    public HashMap<String, Object> getAllOrder(String userId, int page, Pageable pageable) {
         int realPage = (page == 0) ? 0 : (page - 1);
         pageable = PageRequest.of(realPage, 5);
 

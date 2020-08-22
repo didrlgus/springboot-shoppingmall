@@ -41,10 +41,8 @@ public class CartService {
 
     @Transactional
     public void makeCart(CartRequestDto cartRequestDto) {
-        Optional<User> user = userRepository.findById(cartRequestDto.getUserId());
-
-        if (!user.isPresent())
-            throw new NotExistUserException("존재하지 않는 유저입니다.");
+        User user = userRepository.findById(cartRequestDto.getUserId()).orElseThrow(()
+                -> new NotExistUserException("존재하지 않는 유저입니다."));
 
         Optional<Product> productOpt = productRepository.findById(cartRequestDto.getProductId());
 
@@ -57,7 +55,7 @@ public class CartService {
             throw new ProductLimitCountException("재고가 없습니다.");
 
         cartRepository.save(Cart.builder()
-                .user(user.get())
+                .user(user)
                 .product(product)
                 .productCount(cartRequestDto.getProductCount())
                 .useYn('Y')
@@ -65,7 +63,7 @@ public class CartService {
     }
 
     @Transactional
-    public HashMap<String, Object> getCartList(Long userId, int page, Pageable pageable) {
+    public HashMap<String, Object> getCartList(String userId, int page, Pageable pageable) {
         int realPage = page - 1;
         pageable = PageRequest.of(realPage, 5);
 
@@ -120,7 +118,7 @@ public class CartService {
 
     @Transactional
     public int checkReviewAuthority(HashMap<String, Object> paramMap) {
-        Long userId    = Long.parseLong(paramMap.get("userId").toString());
+        String userId = paramMap.get("userId").toString();
         Long productId = Long.parseLong(paramMap.get("productId").toString());
 
         List<Cart> cartList = cartRepository.findAllByUserIdAndProductId(userId, productId);

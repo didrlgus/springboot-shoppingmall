@@ -43,14 +43,14 @@ public class UserService {
     }
 
     // 유저 프로필 조회, 적립금 데이터만 반환시켜 줌
-    public int getProfiles(Long id) {
+    public int getProfiles(String id) {
         User user = userRepository.findById(id).orElseThrow(() -> new NotExistUserException("존재하지 않는 유저입니다."));
 
         return user.getSavings();
     }
 
     // 유저 프로필 수정
-    public UserResponseDto updateProfiles(Long id, MeRequestDto meRequestDto) {
+    public UserResponseDto updateProfiles(String id, MeRequestDto meRequestDto) {
         User user = userRepository.findById(id).orElseThrow(() -> new NotExistUserException("존재하지 않는 유저입니다."));
 
         User updatedUser = user.updateProfiles(meRequestDto);
@@ -61,7 +61,7 @@ public class UserService {
     }
 
     // 유저 탈퇴
-    public void deleteProfiles(Long id) {
+    public void deleteProfiles(String id) {
         User user = userRepository.findById(id).orElseThrow(() -> new NotExistUserException("존재하지 않는 유저입니다."));
 
         User disabledUser = user.deleteProfiles();
@@ -70,7 +70,7 @@ public class UserService {
     }
 
     // 유저 비밀번호 변경
-    public void updatePassword(Long id, UpdatePasswordRequestDto passwordRequestDto) {
+    public void updatePassword(String id, UpdatePasswordRequestDto passwordRequestDto) {
         User user = userRepository.findById(id).orElseThrow(() -> new NotExistUserException("존재하지 않는 유저입니다."));
         String beforePassword = user.getPassword();
 

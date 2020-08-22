@@ -5,7 +5,6 @@ import com.shoppingmall.dto.UpdatePasswordRequestDto;
 import com.shoppingmall.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -33,14 +32,14 @@ public class UserRestController {
 
     @ApiOperation(value = "회원 상세")
     @GetMapping("/me/{id}")
-    public ResponseEntity<?> getProfiles(@PathVariable Long id) {
+    public ResponseEntity<?> getProfiles(@PathVariable String id) {
 
         return ResponseEntity.ok().body(userService.getProfiles(id));
     }
 
     @ApiOperation(value = "회원 프로필 수정")
     @PutMapping("/me/{id}")
-    public ResponseEntity<String> modifyProfiles(HttpServletRequest request, @PathVariable Long id,
+    public ResponseEntity<String> modifyProfiles(HttpServletRequest request, @PathVariable String id,
                                                  @RequestBody @Valid MeRequestDto meRequestDto, BindingResult bindingResult) {
 
         if(bindingResult.hasErrors()){
@@ -55,7 +54,7 @@ public class UserRestController {
 
     @ApiOperation(value = "회원 탈퇴")
     @DeleteMapping("/me/{id}")
-    public ResponseEntity<String> deleteProfiles(@PathVariable Long id) {
+    public ResponseEntity<String> deleteProfiles(@PathVariable String id) {
 
         userService.deleteProfiles(id);
 
@@ -64,7 +63,7 @@ public class UserRestController {
 
     @ApiOperation(value = "회원 비밀번호 수정")
     @PutMapping("/me/{id}/password")
-    public ResponseEntity<String> updatePassword(@PathVariable Long id,
+    public ResponseEntity<String> updatePassword(@PathVariable String id,
                                                  @RequestBody @Valid UpdatePasswordRequestDto passwordRequestDto,
                                                  BindingResult bindingResult) {
 

@@ -13,11 +13,11 @@ import java.util.List;
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
-    Page<Cart> findAllByUserIdAndUseYnOrderByCreatedDateDesc(Long userId, char useYn, Pageable pageable);
+    Page<Cart> findAllByUserIdAndUseYnOrderByCreatedDateDesc(String userId, char useYn, Pageable pageable);
 
-    List<Cart> findAllByUserIdAndUseYnOrderByCreatedDateDesc(Long userId, char useYn);
+    List<Cart> findAllByUserIdAndUseYnOrderByCreatedDateDesc(String userId, char useYn);
 
-    List<Cart> findAllByUserIdAndProductId(Long userId, Long productId);
+    List<Cart> findAllByUserIdAndProductId(String userId, Long productId);
 
     List<Cart> findByCreatedDateBeforeAndUseYnEquals(LocalDateTime minusDays, char y);
 

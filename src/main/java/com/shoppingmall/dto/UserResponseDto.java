@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 public class UserResponseDto {
 
-    private Long   id;
+    private String id;
     private String identifier;
     private String email;
     private String name;
@@ -29,7 +29,7 @@ public class UserResponseDto {
     @Getter
     @Builder
     public static class QuestionUserResponseDto {
-        private Long id;
+        private String id;
         private String identifier;
     }
 

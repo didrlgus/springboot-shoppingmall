@@ -21,8 +21,7 @@ import java.util.List;
 public class User extends BaseTimeEntity {
 
     @Id     // primary key
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column
     private String identifier;
@@ -52,7 +51,6 @@ public class User extends BaseTimeEntity {
     @Column
     private Integer savings;
 
-    @ColumnDefault("N")
     @Column
     private Character disabledYn;
 

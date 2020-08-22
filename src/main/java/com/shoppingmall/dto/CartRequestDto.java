@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 @ToString
 public class CartRequestDto {
 
-    private Long userId;
+    private String userId;
     private Long productId;
     @Min(value = 1, message = "수량은 1보다 작을 수 없습니다.")
     private Integer productCount;

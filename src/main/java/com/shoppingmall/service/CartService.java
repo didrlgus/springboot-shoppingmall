@@ -63,7 +63,7 @@ public class CartService {
     }
 
     @Transactional
-    public HashMap<String, Object> getCartList(String userId, int page, Pageable pageable) {
+    public HashMap<String, Object> getCartList(UUID userId, int page, Pageable pageable) {
         int realPage = page - 1;
         pageable = PageRequest.of(realPage, 5);
 
@@ -118,7 +118,7 @@ public class CartService {
 
     @Transactional
     public int checkReviewAuthority(HashMap<String, Object> paramMap) {
-        String userId = paramMap.get("userId").toString();
+        UUID userId = UUID.fromString(paramMap.get("userId").toString());
         Long productId = Long.parseLong(paramMap.get("productId").toString());
 
         List<Cart> cartList = cartRepository.findAllByUserIdAndProductId(userId, productId);

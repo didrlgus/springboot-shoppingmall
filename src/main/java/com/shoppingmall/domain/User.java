@@ -6,10 +6,12 @@ import com.shoppingmall.dto.MeRequestDto;
 import com.shoppingmall.dto.UserResponseDto;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -20,8 +22,11 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 public class User extends BaseTimeEntity {
 
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(columnDefinition = "BINARY(16)")
     @Id     // primary key
-    private String id;
+    private UUID id;
 
     @Column
     private String identifier;

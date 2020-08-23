@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Controller
@@ -20,7 +21,7 @@ public class ReviewController {
     private final CategoryService categoryService;
 
     @GetMapping("/reviews")
-    public String initReview(@RequestParam Long userId, @RequestParam Long productId, Model model) {
+    public String initReview(@RequestParam UUID userId, @RequestParam Long productId, Model model) {
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("userId", userId);
         paramMap.put("productId", productId);

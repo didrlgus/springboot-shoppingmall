@@ -6,7 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 @Repository
 public interface ProductOrderRepository extends JpaRepository<ProductOrder, Long> {
-    Page<ProductOrder> findAllByUserIdOrderByCreatedDateDesc(String userId, Pageable pageable);
+    Page<ProductOrder> findAllByUserIdOrderByCreatedDateDesc(UUID userId, Pageable pageable);
 }

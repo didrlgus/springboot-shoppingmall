@@ -46,7 +46,6 @@ public class UserRequestDto {
     public User toEntity() {
 
         return User.builder()
-                .id(UUID.randomUUID().toString())
                 .authorities(this.getAuthorities())
                 .identifier(this.getIdentifier())
                 .password(this.getPassword())

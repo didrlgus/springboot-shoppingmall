@@ -10,14 +10,11 @@ import com.shoppingmall.exception.DuplicatedException;
 import com.shoppingmall.exception.NotExistUserException;
 import com.shoppingmall.exception.UpdatePasswordException;
 import com.shoppingmall.repository.UserRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -43,14 +40,14 @@ public class UserService {
     }
 
     // 유저 프로필 조회, 적립금 데이터만 반환시켜 줌
-    public int getProfiles(String id) {
+    public int getProfiles(UUID id) {
         User user = userRepository.findById(id).orElseThrow(() -> new NotExistUserException("존재하지 않는 유저입니다."));
 
         return user.getSavings();
     }
 
     // 유저 프로필 수정
-    public UserResponseDto updateProfiles(String id, MeRequestDto meRequestDto) {
+    public UserResponseDto updateProfiles(UUID id, MeRequestDto meRequestDto) {
         User user = userRepository.findById(id).orElseThrow(() -> new NotExistUserException("존재하지 않는 유저입니다."));
 
         User updatedUser = user.updateProfiles(meRequestDto);
@@ -61,7 +58,7 @@ public class UserService {
     }
 
     // 유저 탈퇴
-    public void deleteProfiles(String id) {
+    public void deleteProfiles(UUID id) {
         User user = userRepository.findById(id).orElseThrow(() -> new NotExistUserException("존재하지 않는 유저입니다."));
 
         User disabledUser = user.deleteProfiles();
@@ -70,7 +67,7 @@ public class UserService {
     }
 
     // 유저 비밀번호 변경
-    public void updatePassword(String id, UpdatePasswordRequestDto passwordRequestDto) {
+    public void updatePassword(UUID id, UpdatePasswordRequestDto passwordRequestDto) {
         User user = userRepository.findById(id).orElseThrow(() -> new NotExistUserException("존재하지 않는 유저입니다."));
         String beforePassword = user.getPassword();
 

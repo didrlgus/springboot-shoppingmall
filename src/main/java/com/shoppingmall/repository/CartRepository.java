@@ -7,17 +7,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
-    Page<Cart> findAllByUserIdAndUseYnOrderByCreatedDateDesc(String userId, char useYn, Pageable pageable);
+    Page<Cart> findAllByUserIdAndUseYnOrderByCreatedDateDesc(UUID userId, char useYn, Pageable pageable);
 
-    List<Cart> findAllByUserIdAndUseYnOrderByCreatedDateDesc(String userId, char useYn);
+    List<Cart> findAllByUserIdAndUseYnOrderByCreatedDateDesc(UUID userId, char useYn);
 
-    List<Cart> findAllByUserIdAndProductId(String userId, Long productId);
+    List<Cart> findAllByUserIdAndProductId(UUID userId, Long productId);
 
     List<Cart> findByCreatedDateBeforeAndUseYnEquals(LocalDateTime minusDays, char y);
 

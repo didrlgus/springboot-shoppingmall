@@ -5,11 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.UUID;
+
 @Builder
 @Getter
 public class UserResponseDto {
 
-    private String id;
+    private UUID id;
     private String identifier;
     private String email;
     private String name;
@@ -29,7 +31,7 @@ public class UserResponseDto {
     @Getter
     @Builder
     public static class QuestionUserResponseDto {
-        private String id;
+        private UUID id;
         private String identifier;
     }
 

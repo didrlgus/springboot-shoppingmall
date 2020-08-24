@@ -1,6 +1,7 @@
 package com.shoppingmall.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.shoppingmall.common.BaseTimeEntity;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class ProductImg {
+public class ProductImg extends BaseTimeEntity  {
 
     @Id     // primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,12 +31,6 @@ public class ProductImg {
 
     @Column(nullable = false)
     private Character useYn;
-
-    @CreatedDate
-    private LocalDateTime createdDate;
-
-    @LastModifiedDate
-    private LocalDateTime updatedDate;
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")

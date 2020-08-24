@@ -1,7 +1,7 @@
 package com.shoppingmall.service;
 
 import com.shoppingmall.domain.Cart;
-import com.shoppingmall.domain.NormalUser;
+import com.shoppingmall.domain.User;
 import com.shoppingmall.domain.Product;
 import com.shoppingmall.domain.ProductDisPrc;
 import com.shoppingmall.dto.CartRequestDto;
@@ -9,7 +9,7 @@ import com.shoppingmall.dto.CartResponseDto;
 import com.shoppingmall.dto.PagingDto;
 import com.shoppingmall.exception.*;
 import com.shoppingmall.repository.CartRepository;
-import com.shoppingmall.repository.NormalUserRepository;
+import com.shoppingmall.repository.UserRepository;
 import com.shoppingmall.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class CartService {
-    private NormalUserRepository normalUserRepository;
+    private UserRepository userRepository;
     private ProductRepository productRepository;
     private CartRepository cartRepository;
     private JobLauncher jobLauncher;
@@ -41,10 +41,8 @@ public class CartService {
 
     @Transactional
     public void makeCart(CartRequestDto cartRequestDto) {
-        Optional<NormalUser> user = normalUserRepository.findById(cartRequestDto.getUserId());
-
-        if (!user.isPresent())
-            throw new NotExistUserException("존재하지 않는 유저입니다.");
+        User user = userRepository.findById(cartRequestDto.getUserId()).orElseThrow(()
+                -> new NotExistUserException("존재하지 않는 유저입니다."));
 
         Optional<Product> productOpt = productRepository.findById(cartRequestDto.getProductId());
 
@@ -57,7 +55,7 @@ public class CartService {
             throw new ProductLimitCountException("재고가 없습니다.");
 
         cartRepository.save(Cart.builder()
-                .normalUser(user.get())
+                .user(user)
                 .product(product)
                 .productCount(cartRequestDto.getProductCount())
                 .useYn('Y')
@@ -65,11 +63,11 @@ public class CartService {
     }
 
     @Transactional
-    public HashMap<String, Object> getCartList(Long userId, int page, Pageable pageable) {
+    public HashMap<String, Object> getCartList(UUID userId, int page, Pageable pageable) {
         int realPage = page - 1;
         pageable = PageRequest.of(realPage, 5);
 
-        Page<Cart> cartList = cartRepository.findAllByNormalUserIdAndUseYnOrderByCreatedDateDesc(userId, 'Y', pageable);
+        Page<Cart> cartList = cartRepository.findAllByUserIdAndUseYnOrderByCreatedDateDesc(userId, 'Y', pageable);
 
         if (cartList.getTotalElements() > 0) {
             List<CartResponseDto> cartResponseDtoList = new ArrayList<>();
@@ -84,7 +82,7 @@ public class CartService {
             PagingDto cartPagingDto = new PagingDto();
             cartPagingDto.setPagingInfo(cartLists);
 
-            List<Cart> carts = cartRepository.findAllByNormalUserIdAndUseYnOrderByCreatedDateDesc(userId, 'Y');
+            List<Cart> carts = cartRepository.findAllByUserIdAndUseYnOrderByCreatedDateDesc(userId, 'Y');
             int checkoutPrice = 0;
             List<Long> cartIdList = new ArrayList<>();
 
@@ -120,10 +118,10 @@ public class CartService {
 
     @Transactional
     public int checkReviewAuthority(HashMap<String, Object> paramMap) {
-        Long userId    = Long.parseLong(paramMap.get("userId").toString());
+        UUID userId = UUID.fromString(paramMap.get("userId").toString());
         Long productId = Long.parseLong(paramMap.get("productId").toString());
 
-        List<Cart> cartList = cartRepository.findAllByNormalUserIdAndProductId(userId, productId);
+        List<Cart> cartList = cartRepository.findAllByUserIdAndProductId(userId, productId);
 
         if (cartList.size() > 0) {
             for (Cart cart : cartList) {

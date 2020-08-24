@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @ToString
 public class QuestionRequestDto {
 
-    private Long normalUserId;
+    private Long userId;
     private Long productId;
     @NotBlank(message = "메세지를 작성해주세요.")
     private String message;

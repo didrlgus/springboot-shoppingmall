@@ -4,19 +4,17 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Getter
 @Setter
-public class SecurityNormalUser extends User {
+public class SecurityUser extends org.springframework.security.core.userdetails.User {
     private static final String ROLE_PREFIX = "ROLE_";
     private static final long serialVersionUID = 1L;
 
-    public SecurityNormalUser(NormalUser user) {
+    public SecurityUser(User user) {
         super(user.getIdentifier(), user.getPassword(), makeGrantedAuthority(user.getAuthorities()));
     }
 

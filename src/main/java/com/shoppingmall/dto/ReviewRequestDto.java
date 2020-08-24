@@ -7,13 +7,14 @@ import lombok.ToString;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import java.util.UUID;
 
 @Setter
 @Getter
 @ToString
 public class ReviewRequestDto {
 
-    private Long userId;
+    private UUID userId;
     private Long productId;
     @NotBlank(message = "제목을 작성하세요.")
     private String title;

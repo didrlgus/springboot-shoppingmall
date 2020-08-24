@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.UUID;
 
 @Slf4j
 @AllArgsConstructor
@@ -53,7 +54,7 @@ public class ProductOrderRestController {
     @ApiOperation(value = "전체 주문 조회")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/users/{userId}/orders/{page}")
-    public ResponseEntity<?> getAllOrder(@PathVariable("userId") Long userId, @PathVariable("page") int page,
+    public ResponseEntity<?> getAllOrder(@PathVariable("userId") UUID userId, @PathVariable("page") int page,
                                          @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
         return ResponseEntity.ok().body(productOrderService.getAllOrder(userId, page, pageable));

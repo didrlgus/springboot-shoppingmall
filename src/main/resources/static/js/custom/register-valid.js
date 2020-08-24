@@ -20,19 +20,15 @@ var validCallback = {
         }
 
         $.ajax({
-            url : "/duplicateCheck",
+            url : "/duplicateCheck?identifier=" + identifier,
             type: "get",
             contentType : "application/json",
-            data : {"identifier" : identifier},
             async : false,
             success : function (data) {
-
-                if (data === "SUCCESS") {
+                if (data) {
                     alert("사용 가능한 아이디 입니다!");
-
                     that.idDupChk = true;
                     that.tempId   = identifier;
-
                 }
             },
             error : function (e) {

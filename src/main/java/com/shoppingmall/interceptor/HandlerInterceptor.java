@@ -16,18 +16,18 @@ import java.util.HashMap;
 @Component
 public class HandlerInterceptor extends HandlerInterceptorAdapter {
 
-    private CategoryService categoryService;
-
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-
-        // ajax 요청인지 아닌지 판단 (ajax 요청이 아닐 경우 if문 수행)
-        if (!"XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
-            HashMap<String, Object> catMapList = categoryService.getCategoryList();
-
-            log.info("#### 인터셉터/ 카테고리 리스트 : {}", catMapList);
-
-            modelAndView.addObject("catMapList", catMapList);
-        }
-    }
+//    private CategoryService categoryService;
+//
+//    @Override
+//    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+//
+//        // ajax 요청인지 아닌지 판단 (ajax 요청이 아닐 경우 if문 수행)
+//        if (!"XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+//            HashMap<String, Object> catMapList = categoryService.getCategoryList();
+//
+//            log.info("#### 인터셉터/ 카테고리 리스트 : {}", catMapList);
+//
+//            modelAndView.addObject("catMapList", catMapList);
+//        }
+//    }
 }

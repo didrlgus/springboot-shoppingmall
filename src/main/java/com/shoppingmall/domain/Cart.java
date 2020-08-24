@@ -1,7 +1,7 @@
 package com.shoppingmall.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.shoppingmall.dto.CartRequestDto;
+import com.shoppingmall.common.BaseTimeEntity;
 import com.shoppingmall.dto.CartResponseDto;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -9,7 +9,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Setter
 @Getter
@@ -18,7 +17,7 @@ import java.util.Date;
 @Builder
 @Entity
 @EntityListeners(value = {AuditingEntityListener.class})
-public class Cart {
+public class Cart extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,13 +26,11 @@ public class Cart {
     private Integer productCount;
     @Column
     private Character useYn;
-    @CreatedDate
-    private LocalDateTime createdDate;
 
     // 객체들 간의 관계
     @ManyToOne
-    @JoinColumn(name = "normal_user_id", referencedColumnName = "id")
-    private NormalUser normalUser;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
@@ -48,7 +45,7 @@ public class Cart {
 
         return CartResponseDto.builder()
                 .id(id)
-                .normalUser(normalUser)
+                .user(user)
                 .product(product)
                 .salePrice((int)((((float) 100 - (float) disPrice) / (float)100) * product.getPrice()))
                 .productCount(productCount)

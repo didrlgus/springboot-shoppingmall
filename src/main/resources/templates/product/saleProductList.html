@@ -9,10 +9,11 @@
 
                 getSaleProductList  : function (obj) {
                     var page = obj ? $(obj).data("page") : 1;
+                    var saleCd = "yes";
 
                     $.ajax({
                         type : "GET",
-                        url  : "/productList/sale/" + page,
+                        url  : "/products?saleCd=" + saleCd + "&page=" + page,
                         contentType : "application/json",
                         success : function (data) {
                             var saleProductList             = data.saleProductList.content,

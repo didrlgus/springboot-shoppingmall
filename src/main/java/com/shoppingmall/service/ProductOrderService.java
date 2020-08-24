@@ -4,7 +4,7 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.shoppingmall.common.ImpProperties;
 import com.shoppingmall.common.JsonUtil;
 import com.shoppingmall.domain.Cart;
-import com.shoppingmall.domain.NormalUser;
+import com.shoppingmall.domain.User;
 import com.shoppingmall.domain.Product;
 import com.shoppingmall.domain.ProductOrder;
 import com.shoppingmall.domain.enums.OrderStatus;
@@ -13,10 +13,9 @@ import com.shoppingmall.dto.ProductOrderRequestDto;
 import com.shoppingmall.dto.ProductOrderResponseDto;
 import com.shoppingmall.exception.*;
 import com.shoppingmall.repository.CartRepository;
-import com.shoppingmall.repository.NormalUserRepository;
+import com.shoppingmall.repository.UserRepository;
 import com.shoppingmall.repository.ProductOrderRepository;
 import com.shoppingmall.repository.ProductRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -39,16 +38,11 @@ import java.util.*;
 public class ProductOrderService {
 
     private final CartRepository cartRepository;
-    private final NormalUserRepository normalUserRepository;
+    private final UserRepository userRepository;
     private final ProductOrderRepository productOrderRepository;
     private final ProductRepository productRepository;
     private final RestTemplate restTemplate;
     private final ImpProperties impProperties;
-
-    /*@Value("${custom.imp.key}")
-    private String imp_key;
-    @Value("${custom.imp.secret}")
-    private String imp_secret;*/
 
     @Transactional
     public void makeOrder(ProductOrderRequestDto productOrderRequestDto) {
@@ -97,25 +91,15 @@ public class ProductOrderService {
         // 해당 유저의 장바구니 조회
         List<Long> cartIdList = productOrderRequestDto.getCartIdList();
 
-        Optional<Cart> cartOpt = cartRepository.findById(cartIdList.get(0));
+        Cart cart = cartRepository.findById(cartIdList.get(0)).orElseThrow(() ->
+                new NotExistCartException("존재하지 않는 장바구니 입니다."));
 
-        if (!cartOpt.isPresent()) {
-            throw new NotExistCartException("존재하지 않는 장바구니 입니다.");
-        }
+        UUID userId = cart.getUser().getId();
 
-        Cart cart = cartOpt.get();
-        Long userId = cart.getNormalUser().getId();
-
-        Optional<NormalUser> userOpt = normalUserRepository.findById(userId);
-
-        if (!userOpt.isPresent()) {
-            throw new NotExistUserException("존재하지 않는 유저 입니다.");
-        }
-
-        NormalUser user = userOpt.get();
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotExistUserException("존재하지 않는 유저 입니다."));
 
         ProductOrder productOrder = productOrderRepository.save(ProductOrder.builder()
-                .normalUser(user)
+                .user(user)
                 .orderNumber(productOrderRequestDto.getOrderNumber())
                 .orderName(productOrderRequestDto.getOrderName())
                 .amount(productOrderRequestDto.getAmount())
@@ -128,23 +112,19 @@ public class ProductOrderService {
         List<HashMap<String, Object>> productMapList = new ArrayList<>();
 
         for (Long cartId : cartIdList) {
-            cartOpt = cartRepository.findById(cartId);
+            cart = cartRepository.findById(cartId).orElseThrow(()
+                    -> new NotExistCartException("존재하지 않는 장바구니 입니다."));
 
-            if(cartOpt.isPresent()) {
-                // 사용한 장바구니 비활성화
-                cart = cartOpt.get();
-                cart.setProductOrder(productOrder);
-                cart.setUseYn('N');
+            // 사용한 장바구니 비활성화
+            cart.setProductOrder(productOrder);
+            cart.setUseYn('N');
 
-                HashMap<String, Object> productMap = new HashMap<>();
-                productMap.put("product", cart.getProduct());
-                productMap.put("productCount", cart.getProductCount());
-                productMapList.add(productMap);
+            HashMap<String, Object> productMap = new HashMap<>();
+            productMap.put("product", cart.getProduct());
+            productMap.put("productCount", cart.getProductCount());
+            productMapList.add(productMap);
 
-                cartRepository.save(cart);
-            } else {
-                throw new NotExistCartException("존재하지 않는 장바구니 입니다.");
-            }
+            cartRepository.save(cart);
         }
 
         // 상품의 재고 수정
@@ -166,7 +146,7 @@ public class ProductOrderService {
         int addSavings = (int)((((float) 3 / (float)100) * productOrderRequestDto.getAmount()));
 
         user.setSavings(user.getSavings() - productOrderRequestDto.getUseSavings() + addSavings);
-        normalUserRepository.save(user);
+        userRepository.save(user);
     }
 
     public ProductOrderResponseDto getOrderDetails(Long orderId) {
@@ -179,11 +159,11 @@ public class ProductOrderService {
         return orderOpt.get().toResponseDto();
     }
 
-    public HashMap<String, Object> getAllOrder(Long userId, int page, Pageable pageable) {
+    public HashMap<String, Object> getAllOrder(UUID userId, int page, Pageable pageable) {
         int realPage = (page == 0) ? 0 : (page - 1);
         pageable = PageRequest.of(realPage, 5);
 
-        Page<ProductOrder> productOrderPage = productOrderRepository.findAllByNormalUserIdOrderByCreatedDateDesc(userId, pageable);
+        Page<ProductOrder> productOrderPage = productOrderRepository.findAllByUserIdOrderByCreatedDateDesc(userId, pageable);
 
         if (productOrderPage.getTotalElements() > 0) {
             List<ProductOrderResponseDto> productOrderResponseDtoList = new ArrayList<>();

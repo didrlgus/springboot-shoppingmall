@@ -130,7 +130,7 @@
 
                     $.ajax({
                         type : "GET",
-                        url  : "/productList/" + page + "/catCd/" + catCd,
+                        url  : "/products?catCd=" + catCd + "&page=" + page,
                         contentType : "application/json",
                         success : function(data) {
                             productListObj.getProductListCmmn(data);
@@ -185,7 +185,7 @@
 
                     $.ajax({
                         type : "GET",
-                        url  : "/productList/" + page + "/catCd/" + catCd + "/sortCd/" + sortCd,
+                        url  : "/products?catCd=" + catCd + "&sortCd=" + sortCd + "&page=" + page,
                         contentType : "application/json",
                         success : function (data) {
                             productListObj.getProductListCmmn(data, "keyword");

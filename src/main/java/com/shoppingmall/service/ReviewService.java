@@ -2,7 +2,7 @@ package com.shoppingmall.service;
 
 import com.shoppingmall.common.FileUploadProperties;
 import com.shoppingmall.common.UploadFileUtils;
-import com.shoppingmall.domain.NormalUser;
+import com.shoppingmall.domain.User;
 import com.shoppingmall.domain.Product;
 import com.shoppingmall.domain.Review;
 import com.shoppingmall.domain.UploadFile;
@@ -12,7 +12,7 @@ import com.shoppingmall.dto.ReviewResponseDto;
 import com.shoppingmall.exception.NotExistProductException;
 import com.shoppingmall.exception.NotExistReviewException;
 import com.shoppingmall.exception.NotExistUserException;
-import com.shoppingmall.repository.NormalUserRepository;
+import com.shoppingmall.repository.UserRepository;
 import com.shoppingmall.repository.ProductRepository;
 import com.shoppingmall.repository.ReviewRepository;
 import com.shoppingmall.repository.UploadFileRepository;
@@ -51,11 +51,19 @@ public class ReviewService {
     @Autowired
     private UploadFileRepository uploadFileRepository;
     @Autowired
-    private NormalUserRepository normalUserRepository;
+    private UserRepository userRepository;
     @Autowired
     private ProductRepository productRepository;
     @Autowired
     private ReviewRepository reviewRepository;
+
+    public String initReview(Long productId) {
+
+        Product product = productRepository.findById(productId).orElseThrow(()
+                -> new NotExistProductException("존재하지 않는 상품입니다."));
+
+        return product.getProductNm();
+    }
 
     @Transactional
     public UploadFile uploadReviewImage(MultipartFile file) throws Exception {
@@ -112,7 +120,7 @@ public class ReviewService {
     // 리뷰 추가 서비스
     @Transactional
     public void makeReview(ReviewRequestDto reviewRequestDto) {
-        Optional<NormalUser> userOpt = normalUserRepository.findById(reviewRequestDto.getUserId());
+        Optional<User> userOpt = userRepository.findById(reviewRequestDto.getUserId());
 
         if (!userOpt.isPresent())
             throw new NotExistUserException("존재하지 않는 유저입니다.");
@@ -126,7 +134,7 @@ public class ReviewService {
         Product product = productOpt.get();
 
         reviewRepository.save(Review.builder()
-                .normalUser(userOpt.get())
+                .user(userOpt.get())
                 .product(product)
                 .title(reviewRequestDto.getTitle())
                 .content(reviewRequestDto.getContent())

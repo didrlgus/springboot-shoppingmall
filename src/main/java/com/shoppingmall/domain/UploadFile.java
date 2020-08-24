@@ -1,5 +1,6 @@
 package com.shoppingmall.domain;
 
+import com.shoppingmall.common.BaseTimeEntity;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @EntityListeners(value = {AuditingEntityListener.class})
-public class UploadFile {
+public class UploadFile extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,8 +32,4 @@ public class UploadFile {
     @Column
     private Long size;
 
-    @CreatedDate
-    private LocalDateTime createdDate;
-    @LastModifiedDate
-    private LocalDateTime updatedDate;
 }

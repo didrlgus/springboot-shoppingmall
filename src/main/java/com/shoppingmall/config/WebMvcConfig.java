@@ -1,24 +1,19 @@
 package com.shoppingmall.config;
 
-import com.shoppingmall.interceptor.HandlerInterceptor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+@RequiredArgsConstructor
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
     // 생성자 주입
-    private HandlerInterceptor handlerInterceptor;
-    private Environment environment;
-
-    public WebMvcConfig(HandlerInterceptor handlerInterceptor, Environment environment) {
-        this.handlerInterceptor = handlerInterceptor;
-        this.environment = environment;
-    }
+    //private final HandlerInterceptor handlerInterceptor;
+    private final Environment environment;
 
     private static final String CLASSPATH_RESOURCE_LOCATIONS = "classpath:/static/";
     @Value("${file.upload-dir}")
@@ -26,13 +21,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Value("{file.product-upload-dir}")
     private String productUploadsRoot;
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(handlerInterceptor)
-                .addPathPatterns("/*");
-
-        WebMvcConfigurer.super.addInterceptors(registry);
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(handlerInterceptor)
+//                .addPathPatterns("/*");
+//
+//        WebMvcConfigurer.super.addInterceptors(registry);
+//    }
 
     // 정적 리소스 설정
     @Override

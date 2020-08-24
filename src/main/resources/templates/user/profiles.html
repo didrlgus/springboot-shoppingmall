@@ -18,7 +18,7 @@
 
                     var user = [[${session.user}]],
                         userId = user.id;
-
+                    console.log(user)
                     $.ajax({
                         type : "GET",
                         url  : "/me/" + userId,

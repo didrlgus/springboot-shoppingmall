@@ -1,10 +1,9 @@
 package com.shoppingmall.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.shoppingmall.common.BaseTimeEntity;
 import com.shoppingmall.dto.ProductDisPrcResponseDto;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -17,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class ProductDisPrc implements Comparable<ProductDisPrc> {
+public class ProductDisPrc extends BaseTimeEntity implements Comparable<ProductDisPrc> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,12 +33,6 @@ public class ProductDisPrc implements Comparable<ProductDisPrc> {
 
     @Column
     private Character rateYn;
-
-    @CreatedDate
-    private LocalDateTime createdDate;
-
-    @LastModifiedDate
-    private LocalDateTime updatedDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", referencedColumnName = "id")

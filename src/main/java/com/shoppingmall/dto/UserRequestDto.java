@@ -1,19 +1,20 @@
 package com.shoppingmall.dto;
 
-import com.shoppingmall.domain.NormalUser;
+import com.shoppingmall.domain.User;
 import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @Builder
 @ToString
-public class NormalUserRequestDto {
+public class UserRequestDto {
 
     @NotBlank(message = "아이디를 작성해주세요.")
     @Pattern(regexp = "^(?=.*[a-zA-Z0-9]).{6,12}$", message = "아이디는 영문/숫자 조합 6자리 ~ 12자리")
@@ -42,9 +43,9 @@ public class NormalUserRequestDto {
     @Size(max = 20, message = "상세주소를 알맞게 작성해주세요.")
     private String detailAddr;
 
-    public NormalUser toEntity() {
+    public User toEntity() {
 
-        return NormalUser.builder()
+        return User.builder()
                 .authorities(this.getAuthorities())
                 .identifier(this.getIdentifier())
                 .password(this.getPassword())
@@ -54,7 +55,7 @@ public class NormalUserRequestDto {
                 .roadAddr(this.getRoadAddr())
                 .buildingName(this.getBuildingName())
                 .detailAddr(this.getDetailAddr())
-                .deleteYn('N')
+                .disabledYn('N')
                 .build();
     }
 }

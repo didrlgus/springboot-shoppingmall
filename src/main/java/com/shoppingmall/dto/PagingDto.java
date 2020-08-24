@@ -30,7 +30,7 @@ public class PagingDto {
         int startPage = (nowScale - 1) * scale + 1;            	    // 스케일 시작 페이지
         int endPage   = startPage + scale - 1;               		// 스케일 끝 페이지
 
-        endPage       = (endPage > totPage) ? totPage : endPage;
+        endPage       = Math.min(endPage, totPage);
 
         int prevPage  = startPage - 1;                      		// 이전 페이지
         int nextPage  = endPage + 1;                        		// 다음 페이지

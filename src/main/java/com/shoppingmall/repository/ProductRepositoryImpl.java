@@ -2,10 +2,12 @@ package com.shoppingmall.repository;
 
 
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.shoppingmall.domain.Product;
 import com.shoppingmall.domain.QProduct;
+import com.shoppingmall.dto.ProductResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +38,7 @@ public class ProductRepositoryImpl extends QuerydslRepositorySupport implements 
     public List<Product> getRelatedProductList(Long id, String smallCatCd) {
 
         return queryFactory.selectFrom(product)
-                .leftJoin(product.productDisPrcList, productDisPrc)
+                .leftJoin(product.productDisPrcList, productDisPrc).fetchJoin()
                 .where(product.id.ne(id), product.smallCatCd.eq(smallCatCd))
                 .orderBy(product.purchaseCount.desc(), product.createdDate.desc())
                 .distinct()
@@ -57,7 +59,7 @@ public class ProductRepositoryImpl extends QuerydslRepositorySupport implements 
     public Page<Product> findSaleProductList(PageRequest pageable) {
         JPQLQuery<Product> query
                 = from(product).innerJoin(product.productDisPrcList, productDisPrc).fetchJoin()
-                  .where().orderBy(product.updatedDate.desc()).distinct();
+                  .where().orderBy(product.modifiedDate.desc()).distinct();
 
         /*List<Product> query = queryFactory
                 .selectFrom(product)

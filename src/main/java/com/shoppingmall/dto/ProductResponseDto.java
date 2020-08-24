@@ -1,12 +1,9 @@
 package com.shoppingmall.dto;
 
-import com.shoppingmall.domain.Question;
 import com.shoppingmall.domain.enums.ProductStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
-
-import java.util.List;
 
 @Getter
 @Builder
@@ -25,11 +22,10 @@ public class ProductResponseDto {
     private Integer totalCount;
     private ProductStatus productStatus;
     private Integer rateAvg;
-    private List<Question> questions;
 
+    @ToString
     @Getter
     @Builder
-    @ToString
     public static class MainProductResponseDto {
         private Long id;
         private String productNm;

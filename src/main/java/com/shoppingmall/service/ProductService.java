@@ -142,7 +142,7 @@ public class ProductService {
 
     public List<ProductResponseDto.MainProductResponseDto> getBestProductList() {
         Pageable pageable = PageRequest.of(0, 10, new Sort(Sort.Direction.DESC, "purchaseCount"));
-        Page<Product> bestProducts = productRepository.findBestTop10Products(pageable);
+        List<Product> bestProducts = productRepository.findBestTop10Products(pageable);
 
         List<ProductResponseDto.MainProductResponseDto> bestProductResponseList = new ArrayList<>();
 
@@ -159,7 +159,7 @@ public class ProductService {
 
     public List<ProductResponseDto.MainProductResponseDto> getNewProductList() {
         Pageable pageable = PageRequest.of(0, 8, new Sort(Sort.Direction.DESC, "createdDate"));
-        Page<Product> newProducts = productRepository.findNewTop8Products(pageable);
+        List<Product> newProducts = productRepository.findNewTop8Products(pageable);
 
         List<ProductResponseDto.MainProductResponseDto> newProductResponseList = new ArrayList<>();
 

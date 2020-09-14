@@ -25,10 +25,10 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
     // 3. BatchSize로 해결 가능 (batch size만큼의 product를 미리 가져옴)
     // 1,2번은 paging 처리에서 문제 발생, 그래서 3번 선택
     @Query("select p from Product p")
-    Page<Product> findBestTop10Products(Pageable pageable);
+    List<Product> findBestTop10Products(Pageable pageable);
 
     @Query("select p from Product p")
-    Page<Product> findNewTop8Products(Pageable pageable);
+    List<Product> findNewTop8Products(Pageable pageable);
 
     Page<Product> findByLargeCatCdAndSmallCatCdOrderByCreatedDateDesc(String firstCatCd, String secondCatCd, Pageable pageable);
 

@@ -30,14 +30,17 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     compile group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '2.4.1'
     compile("org.mariadb.jdbc:mariadb-java-client")
+    compile('mysql:mysql-connector-java')
     compile("com.querydsl:querydsl-jpa")
     compile("com.querydsl:querydsl-apt")
-    compileOnly 'org.projectlombok:lombok'
+    compile('org.projectlombok:lombok')
     runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile("org.springframework.security:spring-security-test")
     testImplementation 'org.springframework.batch:spring-batch-test'
     compile('org.springframework.boot:spring-boot-starter-security')
+    testCompile("org.springframework.security:spring-security-test")
     compile('org.springframework.security:spring-security-oauth2-client')
     compile('org.springframework.security:spring-security-oauth2-jose')
     compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'

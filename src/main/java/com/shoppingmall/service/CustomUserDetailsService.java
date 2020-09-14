@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 import java.util.Optional;
 
+import static java.util.Objects.nonNull;
+
 @RequiredArgsConstructor
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -34,9 +36,11 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new DeleteUserException("이미 탈퇴된 유저입니다. 아이디를 다시 만들어주세요.");
         }
 
-        // 컨텍스트 홀더
-        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-        request.getSession().setAttribute("user", user.toResponseDto(user));
+        if(nonNull(RequestContextHolder.getRequestAttributes())) {
+            // 컨텍스트 홀더
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            request.getSession().setAttribute("user", user.toResponseDto(user));
+        }
 
         return new SecurityUser(user);
     }

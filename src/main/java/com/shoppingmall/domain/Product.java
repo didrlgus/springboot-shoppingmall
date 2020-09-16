@@ -50,7 +50,7 @@ public class Product extends BaseTimeEntity  {
     @Column(length = 10)
     private ProductStatus productStatus;
 
-    @Column(length = 100)
+    @Column(length = 150)
     private String titleImg;
 
     @Column

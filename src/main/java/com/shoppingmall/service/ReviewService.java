@@ -1,11 +1,11 @@
 package com.shoppingmall.service;
 
-import com.shoppingmall.common.FileUploadProperties;
+import com.amazonaws.services.s3.AmazonS3;
+import com.shoppingmall.common.AWSS3Utils;
 import com.shoppingmall.common.UploadFileUtils;
 import com.shoppingmall.domain.User;
 import com.shoppingmall.domain.Product;
 import com.shoppingmall.domain.Review;
-import com.shoppingmall.domain.UploadFile;
 import com.shoppingmall.dto.PagingDto;
 import com.shoppingmall.dto.ReviewRequestDto;
 import com.shoppingmall.dto.ReviewResponseDto;
@@ -15,11 +15,8 @@ import com.shoppingmall.exception.NotExistUserException;
 import com.shoppingmall.repository.UserRepository;
 import com.shoppingmall.repository.ProductRepository;
 import com.shoppingmall.repository.ReviewRepository;
-import com.shoppingmall.repository.UploadFileRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -28,34 +25,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class ReviewService {
 
-    private final Path rootLocation;
-
-    @Autowired
-    public ReviewService(FileUploadProperties prop) {
-        this.rootLocation = Paths.get(prop.getUploadDir())
-                .toAbsolutePath().normalize();
-    }
-    @Autowired
-    private UploadFileRepository uploadFileRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private ReviewRepository reviewRepository;
+    private final AWSS3Utils awss3Utils;
+    private final UserRepository userRepository;
+    private final ProductRepository productRepository;
+    private final ReviewRepository reviewRepository;
 
     public String initReview(Long productId) {
 
@@ -65,56 +49,14 @@ public class ReviewService {
         return product.getProductNm();
     }
 
-    @Transactional
-    public UploadFile uploadReviewImage(MultipartFile file) throws Exception {
+    public String uploadReviewImage(MultipartFile file, String dirName) throws IOException {
+        // S3와 연결할 client 얻기
+        AmazonS3 s3Client = awss3Utils.getS3Client();
 
-        try {
-            if (file.isEmpty()) {
-                throw new Exception("Failed to store empty file " + file.getOriginalFilename());
-            }
+        // S3에 저장할 파일 경로 얻기
+        String saveFilePath = UploadFileUtils.getSaveFilePath(file, dirName);
 
-            String saveFileName = UploadFileUtils.fileSave(rootLocation.toString(), file);
-
-            if (saveFileName.toCharArray()[0] == '/') {
-                saveFileName = saveFileName.substring(1);
-            }
-
-            Resource resource = loadAsResource(saveFileName);
-
-            UploadFile saveFile = new UploadFile();
-            saveFile.setSaveFileName(saveFileName);
-            saveFile.setFileName(file.getOriginalFilename());
-            saveFile.setContentType(file.getContentType());
-            saveFile.setFilePath(rootLocation.toString().replace(File.separatorChar, '/') + File.separator + saveFileName);
-            saveFile.setSize(resource.contentLength());
-            saveFile = uploadFileRepository.save(saveFile);
-
-            return saveFile;
-        } catch (IOException e) {
-            throw new Exception("Failed to store file " + file.getOriginalFilename(), e);
-        }
-    }
-
-    private Resource loadAsResource(String fileName) throws Exception {
-        try {
-            if (fileName.toCharArray()[0] == '/') {
-                fileName = fileName.substring(1);
-            }
-
-            Path file = loadPath(fileName);
-            Resource resource = new UrlResource(file.toUri());
-            if (resource.exists() || resource.isReadable()) {
-                return resource;
-            } else {
-                throw new Exception("Could not read file: " + fileName);
-            }
-        } catch (Exception e) {
-            throw new Exception("Could not read file: " + fileName);
-        }
-    }
-
-    private Path loadPath(String fileName) {
-        return rootLocation.resolve(fileName);
+        return awss3Utils.putObjectToS3AndGetUrl(s3Client, saveFilePath, file);
     }
 
     // 리뷰 추가 서비스

@@ -1,10 +1,10 @@
 package com.shoppingmall.service;
 
-import com.shoppingmall.common.FileUploadProperties;
+import com.amazonaws.services.s3.AmazonS3;
+import com.shoppingmall.common.AWSS3Utils;
 import com.shoppingmall.common.UploadFileUtils;
 import com.shoppingmall.domain.Product;
 import com.shoppingmall.domain.ProductDisPrc;
-import com.shoppingmall.domain.UploadFile;
 import com.shoppingmall.domain.enums.ProductStatus;
 import com.shoppingmall.dto.PagingDto;
 import com.shoppingmall.dto.ProductRequestDto;
@@ -14,18 +14,14 @@ import com.shoppingmall.exception.NotExistProductException;
 import com.shoppingmall.exception.ProductListException;
 import com.shoppingmall.repository.ProductDisPrcRepository;
 import com.shoppingmall.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,20 +30,13 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class ProductService {
 
-    private final Path rootLocation;
-    private ProductRepository productRepository;
-    private ProductDisPrcRepository productDisPrcRepository;
-
-    public ProductService(FileUploadProperties prop,
-                          ProductRepository productRepository, ProductDisPrcRepository productDisPrcRepository) {
-        this.rootLocation = Paths.get(prop.getProductUploadDir())
-                .toAbsolutePath().normalize();
-        this.productRepository = productRepository;
-        this.productDisPrcRepository = productDisPrcRepository;
-    }
+    private final AWSS3Utils awss3Utils;
+    private final ProductRepository productRepository;
+    private final ProductDisPrcRepository productDisPrcRepository;
 
     // 전체 상품 혹은 카테고리로 상품 조회
     public HashMap<String, Object> getProductList(String catCd, String sortCd, String saleCd, int page) throws Exception {
@@ -494,53 +483,15 @@ public class ProductService {
                 .build();
     }
 
-    @Transactional
-    public UploadFile uploadProductImage(MultipartFile file) throws Exception {
-        try {
-            if (file.isEmpty()) {
-                throw new Exception("Failed to store empty file " + file.getOriginalFilename());
-            }
+    public String uploadProductImage(MultipartFile file, String dirName) throws IOException {
+        // S3와 연결할 client 얻기
+        AmazonS3 s3Client = awss3Utils.getS3Client();
 
-            String saveFileName = UploadFileUtils.fileSave(rootLocation.toString(), file);
+        // S3에 저장할 파일 경로 얻기
+        String saveFilePath = UploadFileUtils.getSaveFilePath(file, dirName);
 
-            if (saveFileName.toCharArray()[0] == '/') {
-                saveFileName = saveFileName.substring(1);
-            }
-
-            Resource resource = loadAsResource(saveFileName);
-
-            UploadFile saveFile = new UploadFile();
-            saveFile.setSaveFileName(saveFileName);
-            saveFile.setFileName(file.getOriginalFilename());
-            saveFile.setContentType(file.getContentType());
-            saveFile.setFilePath(rootLocation.toString().replace(File.separatorChar, '/') + File.separator + saveFileName);
-            saveFile.setSize(resource.contentLength());
-
-            return saveFile;
-        } catch (IOException e) {
-            throw new Exception("Failed to store file " + file.getOriginalFilename(), e);
-        }
+        // S3에 파일 저장 후 url 반환
+        return awss3Utils.putObjectToS3AndGetUrl(s3Client, saveFilePath, file);
     }
 
-    private Resource loadAsResource(String fileName) throws Exception {
-        try {
-            if (fileName.toCharArray()[0] == '/') {
-                fileName = fileName.substring(1);
-            }
-
-            Path file = loadPath(fileName);
-            Resource resource = new UrlResource(file.toUri());
-            if (resource.exists() || resource.isReadable()) {
-                return resource;
-            } else {
-                throw new Exception("Could not read file: " + fileName);
-            }
-        } catch (Exception e) {
-            throw new Exception("Could not read file: " + fileName);
-        }
-    }
-
-    private Path loadPath(String fileName) {
-        return rootLocation.resolve(fileName);
-    }
 }

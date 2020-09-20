@@ -1,8 +1,6 @@
 package com.shoppingmall.restcontroller;
 
-import com.shoppingmall.domain.UploadFile;
 import com.shoppingmall.dto.ReviewRequestDto;
-import com.shoppingmall.repository.CartRepository;
 import com.shoppingmall.service.CartService;
 import com.shoppingmall.service.ReviewService;
 import io.swagger.annotations.Api;
@@ -17,7 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.HashMap;
+
+import static com.shoppingmall.common.UploadFileUtils.REVIEW_UPLOAD_IMAGE;
 
 @Slf4j
 @AllArgsConstructor
@@ -31,15 +32,9 @@ public class ReviewRestController {
     @ApiOperation(value = "리뷰 이미지 업로드")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @PostMapping("/reviews/image")
-    public ResponseEntity<?> uploadReviewImage(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> uploadReviewImage(@RequestParam("file") MultipartFile file) throws IOException {
 
-        try {
-            UploadFile uploadedFile = reviewService.uploadReviewImage(file);
-            return ResponseEntity.ok().body("review-upload-image/" + uploadedFile.getSaveFileName());
-
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok().body(reviewService.uploadReviewImage(file, REVIEW_UPLOAD_IMAGE));
     }
 
     // 리뷰를 작성할 수 있는 회원인지 파악 (해당 상품을 결제한 유저는 리뷰작성 가능)

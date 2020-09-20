@@ -1,6 +1,5 @@
 package com.shoppingmall.restcontroller;
 
-import com.shoppingmall.domain.UploadFile;
 import com.shoppingmall.dto.ProductRequestDto;
 import com.shoppingmall.service.ProductService;
 import io.swagger.annotations.Api;
@@ -15,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
+
+import static com.shoppingmall.common.UploadFileUtils.PRODUCT_UPLOAD_IMAGE;
 
 @Api(tags = "product", description = "상품")
 @Slf4j
@@ -71,14 +73,9 @@ public class ProductRestController {
     @ApiOperation(value = "상품 타이틀 이미지 업로드 (관리자 권한)")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/products/titleImage")
-    public ResponseEntity<?> uploadReviewImage(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> uploadProductImage(@RequestParam("file") MultipartFile file) throws IOException {
 
-        try {
-            UploadFile uploadedFile = productService.uploadProductImage(file);
-            return ResponseEntity.ok().body("product-upload-image/" + uploadedFile.getSaveFileName());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok().body(productService.uploadProductImage(file, PRODUCT_UPLOAD_IMAGE));
     }
 
     // 상품 추가 (관리자 권한)

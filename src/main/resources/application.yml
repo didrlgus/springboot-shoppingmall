@@ -9,7 +9,6 @@ spring:
       max-request-size: 215MB
 
 logging.level.org.springframework.batch: DEBUG
-
 ---
 spring.profiles: local
 spring.profiles.include: local-social
@@ -17,9 +16,12 @@ spring.profiles.include: local-social
 spring:
   datasource:
     driverClassName: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3307/shoppingmall
+    url: jdbc:mariadb://localhost:3307/shoppingmall?characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: root
+    hikari:
+      maximum-pool-size: 100
+      minimum-idle: 10
   jpa:
     database: mysql
     properties:
@@ -33,18 +35,15 @@ spring:
     job:
       enabled: false #어플리케이션 구동시 컨텍스트 내의 모든 스프링 배치 작업 자동 실행 여부(false로 해야 구동시 무조건 실행이 안됨)
 
-file:
-  upload-dir: C:\review-upload-image
-  product-upload-dir : C:\product-upload-image
-
 logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type.descriptor.sql.BasicBinder: trace
-
+    com.zaxxer.hikari.HikariConfig: DEBUG
+    com.zaxxer.hikari: TRACE
 ---
 spring.profiles: set1
-spring.profiles.include: real-db, real-social-set1
+spring.profiles.include: real-db
 
 server:
   port: 8081
@@ -54,12 +53,9 @@ spring:
     job:
       enabled: false #어플리케이션 구동시 컨텍스트 내의 모든 스프링 배치 작업 자동 실행 여부(false로 해야 구동시 무조건 실행이 안됨)
 
-file:
-  upload-dir: /home/ec2-user/app/images/review-upload-image
-  product-upload-dir : /home/ec2-user/app/images/product-upload-image
 ---
 spring.profiles: set2
-spring.profiles.include: real-db, real-social-set2
+spring.profiles.include: real-db
 
 server:
   port: 8082
@@ -68,7 +64,3 @@ spring:
   batch:
     job:
       enabled: false #어플리케이션 구동시 컨텍스트 내의 모든 스프링 배치 작업 자동 실행 여부(false로 해야 구동시 무조건 실행이 안됨)
-
-file:
-  upload-dir: /home/ec2-user/app/images/review-upload-image
-  product-upload-dir : /home/ec2-user/app/images/product-upload-image

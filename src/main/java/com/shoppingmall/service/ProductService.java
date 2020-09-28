@@ -16,6 +16,7 @@ import com.shoppingmall.repository.ProductDisPrcRepository;
 import com.shoppingmall.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +38,8 @@ public class ProductService {
     private final AWSS3Utils awss3Utils;
     private final ProductRepository productRepository;
     private final ProductDisPrcRepository productDisPrcRepository;
+    public static final String BEST10_PRODUCT_LIST_KEY = "best10ProductList";
+    public static final String NEW8_PRODUCT_LIST_KEY = "new8ProductList";
 
     // 전체 상품 혹은 카테고리로 상품 조회
     public HashMap<String, Object> getProductList(String catCd, String sortCd, String saleCd, int page) throws Exception {
@@ -61,53 +64,6 @@ public class ProductService {
         throw new NoValidProductSortException("유효하지 않은 상품 조회 요청 파라미터 입니다.");
     }
 
-    private HashMap<String, Object> getResult(Page<Product> products, Pageable pageable) {
-        List<ProductResponseDto> productResponseDtoList = getProductResponseDtoList(products);
-
-        PageImpl<ProductResponseDto> productResponseDtoPage = new PageImpl<>(productResponseDtoList, pageable, products.getTotalElements());
-
-        return getResultMap(productResponseDtoPage);
-    }
-
-    private List<ProductResponseDto> getProductResponseDtoList(Page<Product> products) {
-        List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
-
-        for (Product product : products) {
-            int disPrice = 0;
-            if (product.getProductDisPrcList().size() > 0) {
-                disPrice = getDisPrice(product);
-            }
-            productResponseDtoList.add(product.toResponseDto(disPrice));
-        }
-
-        return productResponseDtoList;
-    }
-
-    private Page<Product> getProductsByCategory(String catCd, Pageable pageable) {
-        // 전체 상품 조회
-        if(isNull(catCd) || catCd.equals("ALL")) {
-            return productRepository.findAll(pageable);
-        }
-        // 카테고리로 상품 조회
-        return productRepository.findBySmallCatCd(catCd, pageable);
-    }
-
-    private void getProductsOnSale(Pageable pageable) {
-        // 할인 상품 조회
-
-    }
-
-    private Page<Product> getProductsByCatCdAndSortCd(String catCd, String sortCd, int page) {
-        Pageable pageable = getPageable(page, sortCd);
-
-        // 정렬기준으로 전체상품 조회
-        if(isNull(catCd) || catCd.equals("ALL")) {
-            return productRepository.findAll(pageable);
-        }
-        // 카테고리, 정렬기준으로 상품 조회
-        return productRepository.findAllByLargeCatCd(catCd, pageable);
-    }
-
     // 상품 상세
     public ProductResponseDto getProductDetails(Long id) {
         Product product = productRepository.findById(id).orElseThrow(()
@@ -121,46 +77,26 @@ public class ProductService {
         return product.toResponseDto(disPrice);
     }
 
-    public HashMap<String, Object> getProductListByKeyword(int page, String largeCatCd, String sortCd) {
-        int realPage = page - 1;
-
-        PageImpl<ProductResponseDto> productResponseDtoPage = checkSort(realPage, largeCatCd, sortCd);
-
-        return getResultMap(productResponseDtoPage);
-    }
-
+    /**
+     * 인기 상위 10개의 상품 조회
+     */
+    @Cacheable(value = "best10-product", key = "#root.target.BEST10_PRODUCT_LIST_KEY", cacheManager = "cacheManager")
     public List<ProductResponseDto.MainProductResponseDto> getBestProductList() {
         Pageable pageable = PageRequest.of(0, 10, new Sort(Sort.Direction.DESC, "purchaseCount"));
         List<Product> bestProducts = productRepository.findBestTop10Products(pageable);
 
-        List<ProductResponseDto.MainProductResponseDto> bestProductResponseList = new ArrayList<>();
-
-        for (Product product : bestProducts) {
-            int disPrice = 0;
-            if (product.getProductDisPrcList().size() > 0) {
-                disPrice = getDisPrice(product);
-            }
-            bestProductResponseList.add(product.toMainProductResponseDto(disPrice));
-        }
-
-        return bestProductResponseList;
+        return getMainProductResponseDto(bestProducts);
     }
 
+    /**
+     * 최신 상품 8개 조회
+     */
+    @Cacheable(value = "new8-product", key = "#root.target.NEW8_PRODUCT_LIST_KEY", cacheManager = "cacheManager")
     public List<ProductResponseDto.MainProductResponseDto> getNewProductList() {
         Pageable pageable = PageRequest.of(0, 8, new Sort(Sort.Direction.DESC, "createdDate"));
         List<Product> newProducts = productRepository.findNewTop8Products(pageable);
 
-        List<ProductResponseDto.MainProductResponseDto> newProductResponseList = new ArrayList<>();
-
-        for (Product product : newProducts) {
-            int disPrice = 0;
-            if (product.getProductDisPrcList().size() > 0) {
-                disPrice = getDisPrice(product);
-            }
-            newProductResponseList.add(product.toMainProductResponseDto(disPrice));
-        }
-
-        return newProductResponseList;
+        return getMainProductResponseDto(newProducts);
     }
 
     // 세일 중인 상품 리스트 얻기
@@ -193,19 +129,8 @@ public class ProductService {
 
         List<Product> relatedProductList = productRepository.getRelatedProductList(id, smallCatCd);
 
-        List<ProductResponseDto.MainProductResponseDto> relatedProductResponseDtoList = new ArrayList<>();
-
-        for (Product product : relatedProductList) {
-            int disPrice = 0;
-            if (product.getProductDisPrcList().size() > 0) {
-                disPrice = getDisPrice(product);
-            }
-            relatedProductResponseDtoList.add(product.toMainProductResponseDto(disPrice));
-        }
-
-        return relatedProductResponseDtoList;
+        return getMainProductResponseDto(relatedProductList);
     }
-
 
     public HashMap<String, Object> getAdminProductList(int page) {
         int realPage = page - 1;
@@ -255,6 +180,11 @@ public class ProductService {
                 .largeCatCd(productRequestDto.getLargeCatCd())
                 .smallCatCd(productRequestDto.getSmallCatCd())
                 .productStatus(ProductStatus.SALE)
+                .productDisPrcList(new ArrayList<>())
+                .questions(new ArrayList<>())
+                .carts(new ArrayList<>())
+                .productImgList(new ArrayList<>())
+                .reviews(new ArrayList<>())
                 .purchaseCount(0)
                 .limitCount(productRequestDto.getTotalCount())
                 .totalCount(productRequestDto.getTotalCount())
@@ -333,6 +263,62 @@ public class ProductService {
         return "상품 정보 수정이 완료되었습니다.";
     }
 
+    private HashMap<String, Object> getResult(Page<Product> products, Pageable pageable) {
+        List<ProductResponseDto> productResponseDtoList = getProductResponseDtoList(products);
+
+        PageImpl<ProductResponseDto> productResponseDtoPage = new PageImpl<>(productResponseDtoList, pageable, products.getTotalElements());
+
+        return getResultMap(productResponseDtoPage);
+    }
+
+    private List<ProductResponseDto> getProductResponseDtoList(Page<Product> products) {
+        List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
+
+        for (Product product : products) {
+            int disPrice = 0;
+            if (product.getProductDisPrcList().size() > 0) {
+                disPrice = getDisPrice(product);
+            }
+            productResponseDtoList.add(product.toResponseDto(disPrice));
+        }
+
+        return productResponseDtoList;
+    }
+
+    private Page<Product> getProductsByCategory(String catCd, Pageable pageable) {
+        // 전체 상품 조회
+        if(isNull(catCd) || catCd.equals("ALL")) {
+            return productRepository.findAll(pageable);
+        }
+        // 카테고리로 상품 조회
+        return productRepository.findBySmallCatCd(catCd, pageable);
+    }
+
+    private Page<Product> getProductsByCatCdAndSortCd(String catCd, String sortCd, int page) {
+        Pageable pageable = getPageable(page, sortCd);
+
+        // 정렬기준으로 전체상품 조회
+        if(isNull(catCd) || catCd.equals("ALL")) {
+            return productRepository.findAll(pageable);
+        }
+        // 카테고리, 정렬기준으로 상품 조회
+        return productRepository.findAllByLargeCatCd(catCd, pageable);
+    }
+
+    private List<ProductResponseDto.MainProductResponseDto> getMainProductResponseDto(List<Product> products) {
+        List<ProductResponseDto.MainProductResponseDto> productResponseDtoList = new ArrayList<>();
+
+        for (Product product : products) {
+            int disPrice = 0;
+            if (product.getProductDisPrcList().size() > 0) {
+                disPrice = getDisPrice(product);
+            }
+            productResponseDtoList.add(product.toMainProductResponseDto(disPrice));
+        }
+
+        return productResponseDtoList;
+    }
+
     // adminProductListDto 조회 공통
     private HashMap<String, Object> getAdminProductListMap(Page<Product> productPage, PageRequest pageable) {
         List<ProductResponseDto.AdminProductResponseDto> productResponseDtoList = new ArrayList<>();
@@ -356,34 +342,6 @@ public class ProductService {
         resultMap.put("adminProductPagingDto", adminProductPagingDto);
 
         return resultMap;
-    }
-
-    private PageImpl<ProductResponseDto> checkSort(int realPage, String largeCatCd, String sortCd) {
-        Pageable pageable;
-        Page<Product> productList;
-
-        if (largeCatCd.equals("ALL")) {
-            pageable = getPageable(realPage, sortCd);
-
-            productList = productRepository.findAll(pageable);
-        } else {
-            pageable = getPageable(realPage, sortCd);
-
-            productList = productRepository.findAllByLargeCatCd(largeCatCd, pageable);
-        }
-
-        List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
-
-        for (Product product : productList) {
-            int disPrice = 0;
-            if (product.getProductDisPrcList().size() > 0) {
-                disPrice = getDisPrice(product);
-            }
-
-            productResponseDtoList.add(product.toResponseDto(disPrice));
-        }
-
-        return new PageImpl<>(productResponseDtoList, pageable, productList.getTotalElements());
     }
 
     private Pageable getPageable(int realPage, String sortCd) {

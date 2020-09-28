@@ -1,14 +1,15 @@
 package com.shoppingmall.dto;
 
 import com.shoppingmall.domain.enums.ProductStatus;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
+
+import java.io.Serializable;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
-@ToString
-public class ProductResponseDto {
+public class ProductResponseDto implements Serializable {
 
     private Long id;
     private String productNm;
@@ -23,10 +24,11 @@ public class ProductResponseDto {
     private ProductStatus productStatus;
     private Integer rateAvg;
 
-    @ToString
     @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Builder
-    public static class MainProductResponseDto {
+    public static class MainProductResponseDto implements Serializable {
         private Long id;
         private String productNm;
         private String titleImg;

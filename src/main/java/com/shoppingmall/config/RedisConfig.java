@@ -14,19 +14,25 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
 
+// @EnableRedisRepositories(basePackages = "com.shoppingmall.repository.redis")
 @EnableCaching
 @Configuration
 public class RedisConfig extends CachingConfigurerSupport {
     @Value("${spring.redis.host}")
     private String redisHost;
+
+    @Value("${spring.redis.password}")
+    private String password;
 
     @Value("${spring.redis.port}")
     private int redisPort;
@@ -34,7 +40,12 @@ public class RedisConfig extends CachingConfigurerSupport {
     @Bean
     @ConditionalOnMissingBean(RedisConnectionFactory.class)
     public RedisConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory(redisHost, redisPort);
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+        redisStandaloneConfiguration.setHostName(redisHost);
+        redisStandaloneConfiguration.setPassword(password);
+        redisStandaloneConfiguration.setPort(redisPort);
+
+        return new LettuceConnectionFactory(redisStandaloneConfiguration);
     }
 
     @Bean

@@ -7,8 +7,11 @@ import com.shoppingmall.dto.CategoryResponseDto;
 import com.shoppingmall.exception.CatCdException;
 import com.shoppingmall.exception.NotExistCategoryException;
 import com.shoppingmall.repository.CategoryRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,31 +25,30 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class CategoryService {
 
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
+    private final RedisTemplate<String, Object> redisTemplate;
+    public static final String CATEGORY_LIST_KEY = "categoryList";
 
+    /**
+     * 모든 카테고리 조회, 캐싱
+     */
+    @Cacheable(value = "categoryList", key = "#root.target.CATEGORY_LIST_KEY", cacheManager = "cacheManager")
     public HashMap<String, Object> getCategoryList() {
 
         HashMap<String, Object> resultMap = new HashMap<>();
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(String.valueOf(authentication.getAuthorities()).contains(Role.ADMIN.getKey())) {
-            List<ProductCat> allCategoryList = categoryRepository.findAll();
-
-            resultMap.put("adminCatList", allCategoryList);
-            resultMap.put("mainCatList", allCategoryList.stream().
-                    filter(productCat -> productCat.getUseYn() == 'Y').collect(Collectors.toList()));
-
-            return resultMap;
-        }
-
         resultMap.put("mainCatList", categoryRepository.findAllByUseYn('Y'));
+
         return resultMap;
     }
 
+    /**
+     * 상위 카테고리 추가, 추가 후 캐시 업데이트
+     */
     public String addFirstCategory(CategoryRequestDto.firstCategory firstCategory) {
 
         List<ProductCat> firstCategoryList = categoryRepository.findAllByCatLvOrderByCatCdDesc(1);
@@ -60,9 +62,15 @@ public class CategoryService {
                 .useYn(firstCategory.getUseYn())
                 .build());
 
+        // 상품 카테고리 캐싱
+        setCategoryCaching();
+
         return "1차 카테고리가 등록 되었습니다.";
     }
 
+    /**
+     * 하위 카테고리 추가, 추가 후 캐시 업데이트
+     */
     public String addSecondCategory(CategoryRequestDto.secondCategory secondCategory) {
         String upprCatCd = secondCategory.getUpprCatCd();
 
@@ -86,6 +94,9 @@ public class CategoryService {
                 .cnntUrl("/productList")
                 .useYn(secondCategory.getUseYn())
                 .build());
+
+        // 상품 카테고리 캐싱
+        setCategoryCaching();
 
         return "2차 카테고리가 등록 되었습니다.";
     }
@@ -146,6 +157,21 @@ public class CategoryService {
         return secondCategoryDtoList;
     }
 
+    public HashMap<String, Object> getAdminCategoryList() {
+        HashMap<String, Object> resultMap = new HashMap<>();
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(String.valueOf(authentication.getAuthorities()).contains(Role.ADMIN.getKey())) {
+            List<ProductCat> allCategoryList = categoryRepository.findAll();
+
+            resultMap.put("adminCatList", allCategoryList);
+            resultMap.put("mainCatList", allCategoryList.stream().
+                    filter(productCat -> productCat.getUseYn() == 'Y').collect(Collectors.toList()));
+        }
+
+        return resultMap;
+    }
+
     private String makeFirstCatCd(String catCdOfFinalBigCategory) {
         String catCdStr = catCdOfFinalBigCategory.split("C")[1].split("000")[0];
 
@@ -185,5 +211,15 @@ public class CategoryService {
         return catCd;
     }
 
+    /**
+     * 카테고리 추가 시 캐시 업데이트
+     */
+    private void setCategoryCaching() {
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("mainCatList", categoryRepository.findAllByUseYn('Y'));
+
+        ValueOperations<String, Object> vop = redisTemplate.opsForValue();
+        vop.set("redis-cache:" + CATEGORY_LIST_KEY, resultMap);
+    }
 
 }

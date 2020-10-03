@@ -3,12 +3,10 @@ package com.shoppingmall.domain;
 import com.shoppingmall.common.BaseTimeEntity;
 import com.shoppingmall.dto.CategoryResponseDto;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -18,7 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ToString
 @EntityListeners(AuditingEntityListener.class)
-public class ProductCat extends BaseTimeEntity  {
+public class ProductCat extends BaseTimeEntity implements Serializable {
 
     @Id     // primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -16,14 +16,14 @@ public class AdminController {
 
     @GetMapping("/admin")
     public String adminInit(Model model) {
-        model.addAttribute("catMapList", categoryService.getCategoryList());
+        model.addAttribute("catMapList", categoryService.getAdminCategoryList());
 
         return "admin/admin-menu-list";
     }
 
     @GetMapping("/adminProduct")
     public String adminProductInit(Model model) {
-        model.addAttribute("catMapList", categoryService.getCategoryList());
+        model.addAttribute("catMapList", categoryService.getAdminCategoryList());
 
         return "admin/admin-product-list";
     }
@@ -35,21 +35,21 @@ public class AdminController {
 
     @GetMapping("/adminSecondMenu")
     public String registSecondMenuInit(Model model) {
-        model.addAttribute("catMapList", categoryService.getCategoryList());
+        model.addAttribute("catMapList", categoryService.getAdminCategoryList());
 
         return "admin/second-menu-regist";
     }
 
     @GetMapping("/adminProductRegist")
     public String registProduct(Model model) {
-        model.addAttribute("catMapList", categoryService.getCategoryList());
+        model.addAttribute("catMapList", categoryService.getAdminCategoryList());
 
         return "admin/product-regist";
     }
 
     @GetMapping("/adminProductDetails")
     public String adminProductDetailsInit(Model model) {
-        model.addAttribute("catMapList", categoryService.getCategoryList());
+        model.addAttribute("catMapList", categoryService.getAdminCategoryList());
 
         return "admin/admin-product-details";
     }

@@ -7,6 +7,10 @@
 * Sourcetree
 * GitHub
 
+## 부하 테스팅 도구
+* K6
+* Grafana
+* InfluxDB
 
 ## 사용 기술
 ### 백엔드
@@ -23,13 +27,12 @@
 * Gradle
 
 #### Database
-* MariaDB
+* Mysql
+* Redis
 
 #### AWS
 * EC2
-* RDS
 * S3
-* CodeDeploy
 
 #### CI
 * Travis CI
@@ -38,8 +41,6 @@
 * Javascript
 * Thymeleaf
 * jQuery
-
-
 
 ## 주요 키워드
 * REST API
@@ -52,15 +53,13 @@
 * 트랜잭션
 * 예외처리
 * Git 버전관리
-* Travis CI, AWS S3, AWS Code Deploy를 통한 배포 자동화
 * AWS EC2 배포
-* Nginx 무중단 배포 (리버스 프록시)
-
-
 
 ## 시스템 구조
-<img width="1000" alt="system-structure" src="https://user-images.githubusercontent.com/40568894/63998445-13130280-cb3c-11e9-9f3b-1b378af6946a.PNG">
+<img width="1000" alt="구조" src="https://user-images.githubusercontent.com/40568894/94989264-57c66400-05ae-11eb-8cc9-bc3990307d6c.PNG">
 
+## quartz 배치
+* [quartz-batch 스케줄러 레파지토리](https://github.com/didrlgus/spring-quartz-scheduler)
 
 ## Rest API 설계
 ![REST API1](https://user-images.githubusercontent.com/40568894/64402718-d3569880-d0b0-11e9-90df-e14b1a5389bd.png)

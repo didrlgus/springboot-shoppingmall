@@ -10,6 +10,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Getter
@@ -104,6 +105,8 @@ public class Product extends BaseTimeEntity  {
                 .disPrice(disPrice)
                 .salePrice((int)((((float) 100 - (float) disPrice) / (float)100) * price))
                 .rateAvg(rateAvg)
+                .timestamp(Timestamp.valueOf(this.getCreatedDate()).getTime())
+                .purchaseCnt(purchaseCount)
                 .build();
     }
 

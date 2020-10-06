@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.shoppingmall.common.SerializedObjectCodec;
+import io.lettuce.core.RedisClient;
+import io.lettuce.core.api.StatefulRedisConnection;
+import io.lettuce.core.api.sync.RedisCommands;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cache.CacheManager;
@@ -17,14 +21,14 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import java.time.Duration;
-
-// @EnableRedisRepositories(basePackages = "com.shoppingmall.repository.redis")
+@EnableRedisRepositories
 @EnableCaching
 @Configuration
 public class RedisConfig extends CachingConfigurerSupport {
@@ -36,6 +40,14 @@ public class RedisConfig extends CachingConfigurerSupport {
 
     @Value("${spring.redis.port}")
     private int redisPort;
+
+//    @Bean
+//    public RedisCommands<String, Object> redisSyncCommands() {
+//        RedisClient redisClient = RedisClient.create("redis://" + password + "@" + redisHost + ":" + redisPort);
+//        StatefulRedisConnection<String, Object> connection = redisClient.connect(new SerializedObjectCodec());
+//
+//        return connection.sync();
+//    }
 
     @Bean
     @ConditionalOnMissingBean(RedisConnectionFactory.class)
@@ -66,19 +78,27 @@ public class RedisConfig extends CachingConfigurerSupport {
     }
 
     @Bean
-    @Override
-    public CacheManager cacheManager() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
-        objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT);
-        objectMapper.registerModule(new JavaTimeModule());
-
-        RedisCacheManager.RedisCacheManagerBuilder builder = RedisCacheManager.RedisCacheManagerBuilder.fromConnectionFactory(redisConnectionFactory());
-        RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer(objectMapper)))
-                .prefixKeysWith("redis-cache:");
-
-        builder.cacheDefaults(configuration);
-        return builder.build();
+    public ZSetOperations<String, Object> zSetOperations() {
+        return redisTemplate().opsForZSet();
     }
+
+    @Bean
+    public ValueOperations<String, Object> valueOperations() { return redisTemplate().opsForValue(); }
+
+//    @Bean
+//    @Override
+//    public CacheManager cacheManager() {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+//        objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT);
+//        objectMapper.registerModule(new JavaTimeModule());
+//
+//        RedisCacheManager.RedisCacheManagerBuilder builder = RedisCacheManager.RedisCacheManagerBuilder.fromConnectionFactory(redisConnectionFactory());
+//        RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
+//                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer(objectMapper)))
+//                .prefixKeysWith("redis-cache:");
+//
+//        builder.cacheDefaults(configuration);
+//        return builder.build();
+//    }
 }

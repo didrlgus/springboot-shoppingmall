@@ -16,8 +16,8 @@ import com.shoppingmall.repository.ProductDisPrcRepository;
 import com.shoppingmall.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +27,8 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.shoppingmall.common.RedisKeyUtils.BEST10_PRODUCT_LIST_KEY;
+import static com.shoppingmall.common.RedisKeyUtils.NEW8_PRODUCT_LIST_KEY;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -38,8 +40,7 @@ public class ProductService {
     private final AWSS3Utils awss3Utils;
     private final ProductRepository productRepository;
     private final ProductDisPrcRepository productDisPrcRepository;
-    public static final String BEST10_PRODUCT_LIST_KEY = "best10ProductList";
-    public static final String NEW8_PRODUCT_LIST_KEY = "new8ProductList";
+    private final ZSetOperations<String, Object> zSetOperations;
 
     // 전체 상품 혹은 카테고리로 상품 조회
     public HashMap<String, Object> getProductList(String catCd, String sortCd, String saleCd, int page) throws Exception {
@@ -80,23 +81,29 @@ public class ProductService {
     /**
      * 인기 상위 10개의 상품 조회
      */
-    @Cacheable(value = "best10-product", key = "#root.target.BEST10_PRODUCT_LIST_KEY", cacheManager = "cacheManager")
     public List<ProductResponseDto.MainProductResponseDto> getBestProductList() {
-        Pageable pageable = PageRequest.of(0, 10, new Sort(Sort.Direction.DESC, "purchaseCount"));
-        List<Product> bestProducts = productRepository.findBestTop10Products(pageable);
+        // 레디스 캐시(메모리) I/O
+        Set<Object> result = zSetOperations.reverseRange(BEST10_PRODUCT_LIST_KEY, 0, 9);
 
-        return getMainProductResponseDto(bestProducts);
+        if(isNull(result)) {
+            return null;
+        } else {
+            return result.stream().map(el -> (ProductResponseDto.MainProductResponseDto) el).collect(Collectors.toList());
+        }
     }
 
     /**
-     * 최신 상품 8개 조회
+     * 최신 상위 8개 상품 조회
      */
-    @Cacheable(value = "new8-product", key = "#root.target.NEW8_PRODUCT_LIST_KEY", cacheManager = "cacheManager")
     public List<ProductResponseDto.MainProductResponseDto> getNewProductList() {
-        Pageable pageable = PageRequest.of(0, 8, new Sort(Sort.Direction.DESC, "createdDate"));
-        List<Product> newProducts = productRepository.findNewTop8Products(pageable);
+        // 레디스 캐시(메모리) I/O
+        Set<Object> result = zSetOperations.reverseRange(NEW8_PRODUCT_LIST_KEY, 0, 7);
 
-        return getMainProductResponseDto(newProducts);
+        if(isNull(result)) {
+            return null;
+        } else {
+            return result.stream().map(el -> (ProductResponseDto.MainProductResponseDto) el).collect(Collectors.toList());
+        }
     }
 
     // 세일 중인 상품 리스트 얻기

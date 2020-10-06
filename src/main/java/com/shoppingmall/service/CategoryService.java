@@ -9,8 +9,6 @@ import com.shoppingmall.exception.NotExistCategoryException;
 import com.shoppingmall.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -24,45 +22,33 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.shoppingmall.common.RedisKeyUtils.CATEGORY_LIST_KEY;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
-    private final RedisTemplate<String, Object> redisTemplate;
-    public static final String CATEGORY_LIST_KEY = "categoryList";
+    private final ValueOperations<String, Object> valueOperations;
 
     /**
-     * 모든 카테고리 조회, 캐싱
+     * 모든 카테고리 조회, 캐싱된 데이터 조회 (memory I/O)
      */
-    @Cacheable(value = "categoryList", key = "#root.target.CATEGORY_LIST_KEY", cacheManager = "cacheManager")
+    @SuppressWarnings("unchecked")
     public HashMap<String, Object> getCategoryList() {
 
-        HashMap<String, Object> resultMap = new HashMap<>();
-
-        resultMap.put("mainCatList", categoryRepository.findAllByUseYn('Y'));
-
-        return resultMap;
+        return (HashMap<String, Object>) valueOperations.get(CATEGORY_LIST_KEY);
     }
 
     /**
      * 상위 카테고리 추가, 추가 후 캐시 업데이트
      */
     public String addFirstCategory(CategoryRequestDto.firstCategory firstCategory) {
+        // Mysql에 추가 (File i/o)
+        saveFirstCategory(firstCategory);
 
-        List<ProductCat> firstCategoryList = categoryRepository.findAllByCatLvOrderByCatCdDesc(1);
-
-        String catCdOfFinalBigCategory = firstCategoryList.get(0).getCatCd();
-
-        categoryRepository.save(ProductCat.builder()
-                .catCd(makeFirstCatCd(catCdOfFinalBigCategory))
-                .catLv(1)
-                .catNm(firstCategory.getCatNm())
-                .useYn(firstCategory.getUseYn())
-                .build());
-
-        // 상품 카테고리 캐싱
+        // 상품 카테고리 캐싱 (Memory i/o)
         setCategoryCaching();
 
         return "1차 카테고리가 등록 되었습니다.";
@@ -72,30 +58,10 @@ public class CategoryService {
      * 하위 카테고리 추가, 추가 후 캐시 업데이트
      */
     public String addSecondCategory(CategoryRequestDto.secondCategory secondCategory) {
-        String upprCatCd = secondCategory.getUpprCatCd();
+        // Mysql에 추가 (File i/o)
+        saveSecondCategory(secondCategory);
 
-        List<ProductCat> secondCategoryList = categoryRepository.findAllByUpprCatCdOrderByCatCdDesc(upprCatCd);
-
-        String catCdOfNewSmallCategory = "";
-
-        if (secondCategoryList.isEmpty()) {
-            catCdOfNewSmallCategory = makeSecondCatCd(upprCatCd);
-        } else {
-            String catCdOfFinalSmallCategory = secondCategoryList.get(0).getCatCd();
-
-            catCdOfNewSmallCategory = makeSecondCatCd(catCdOfFinalSmallCategory);
-        }
-
-        categoryRepository.save(ProductCat.builder()
-                .catCd(catCdOfNewSmallCategory)
-                .catLv(2)
-                .catNm(secondCategory.getCatNm())
-                .upprCatCd(upprCatCd)
-                .cnntUrl("/productList")
-                .useYn(secondCategory.getUseYn())
-                .build());
-
-        // 상품 카테고리 캐싱
+        // 상품 카테고리 캐싱 (Memory i/o)
         setCategoryCaching();
 
         return "2차 카테고리가 등록 되었습니다.";
@@ -172,6 +138,50 @@ public class CategoryService {
         return resultMap;
     }
 
+    private void saveFirstCategory(CategoryRequestDto.firstCategory firstCategory) {
+        List<ProductCat> firstCategoryList = categoryRepository.findAllByCatLvOrderByCatCdDesc(1);
+
+        String catCdOfFinalBigCategory;
+
+        if(firstCategoryList.isEmpty()) {
+            catCdOfFinalBigCategory = "C010000";
+        } else {
+            catCdOfFinalBigCategory = makeFirstCatCd(firstCategoryList.get(0).getCatCd());
+        }
+
+        categoryRepository.save(ProductCat.builder()
+                .catCd(catCdOfFinalBigCategory)
+                .catLv(1)
+                .catNm(firstCategory.getCatNm())
+                .useYn(firstCategory.getUseYn())
+                .build());
+    }
+
+    private void saveSecondCategory(CategoryRequestDto.secondCategory secondCategory) {
+        String upprCatCd = secondCategory.getUpprCatCd();
+
+        List<ProductCat> secondCategoryList = categoryRepository.findAllByUpprCatCdOrderByCatCdDesc(upprCatCd);
+
+        String catCdOfNewSmallCategory = "";
+
+        if (secondCategoryList.isEmpty()) {
+            catCdOfNewSmallCategory = makeSecondCatCd(upprCatCd);
+        } else {
+            String catCdOfFinalSmallCategory = secondCategoryList.get(0).getCatCd();
+
+            catCdOfNewSmallCategory = makeSecondCatCd(catCdOfFinalSmallCategory);
+        }
+
+        categoryRepository.save(ProductCat.builder()
+                .catCd(catCdOfNewSmallCategory)
+                .catLv(2)
+                .catNm(secondCategory.getCatNm())
+                .upprCatCd(upprCatCd)
+                .cnntUrl("/productList")
+                .useYn(secondCategory.getUseYn())
+                .build());
+    }
+
     private String makeFirstCatCd(String catCdOfFinalBigCategory) {
         String catCdStr = catCdOfFinalBigCategory.split("C")[1].split("000")[0];
 
@@ -187,10 +197,10 @@ public class CategoryService {
         newCatCdSb.append(newCatCdInt);
 
         while(newCatCdSb.toString().length() < 3) {
-            newCatCdSb = newCatCdSb.append("0");
+            newCatCdSb.append("0");
         }
 
-        newCatCdSb = newCatCdSb.append("C").reverse().append("000");
+        newCatCdSb.append("C").reverse().append("000");
 
         return newCatCdSb.toString();
     }
@@ -203,10 +213,7 @@ public class CategoryService {
             throw new CatCdException("더 이상 하위 카테고리를 추가할 수 없습니다.");
         }
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(catCd.substring(0, 3));
-        sb.append(Integer.parseInt(catCd.split("C")[1]) + 1);
-        catCd = sb.toString();
+        catCd = catCd.substring(0, 3) + (Integer.parseInt(catCd.split("C")[1]) + 1);
 
         return catCd;
     }
@@ -218,8 +225,7 @@ public class CategoryService {
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("mainCatList", categoryRepository.findAllByUseYn('Y'));
 
-        ValueOperations<String, Object> vop = redisTemplate.opsForValue();
-        vop.set("redis-cache:" + CATEGORY_LIST_KEY, resultMap);
+        valueOperations.set(CATEGORY_LIST_KEY, resultMap);
     }
 
 }

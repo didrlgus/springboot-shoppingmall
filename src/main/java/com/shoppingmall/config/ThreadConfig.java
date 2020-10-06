@@ -18,14 +18,14 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 public class ThreadConfig {
 
     // 스레드 관리자
-    @Bean
-    public TaskExecutor taskExecutor() {
-        ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
-
-        threadPoolTaskExecutor.setCorePoolSize(Thread.activeCount());   // 스레드 풀 기본 사이즈 설정
-        threadPoolTaskExecutor.setMaxPoolSize(10);                      // 스레드 풀 최대 사이즈 설정
-        threadPoolTaskExecutor.setThreadNamePrefix("Batch-thread-");
-
-        return threadPoolTaskExecutor;
-    }
+//    @Bean
+//    public TaskExecutor taskExecutor() {
+//        ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
+//
+//        threadPoolTaskExecutor.setCorePoolSize(Thread.activeCount());   // 스레드 풀 기본 사이즈 설정
+//        threadPoolTaskExecutor.setMaxPoolSize(10);                      // 스레드 풀 최대 사이즈 설정
+//        threadPoolTaskExecutor.setThreadNamePrefix("Batch-thread-");
+//
+//        return threadPoolTaskExecutor;
+//    }
 }

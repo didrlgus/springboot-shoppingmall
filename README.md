@@ -1,4 +1,7 @@
-# 스프링 부트로 만드는 쇼핑몰 프로젝트 [![Build Status](https://travis-ci.org/didrlgus/springboot-shoppingmall.svg?branch=master)](https://travis-ci.org/didrlgus/springboot-shoppingmall)
+# 스프링 부트로 만드는 쇼핑몰 프로젝트
+
+## 배포 URL
+* http://fancy-cart.ga
 
 ## 개발환경
 * IntelliJ
@@ -7,7 +10,7 @@
 * Sourcetree
 * GitHub
 
-## 부하 테스팅 도구
+## 성능 테스팅 도구
 * K6
 * Grafana
 * InfluxDB
@@ -56,10 +59,23 @@
 * AWS EC2 배포
 
 ## 시스템 구조
-<img width="1000" alt="구조" src="https://user-images.githubusercontent.com/40568894/94989264-57c66400-05ae-11eb-8cc9-bc3990307d6c.PNG">
+<img width="1000" alt="구조4" src="https://user-images.githubusercontent.com/40568894/95181686-93576d00-07fe-11eb-80e3-f1aaa2399d9a.PNG">
 
 ## quartz 배치
-* [quartz-batch 스케줄러 레파지토리](https://github.com/didrlgus/spring-quartz-scheduler)
+* [quartz-batch 스케줄러 Repository](https://github.com/didrlgus/spring-quartz-scheduler)
+
+## redis update 권한 서버
+* [redis update 권한 서버 Repository](https://github.com/didrlgus/redis-update-server)
+
+## Trouble Shooting
+* [API 성능 테스트 에서 발생한 문제 해결을 위한 시도](https://github.com/didrlgus/springboot-shoppingmall/issues/6)
+
+## 성능 테스트
+* [초기 성능 테스트 결과](https://github.com/didrlgus/springboot-shoppingmall/issues/5)
+* [메인화면 API 캐시 적용 전, 후 성능 테스트 비교 결과](https://github.com/didrlgus/springboot-shoppingmall/issues/21)
+
+## ERD 설계
+* [shopping mall ERD](https://github.com/didrlgus/springboot-shoppingmall/issues/1)
 
 ## Rest API 설계
 ![REST API1](https://user-images.githubusercontent.com/40568894/64402718-d3569880-d0b0-11e9-90df-e14b1a5389bd.png)

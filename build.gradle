@@ -40,7 +40,6 @@ dependencies {
     testCompile("org.springframework.security:spring-security-test")
     testImplementation 'org.springframework.batch:spring-batch-test'
     compile('org.springframework.boot:spring-boot-starter-security')
-    testCompile("org.springframework.security:spring-security-test")
     compile('org.springframework.security:spring-security-oauth2-client')
     compile('org.springframework.security:spring-security-oauth2-jose')
     compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'

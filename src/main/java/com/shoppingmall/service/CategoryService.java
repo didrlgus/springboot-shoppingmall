@@ -93,18 +93,20 @@ public class CategoryService {
         }
     }
 
-    // 카테고리 수정
+    /**
+     * 카테고리 수정 시, 캐시 업데이트
+     */
     public String updateCategory(Long id, CategoryRequestDto categoryDto) {
-        Optional<ProductCat> categoryOpt = categoryRepository.findById(id);
+        ProductCat category = categoryRepository.findById(id).orElseThrow(()
+                -> new NotExistCategoryException("존재하지 않는 카테고리 입니다."));
 
-        if (!categoryOpt.isPresent())
-            throw new NotExistCategoryException("존재하지 않는 카테고리 입니다.");
-
-        ProductCat category = categoryOpt.get();
         category.setCatNm(categoryDto.getCatNm());
         category.setUseYn(categoryDto.getUseYn());
 
         categoryRepository.save(category);
+
+        // 캐시 업데이트
+        setCategoryCaching();
 
         return "카테고리가 수정되었습니다.";
     }
@@ -162,7 +164,7 @@ public class CategoryService {
 
         List<ProductCat> secondCategoryList = categoryRepository.findAllByUpprCatCdOrderByCatCdDesc(upprCatCd);
 
-        String catCdOfNewSmallCategory = "";
+        String catCdOfNewSmallCategory;
 
         if (secondCategoryList.isEmpty()) {
             catCdOfNewSmallCategory = makeSecondCatCd(upprCatCd);

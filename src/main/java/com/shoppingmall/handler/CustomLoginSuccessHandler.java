@@ -1,8 +1,12 @@
 package com.shoppingmall.handler;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +15,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
+
+    private RequestCache requestCache = new HttpSessionRequestCache();
+    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
     public CustomLoginSuccessHandler(String defaultTargetUrl) {
         setDefaultTargetUrl(defaultTargetUrl);
     }
@@ -32,17 +40,21 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 
         // 일반 유저로 로그인할 경우
         if (session != null) {
-            String redirectUrl = (String) session.getAttribute("prevPage");
-
-            if (!redirectUrl.equals("/login")) {
-                session.removeAttribute("prevPage");
-                //session.setAttribute("user", authentication);
-                getRedirectStrategy().sendRedirect(request, response, redirectUrl);
-            } else {
-                getRedirectStrategy().sendRedirect(request, response, "/");
-            }
+            resultRedirectStrategy(request, response, authentication);
         } else {
             super.onAuthenticationSuccess(request, response, authentication);
+        }
+    }
+
+    protected void resultRedirectStrategy(HttpServletRequest request, HttpServletResponse response,
+                                          Authentication authentication) throws IOException, ServletException {
+        SavedRequest savedRequest = requestCache.getRequest(request, response);
+
+        if(savedRequest != null) {
+            String targetUrl = savedRequest.getRedirectUrl();
+            redirectStrategy.sendRedirect(request, response, targetUrl);
+        } else {
+            redirectStrategy.sendRedirect(request, response, "/");
         }
     }
 }

@@ -3,7 +3,6 @@ package com.shoppingmall.controller;
 import com.shoppingmall.dto.UserRequestDto;
 import com.shoppingmall.service.CategoryService;
 import com.shoppingmall.service.UserService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -13,6 +12,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -73,7 +73,9 @@ public class UserController {
     }
 
     @PostMapping("/loginFailure")
-    public String loginFailure() throws Exception {
+    public String loginFailure(ModelMap model) throws Exception {
+
+        model.addAttribute("catMapList", categoryService.getCategoryList());
 
         return "user/login-register";
     }
@@ -84,6 +86,6 @@ public class UserController {
 
         rttr.addFlashAttribute("duplicatedLogin", "다른 곳에서 로그인 하였습니다.");
 
-        return "/redirect:/";
+        return "redirect:/";
     }
 }

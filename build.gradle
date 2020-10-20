@@ -34,6 +34,7 @@ dependencies {
     compile("com.querydsl:querydsl-jpa")
     compile("com.querydsl:querydsl-apt")
     compile('org.projectlombok:lombok')
+    compile group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '6.3'
     runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
     testCompile('org.springframework.boot:spring-boot-starter-test')

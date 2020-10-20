@@ -15,6 +15,10 @@
 * Grafana
 * InfluxDB
 
+## 로그 분석 도구
+* ELK Stack
+  * Elasticsearch, Logstash, Kibana, Filebeats
+
 ## 사용 기술
 ### 백엔드
 #### Spring boot
@@ -59,7 +63,7 @@
 * AWS EC2 배포
 
 ## 시스템 구조
-<img width="1000" alt="구조4" src="https://user-images.githubusercontent.com/40568894/95181686-93576d00-07fe-11eb-80e3-f1aaa2399d9a.PNG">
+<img width="1000" alt="캡처3" src="https://user-images.githubusercontent.com/40568894/96220933-a7e8f180-0fc4-11eb-9625-9c2daf3ea2c7.PNG"><img width="1000" alt="캡처4" src="https://user-images.githubusercontent.com/40568894/96221083-debf0780-0fc4-11eb-968d-49e196461139.PNG">
 
 ## quartz 배치
 * [quartz-batch 스케줄러 Repository](https://github.com/didrlgus/spring-quartz-scheduler)

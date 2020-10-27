@@ -4,3 +4,5 @@ pluginManagement {
     }
 }
 rootProject.name = 'springboot-webservice'
+include 'app:api-server'
+include 'app:batch-server'

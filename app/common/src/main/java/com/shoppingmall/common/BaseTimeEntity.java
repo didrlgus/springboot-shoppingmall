@@ -1,4 +1,4 @@
-package com.quartzscheduler.common;
+package com.shoppingmall.common;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

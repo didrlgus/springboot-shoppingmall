@@ -1,7 +1,7 @@
 package com.shoppingmall.domain.productDisPrc;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.quartzscheduler.common.BaseTimeEntity;
+import com.shoppingmall.common.BaseTimeEntity;
 import com.shoppingmall.domain.product.Product;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

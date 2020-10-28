@@ -3,17 +3,17 @@ package com.shoppingmall.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.shoppingmall.common.AWSS3Utils;
 import com.shoppingmall.common.UploadFileUtils;
-import com.shoppingmall.domain.Product;
-import com.shoppingmall.domain.ProductDisPrc;
 import com.shoppingmall.domain.enums.ProductStatus;
+import com.shoppingmall.domain.product.Product;
+import com.shoppingmall.domain.product.ProductRepository;
+import com.shoppingmall.domain.productDisPrc.ProductDisPrc;
+import com.shoppingmall.domain.productDisPrc.ProductDisPrcRepository;
 import com.shoppingmall.dto.PagingDto;
 import com.shoppingmall.dto.ProductRequestDto;
 import com.shoppingmall.dto.ProductResponseDto;
 import com.shoppingmall.exception.NoValidProductSortException;
 import com.shoppingmall.exception.NotExistProductException;
 import com.shoppingmall.exception.ProductListException;
-import com.shoppingmall.repository.ProductDisPrcRepository;
-import com.shoppingmall.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.*;
@@ -132,12 +132,12 @@ public class ProductService {
     }
 
     // 관련 상품 4가지를 얻되 구매수가 많은 것부터 얻음
-    public List<ProductResponseDto.MainProductResponseDto> getRelatedProductList(Long id, String smallCatCd) {
-
-        List<Product> relatedProductList = productRepository.getRelatedProductList(id, smallCatCd);
-
-        return getMainProductResponseDto(relatedProductList);
-    }
+//    public List<ProductResponseDto.MainProductResponseDto> getRelatedProductList(Long id, String smallCatCd) {
+//
+//        List<Product> relatedProductList = productRepository.getRelatedProductList(id, smallCatCd);
+//
+//        return getMainProductResponseDto(relatedProductList);
+//    }
 
     public HashMap<String, Object> getAdminProductList(int page) {
         int realPage = page - 1;

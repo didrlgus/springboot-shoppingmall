@@ -2,8 +2,12 @@ package com.shoppingmall.domain.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shoppingmall.common.BaseTimeEntity;
+import com.shoppingmall.domain.cart.Cart;
 import com.shoppingmall.domain.enums.ProductStatus;
 import com.shoppingmall.domain.productDisPrc.ProductDisPrc;
+import com.shoppingmall.domain.productImg.ProductImg;
+import com.shoppingmall.domain.question.Question;
+import com.shoppingmall.domain.review.Review;
 import com.shoppingmall.dto.ProductResponseDto;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
@@ -20,8 +24,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @EntityListeners(AuditingEntityListener.class)
-public class Product extends BaseTimeEntity {
+public class Product extends BaseTimeEntity  {
 
     @Id     // primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,10 +63,42 @@ public class Product extends BaseTimeEntity {
     @ColumnDefault("0") //default 0
     private Integer rateAvg;
 
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ProductImg> productImgList;
+
     @BatchSize(size = 1000)
-    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<ProductDisPrc> productDisPrcList;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Question> questions;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Cart> carts;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Review> reviews;
+
+    public ProductResponseDto toResponseDto(int disPrice) {
+
+        return ProductResponseDto.builder()
+                .id(id)
+                .productNm(productNm)
+                .largeCatCd(largeCatCd)
+                .smallCatCd(smallCatCd)
+                .price(price)
+                .disPrice(disPrice)
+                .purchaseCount(purchaseCount)
+                .limitCount(limitCount)
+                .totalCount(totalCount)
+                .productStatus(productStatus)
+                .rateAvg(rateAvg)
+                .titleImg(titleImg)
+                .build();
+    }
 
     public ProductResponseDto.MainProductResponseDto toMainProductResponseDto(int disPrice) {
 
@@ -77,4 +114,19 @@ public class Product extends BaseTimeEntity {
                 .purchaseCnt(purchaseCount)
                 .build();
     }
+
+    public ProductResponseDto.AdminProductResponseDto toAdminProductResponseDto(int disPrice) {
+
+        return ProductResponseDto.AdminProductResponseDto.builder()
+                .id(id)
+                .productNm(productNm)
+                .titleImg(titleImg)
+                .price(price)
+                .disPrice(disPrice)
+                .purchaseCount(purchaseCount)
+                .totalCount(totalCount)
+                .rateAvg(rateAvg)
+                .build();
+    }
 }
+

@@ -3,6 +3,7 @@ package com.shoppingmall.domain.productDisPrc;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shoppingmall.common.BaseTimeEntity;
 import com.shoppingmall.domain.product.Product;
+import com.shoppingmall.dto.ProductDisPrcResponseDto;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -39,8 +40,25 @@ public class ProductDisPrc extends BaseTimeEntity implements Comparable<ProductD
     @JsonIgnore
     private Product product;
 
+    // 가격으로 내림차순 하기 위한 compareTo 재정의
     @Override
     public int compareTo(ProductDisPrc o) {
         return Integer.compare(o.disPrc, this.disPrc);
+    }
+
+    public ProductDisPrcResponseDto toResponseDto() {
+
+        String startMonthStr = startDt.getMonthValue() < 10 ? "0" + startDt.getMonthValue() : "" + startDt.getMonthValue();
+        String startDayStr = startDt.getDayOfMonth() < 10 ? "0" + startDt.getDayOfMonth() : "" + startDt.getDayOfMonth();
+        String endMonthStr = endDt.getMonthValue() < 10 ? "0" + endDt.getMonthValue() : "" + endDt.getMonthValue();
+        String endDayStr = endDt.getDayOfMonth() < 10 ? "0" + endDt.getDayOfMonth() : "" + endDt.getDayOfMonth();
+
+        return ProductDisPrcResponseDto.builder()
+                .id(id)
+                .productId(product.getId())
+                .startDt(startDt.getYear() + "-" + startMonthStr + "-" + startDayStr)
+                .endDt(endDt.getYear() + "-" + endMonthStr + "-" + endDayStr)
+                .disPrc(disPrc)
+                .build();
     }
 }

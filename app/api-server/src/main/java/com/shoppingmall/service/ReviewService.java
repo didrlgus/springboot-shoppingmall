@@ -3,18 +3,18 @@ package com.shoppingmall.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.shoppingmall.common.AWSS3Utils;
 import com.shoppingmall.common.UploadFileUtils;
-import com.shoppingmall.domain.User;
-import com.shoppingmall.domain.Product;
-import com.shoppingmall.domain.Review;
+import com.shoppingmall.domain.product.Product;
+import com.shoppingmall.domain.product.ProductRepository;
+import com.shoppingmall.domain.review.Review;
+import com.shoppingmall.domain.review.ReviewRepository;
+import com.shoppingmall.domain.user.User;
+import com.shoppingmall.domain.user.UserRepository;
 import com.shoppingmall.dto.PagingDto;
 import com.shoppingmall.dto.ReviewRequestDto;
 import com.shoppingmall.dto.ReviewResponseDto;
 import com.shoppingmall.exception.NotExistProductException;
 import com.shoppingmall.exception.NotExistReviewException;
 import com.shoppingmall.exception.NotExistUserException;
-import com.shoppingmall.repository.UserRepository;
-import com.shoppingmall.repository.ProductRepository;
-import com.shoppingmall.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -62,21 +61,14 @@ public class ReviewService {
     // 리뷰 추가 서비스
     @Transactional
     public void makeReview(ReviewRequestDto reviewRequestDto) {
-        Optional<User> userOpt = userRepository.findById(reviewRequestDto.getUserId());
+        User user = userRepository.findById(reviewRequestDto.getUserId())
+                .orElseThrow(() -> new NotExistUserException("존재하지 않는 유저입니다."));
 
-        if (!userOpt.isPresent())
-            throw new NotExistUserException("존재하지 않는 유저입니다.");
-
-        Optional<Product> productOpt = productRepository.findById(reviewRequestDto.getProductId());
-
-        if (!productOpt.isPresent())
-            throw new NotExistProductException("존재하지 않는 상품입니다.");
-
-
-        Product product = productOpt.get();
+        Product product = productRepository.findById(reviewRequestDto.getProductId())
+                .orElseThrow(() -> new NotExistProductException("존재하지 않는 상품입니다."));
 
         reviewRepository.save(Review.builder()
-                .user(userOpt.get())
+                .user(user)
                 .product(product)
                 .title(reviewRequestDto.getTitle())
                 .content(reviewRequestDto.getContent())
@@ -114,28 +106,24 @@ public class ReviewService {
         reviewPagingDto.setPagingInfo(reviewResponseDtos);
 
         // 평점 평균 조회해서 맵에 추가
-        Optional<Product> productOpt = productRepository.findById(productId);
-
-        if (!productOpt.isPresent())
-            throw new NotExistProductException("존재하지 않는 상품입니다.");
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new NotExistProductException("존재하지 않는 상품입니다."));
 
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("reviewList", reviewResponseDtos);
         resultMap.put("reviewPagingDto", reviewPagingDto);
-        resultMap.put("rateAvg", productOpt.get().getRateAvg());
+        resultMap.put("rateAvg", product.getRateAvg());
 
         return resultMap;
     }
 
     public ReviewResponseDto.ReviewDetailResponseDto getReviewDetail(Long id) {
 
-        Optional<Review> reviewOpt = reviewRepository.findById(id);
-
-        if (!reviewOpt.isPresent())
-            throw new NotExistReviewException("존재하지 않는 리뷰입니다.");
+        Review review = reviewRepository.findById(id)
+                .orElseThrow(() -> new NotExistReviewException("존재하지 않는 리뷰입니다."));
 
         return ReviewResponseDto.ReviewDetailResponseDto.builder()
-                .content(reviewOpt.get().getContent())
+                .content(review.getContent())
                 .build();
     }
 }

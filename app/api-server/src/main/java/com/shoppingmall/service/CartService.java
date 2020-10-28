@@ -1,16 +1,16 @@
 package com.shoppingmall.service;
 
-import com.shoppingmall.domain.Cart;
-import com.shoppingmall.domain.User;
-import com.shoppingmall.domain.Product;
-import com.shoppingmall.domain.ProductDisPrc;
+import com.shoppingmall.domain.cart.Cart;
+import com.shoppingmall.domain.cart.CartRepository;
+import com.shoppingmall.domain.product.Product;
+import com.shoppingmall.domain.product.ProductRepository;
+import com.shoppingmall.domain.productDisPrc.ProductDisPrc;
+import com.shoppingmall.domain.user.User;
+import com.shoppingmall.domain.user.UserRepository;
 import com.shoppingmall.dto.CartRequestDto;
 import com.shoppingmall.dto.CartResponseDto;
 import com.shoppingmall.dto.PagingDto;
 import com.shoppingmall.exception.*;
-import com.shoppingmall.repository.CartRepository;
-import com.shoppingmall.repository.UserRepository;
-import com.shoppingmall.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;

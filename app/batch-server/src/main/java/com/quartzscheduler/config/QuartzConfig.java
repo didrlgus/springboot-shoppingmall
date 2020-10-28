@@ -12,7 +12,7 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 import java.util.Objects;
 
-@EntityScan({"com.shoppingmall.domain.product", "com.shoppingmall.domain.productDisPrc"})
+@EntityScan({"com.shoppingmall.domain"})
 @EnableJpaRepositories(basePackages = {"com.shoppingmall.domain.product"})
 @RequiredArgsConstructor
 @Configuration

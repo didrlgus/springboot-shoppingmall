@@ -13,6 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,10 +37,21 @@ public class BestAndNewProductCachingJob implements Job {
     public void execute(JobExecutionContext context) {
         ApplicationContext applicationContext = getApplicationContext(context);
 
-        List<ProductResponseDto.MainProductResponseDto> best10ProductList = getBest10ProductList(applicationContext);
-        List<ProductResponseDto.MainProductResponseDto> new8ProductList = getNew8ProductList(applicationContext);
+        // TransactionManager 주입
+        PlatformTransactionManager transactionManager = getPlatformTransactionManager(applicationContext);
+        TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
 
-        setCaching(applicationContext, best10ProductList, new8ProductList);
+        try {
+            List<ProductResponseDto.MainProductResponseDto> best10ProductList = getBest10ProductList(applicationContext);
+            List<ProductResponseDto.MainProductResponseDto> new8ProductList = getNew8ProductList(applicationContext);
+
+            setCaching(applicationContext, best10ProductList, new8ProductList);
+
+            transactionManager.commit(status);
+        } catch (Exception e) {
+            log.error("{com.quartzscheduler.scheduler.execute} : " + e);
+            transactionManager.rollback(status);
+        }
     }
 
     public void setCaching(ApplicationContext applicationContext,
@@ -130,6 +144,10 @@ public class BestAndNewProductCachingJob implements Job {
         }
 
         return 0;
+    }
+
+    public PlatformTransactionManager getPlatformTransactionManager(ApplicationContext applicationContext) {
+        return applicationContext.getBean(PlatformTransactionManager.class);
     }
 
     public ProductRepository getProductRepository(ApplicationContext applicationContext) {

@@ -23,6 +23,8 @@ subprojects {
     }
 
     dependencies {
+        compile('org.projectlombok:lombok')
+        annotationProcessor 'org.projectlombok:lombok'
     }
 }
 

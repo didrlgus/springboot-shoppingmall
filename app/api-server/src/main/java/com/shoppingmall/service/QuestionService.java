@@ -1,17 +1,17 @@
 package com.shoppingmall.service;
 
-import com.shoppingmall.domain.User;
-import com.shoppingmall.domain.Product;
-import com.shoppingmall.domain.Question;
+import com.shoppingmall.domain.product.Product;
+import com.shoppingmall.domain.product.ProductRepository;
+import com.shoppingmall.domain.question.Question;
+import com.shoppingmall.domain.question.QuestionRepository;
+import com.shoppingmall.domain.user.User;
+import com.shoppingmall.domain.user.UserRepository;
 import com.shoppingmall.exception.NotExistQuestionException;
 import com.shoppingmall.dto.PagingDto;
 import com.shoppingmall.dto.QuestionRequestDto;
 import com.shoppingmall.dto.QuestionResponseDto;
 import com.shoppingmall.exception.NotExistProductException;
 import com.shoppingmall.exception.NotExistUserException;
-import com.shoppingmall.repository.UserRepository;
-import com.shoppingmall.repository.ProductRepository;
-import com.shoppingmall.repository.QuestionRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @AllArgsConstructor
@@ -83,25 +82,19 @@ public class QuestionService {
 
     public void updateQuestion(Long id, QuestionRequestDto.Update questionRequestDto) {
 
-        Optional<Question> question = questionRepository.findById(id);
+        Question question = questionRepository.findById(id)
+                .orElseThrow(() -> new NotExistQuestionException("존재하지 않는 문의 입니다."));
 
-        if (!question.isPresent()) {
-            throw new NotExistQuestionException("존재하지 않는 문의 입니다.");
-        }
+        question.setMessage(questionRequestDto.getMessage());
 
-        question.get().setMessage(questionRequestDto.getMessage());
-
-        questionRepository.save(question.get());
+        questionRepository.save(question);
     }
 
     public void deleteQuestion(Long id) {
 
-        Optional<Question> question = questionRepository.findById(id);
+        Question question = questionRepository.findById(id)
+                .orElseThrow(() -> new NotExistQuestionException("존재하지 않는 문의 입니다."));
 
-        if (!question.isPresent()) {
-            throw new NotExistQuestionException("존재하지 않는 문의 입니다.");
-        }
-
-        questionRepository.delete(question.get());
+        questionRepository.delete(question);
     }
 }

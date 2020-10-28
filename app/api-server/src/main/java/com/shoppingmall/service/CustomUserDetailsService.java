@@ -1,11 +1,10 @@
 package com.shoppingmall.service;
 
-import com.shoppingmall.domain.User;
-import com.shoppingmall.domain.SecurityUser;
-import com.shoppingmall.dto.UserResponseDto;
+import com.shoppingmall.common.SecurityUser;
+import com.shoppingmall.domain.user.User;
+import com.shoppingmall.domain.user.UserRepository;
 import com.shoppingmall.exception.DeleteUserException;
 import com.shoppingmall.exception.NotExistUserException;
-import com.shoppingmall.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,8 +14,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Objects;
-import java.util.Optional;
 
 import static java.util.Objects.nonNull;
 

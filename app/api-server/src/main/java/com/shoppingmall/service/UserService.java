@@ -1,7 +1,8 @@
 package com.shoppingmall.service;
 
-import com.shoppingmall.domain.User;
 import com.shoppingmall.domain.enums.Role;
+import com.shoppingmall.domain.user.User;
+import com.shoppingmall.domain.user.UserRepository;
 import com.shoppingmall.dto.MeRequestDto;
 import com.shoppingmall.dto.UserRequestDto;
 import com.shoppingmall.dto.UserResponseDto;
@@ -9,7 +10,6 @@ import com.shoppingmall.dto.UpdatePasswordRequestDto;
 import com.shoppingmall.exception.DuplicatedException;
 import com.shoppingmall.exception.NotExistUserException;
 import com.shoppingmall.exception.UpdatePasswordException;
-import com.shoppingmall.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

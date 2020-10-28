@@ -1,13 +1,13 @@
 package com.shoppingmall.service;
 
-import com.shoppingmall.domain.Product;
-import com.shoppingmall.domain.ProductDisPrc;
+import com.shoppingmall.domain.product.Product;
+import com.shoppingmall.domain.product.ProductRepository;
+import com.shoppingmall.domain.productDisPrc.ProductDisPrc;
+import com.shoppingmall.domain.productDisPrc.ProductDisPrcRepository;
 import com.shoppingmall.dto.ProductDisPrcRequestDto;
 import com.shoppingmall.dto.ProductDisPrcResponseDto;
 import com.shoppingmall.exception.NotExistProductDisPrcException;
 import com.shoppingmall.exception.NotExistProductException;
-import com.shoppingmall.repository.ProductDisPrcRepository;
-import com.shoppingmall.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

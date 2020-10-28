@@ -43,12 +43,12 @@ public class ProductRestController {
         return ResponseEntity.ok().body(productService.getProductDetails(id));
     }
 
-    @ApiOperation(value = "관련 상품 조회")
-    @GetMapping("/products/{id}/relation/{smallCatCd}")
-    public ResponseEntity<?> getRelatedProductList(@PathVariable("id") Long id, @PathVariable("smallCatCd") String smallCatCd) {
-
-        return ResponseEntity.ok().body(productService.getRelatedProductList(id, smallCatCd));
-    }
+//    @ApiOperation(value = "관련 상품 조회")
+//    @GetMapping("/products/{id}/relation/{smallCatCd}")
+//    public ResponseEntity<?> getRelatedProductList(@PathVariable("id") Long id, @PathVariable("smallCatCd") String smallCatCd) {
+//
+//        return ResponseEntity.ok().body(productService.getRelatedProductList(id, smallCatCd));
+//    }
 
     // 상품 리스트 조회 (관리자 권한)
     @ApiOperation(value = "상품 전체 조회 (관리자 권한)")

@@ -7,7 +7,7 @@ jar {
 }
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-jdbc')
+    compile project(':app:common')
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile("org.mariadb.jdbc:mariadb-java-client")
@@ -15,8 +15,6 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-quartz')
     compile('org.springframework.boot:spring-boot-starter-data-redis')
     runtimeOnly 'com.h2database:h2'
-    compile('org.projectlombok:lombok')
-    annotationProcessor 'org.projectlombok:lombok'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }

@@ -1,16 +1,16 @@
 package com.shoppingmall.service;
 
-import com.shoppingmall.domain.User;
-import com.shoppingmall.domain.Question;
-import com.shoppingmall.domain.QuestionAnswer;
+import com.shoppingmall.domain.question.Question;
+import com.shoppingmall.domain.question.QuestionRepository;
+import com.shoppingmall.domain.questionAnswer.QuestionAnswer;
+import com.shoppingmall.domain.questionAnswer.QuestionAnswerRepository;
+import com.shoppingmall.domain.user.User;
+import com.shoppingmall.domain.user.UserRepository;
 import com.shoppingmall.dto.PagingDto;
 import com.shoppingmall.dto.QuestionAnswerRequestDto;
 import com.shoppingmall.dto.QuestionAnswerResponseDto;
 import com.shoppingmall.exception.NotExistQuestionException;
 import com.shoppingmall.exception.NotExistUserException;
-import com.shoppingmall.repository.UserRepository;
-import com.shoppingmall.repository.QuestionAnswerRepository;
-import com.shoppingmall.repository.QuestionRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @AllArgsConstructor
@@ -63,27 +62,23 @@ public class QuestionAnswerService {
     @Transactional
     public void makeAnswer(Long questionId, QuestionAnswerRequestDto questionAnswerRequestDto) {
 
-        Optional<User> normalUser = userRepository.findById(questionAnswerRequestDto.getUserId());
+        User normalUser = userRepository.findById(questionAnswerRequestDto.getUserId())
+                .orElseThrow(() -> new NotExistUserException("존재하지 않는 유저입니다."));
 
-        if (!normalUser.isPresent())
-            throw new NotExistUserException("존재하지 않는 유저입니다.");
-
-        Optional<Question> question = questionRepository.findById(questionId);
-
-        if (!question.isPresent())
-            throw new NotExistQuestionException("존재하지 않는 문의입니다.");
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new NotExistQuestionException("존재하지 않는 문의입니다."));
 
         // 댓글 상태, 개수 추가
-        Question updateQuestion = question.get();
-        if (!updateQuestion.isAnswerState()) {
-            updateQuestion.setAnswerState(true);
+        if (!question.isAnswerState()) {
+            question.setAnswerState(true);
         }
-        updateQuestion.setAnswerCount(updateQuestion.getAnswerCount() + 1);
-        questionRepository.save(updateQuestion);
+
+        question.setAnswerCount(question.getAnswerCount() + 1);
+        questionRepository.save(question);
 
         questionAnswerRepository.save(QuestionAnswer.builder()
-                .user(normalUser.get())
-                .question(question.get())
+                .user(normalUser)
+                .question(question)
                 .message(questionAnswerRequestDto.getMessage())
                 .build());
     }

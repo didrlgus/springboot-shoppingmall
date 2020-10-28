@@ -1,7 +1,7 @@
 package com.shoppingmall.domain.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.quartzscheduler.common.BaseTimeEntity;
+import com.shoppingmall.common.BaseTimeEntity;
 import com.shoppingmall.domain.enums.ProductStatus;
 import com.shoppingmall.domain.productDisPrc.ProductDisPrc;
 import com.shoppingmall.dto.ProductResponseDto;

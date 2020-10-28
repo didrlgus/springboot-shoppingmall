@@ -1,12 +1,12 @@
 package com.shoppingmall.service;
 
-import com.shoppingmall.domain.ProductCat;
 import com.shoppingmall.domain.enums.Role;
+import com.shoppingmall.domain.productCat.CategoryRepository;
+import com.shoppingmall.domain.productCat.ProductCat;
 import com.shoppingmall.dto.CategoryRequestDto;
 import com.shoppingmall.dto.CategoryResponseDto;
 import com.shoppingmall.exception.CatCdException;
 import com.shoppingmall.exception.NotExistCategoryException;
-import com.shoppingmall.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.ValueOperations;

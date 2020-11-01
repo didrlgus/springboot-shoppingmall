@@ -8,12 +8,12 @@ jar {
 
 dependencies {
     compile project(':app:common')
+    compile project(':lib:redis')
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile("org.mariadb.jdbc:mariadb-java-client")
     compile('mysql:mysql-connector-java')
     compile('org.springframework.boot:spring-boot-starter-quartz')
-    compile('org.springframework.boot:spring-boot-starter-data-redis')
     runtimeOnly 'com.h2database:h2'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

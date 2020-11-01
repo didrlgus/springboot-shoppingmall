@@ -8,7 +8,13 @@ spring:
       max-file-size: 200MB
       max-request-size: 215MB
 
+  data:
+    redis:
+      repositories:
+        enabled: false
+
 logging.level.org.springframework.batch: DEBUG
+
 ---
 spring.profiles: local
 spring.profiles.include: local-social

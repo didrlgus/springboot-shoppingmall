@@ -1,4 +1,4 @@
-package com.shoppingmall.config;
+package com.shoppingmall.config.redis;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

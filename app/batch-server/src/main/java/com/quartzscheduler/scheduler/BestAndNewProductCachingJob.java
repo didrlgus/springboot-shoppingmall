@@ -156,7 +156,7 @@ public class BestAndNewProductCachingJob implements Job {
 
     @SuppressWarnings("unchecked")
     public RedisTemplate<String, Object> getRedisTemplate(ApplicationContext applicationContext) {
-        return applicationContext.getBean("redisQuartzTemplate", RedisTemplate.class);
+        return applicationContext.getBean("redisCustomTemplate", RedisTemplate.class);
     }
 
     public ApplicationContext getApplicationContext(JobExecutionContext context) {

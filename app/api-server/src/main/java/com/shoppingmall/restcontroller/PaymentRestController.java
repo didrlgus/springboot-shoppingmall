@@ -1,8 +1,10 @@
 package com.shoppingmall.restcontroller;
 
 import com.shoppingmall.dto.PaymentRequestDto;
-import com.shoppingmall.service.PaymentService;
+import com.shoppingmall.publisher.MessagePublisher;
+import com.shoppingmall.publisher.PaymentSuccessChannel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -13,10 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
+@EnableBinding(PaymentSuccessChannel.class)
 @RestController
 public class PaymentRestController {
 
-    private final PaymentService paymentService;
+    private final MessagePublisher messagePublisher;
 
     @PostMapping("/payment/success")
     public ResponseEntity<?> paymentSuccess(@RequestBody @Valid PaymentRequestDto.Success requestDto,
@@ -27,7 +30,7 @@ public class PaymentRestController {
             return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
         }
 
-        paymentService.sendEmail(requestDto);
+        messagePublisher.publishPaymentSuccessMessage(requestDto);
 
         return ResponseEntity.ok("결제가 완료되었습니다.");
     }

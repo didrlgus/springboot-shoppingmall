@@ -9,4 +9,4 @@ include 'app:batch-server'
 include 'app:common'
 include 'lib:redis'
 include 'lib:kafka'
-
+include 'app:mail-server'

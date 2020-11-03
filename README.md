@@ -68,7 +68,7 @@
 * Event Driven Architecture
 
 ## :factory: 시스템 구조
-<img width="1000" alt="캡처1" src="https://user-images.githubusercontent.com/40568894/97999746-133d1b00-1e2f-11eb-85b0-6212e95ca63d.PNG"><img width="1000" alt="캡처2" src="https://user-images.githubusercontent.com/40568894/97997660-8a24e480-1e2c-11eb-9e11-99510c7f2e00.PNG"><img width="1000" alt="캡처3" src="https://user-images.githubusercontent.com/40568894/97997675-8c873e80-1e2c-11eb-9f77-95e9c66b1c1a.PNG">
+<img width="1000" alt="캡처1" src="https://user-images.githubusercontent.com/40568894/97999746-133d1b00-1e2f-11eb-85b0-6212e95ca63d.PNG"><img width="1000" alt="캡처2" src="https://user-images.githubusercontent.com/40568894/98000264-ab3b0480-1e2f-11eb-94ee-1dede8d4393a.PNG"><img width="1000" alt="캡처3" src="https://user-images.githubusercontent.com/40568894/97997675-8c873e80-1e2c-11eb-9f77-95e9c66b1c1a.PNG">
 
 ## :link: quartz 배치
 * [quartz-batch 스케줄러](https://github.com/didrlgus/springboot-shoppingmall/tree/master/app/batch-server)

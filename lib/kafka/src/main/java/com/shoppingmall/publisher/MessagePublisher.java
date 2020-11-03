@@ -1,5 +1,6 @@
 package com.shoppingmall.publisher;
 
+import com.shoppingmall.channel.PaymentSuccessOutputChannel;
 import com.shoppingmall.dto.PaymentRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.integration.support.MessageBuilder;
@@ -9,10 +10,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessagePublisher {
 
-    private final PaymentSuccessChannel paymentSuccessChannel;
+    private final PaymentSuccessOutputChannel paymentSuccessOutputChannel;
 
     public void publishPaymentSuccessMessage(PaymentRequestDto.Success message) {
-        paymentSuccessChannel.paymentSuccessChannel().send(MessageBuilder.withPayload(message).build());
+        paymentSuccessOutputChannel.outputChannel().send(MessageBuilder.withPayload(message).build());
     }
 
 }

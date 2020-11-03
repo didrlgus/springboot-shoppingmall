@@ -2,7 +2,7 @@ package com.shoppingmall.restcontroller;
 
 import com.shoppingmall.dto.PaymentRequestDto;
 import com.shoppingmall.publisher.MessagePublisher;
-import com.shoppingmall.publisher.PaymentSuccessChannel;
+import com.shoppingmall.channel.PaymentSuccessOutputChannel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
-@EnableBinding(PaymentSuccessChannel.class)
+@EnableBinding(PaymentSuccessOutputChannel.class)
 @RestController
 public class PaymentRestController {
 

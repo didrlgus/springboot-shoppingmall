@@ -58,7 +58,6 @@
                                 checkoutData.buildingName = cartList[0].user.buildingName;
                                 checkoutData.detailAddr = cartList[0].user.detailAddr;
 
-
                                 checkoutData.userSavings = cartList[0].user.savings;
                                 $(".savings p.user-savings").text(checkoutData.userSavings + "원 보유 (5000원 이상 결제 시 사용가능)");
 
@@ -204,38 +203,63 @@
                             var impUid = rsp.imp_uid;
                             checkoutData.deliveryMessage = $("#delivery-message-area").val();
 
-                            var orderData = {
-                                cartIdList      : checkoutData.cartId,
+                            var paymentSuccessData = {
+                                email           : checkoutData.email,
+                                buyerName      : checkoutData.buyer_name,
                                 orderNumber     : orderNumber,
                                 orderName       : checkoutData.orderName,
                                 deliveryMessage : checkoutData.deliveryMessage,
                                 address         : $("input[name='roadAddr']").val() + " " + $("input[name='buildingName']").val() + " " +  $("input[name='detailAddr']").val(),
                                 amount          : checkoutData.amount,
-                                useSavings      : checkoutData.useSavings,
-                                impUid          : impUid
+                                useSavings      : checkoutData.useSavings
                             }
 
                             $.ajax({
                                 type : "POST",
-                                url  : "/orders",
+                                url  : "/payment/success",
                                 contentType : "application/json",
-                                data        : JSON.stringify(orderData),
+                                data        : JSON.stringify(paymentSuccessData),
                                 beforeSend  : function(xhr) {
                                     xhr.setRequestHeader(header, token);
                                 },
                                 success     : function(data) {
+                                    var orderData = {
+                                        cartIdList      : checkoutData.cartId,
+                                        orderNumber     : orderNumber,
+                                        orderName       : checkoutData.orderName,
+                                        deliveryMessage : checkoutData.deliveryMessage,
+                                        address         : $("input[name='roadAddr']").val() + " " + $("input[name='buildingName']").val() + " " +  $("input[name='detailAddr']").val(),
+                                        amount          : checkoutData.amount,
+                                        useSavings      : checkoutData.useSavings,
+                                        impUid          : impUid
+                                    }
+
+                                    $.ajax({
+                                        type : "POST",
+                                        url  : "/orders",
+                                        contentType : "application/json",
+                                        data        : JSON.stringify(orderData),
+                                        beforeSend  : function(xhr) {
+                                            xhr.setRequestHeader(header, token);
+                                        },
+                                        success     : function(data) {
+                                        },
+                                        error       : function(e) {
+                                            alert(e.responseText);
+                                        }
+                                    }).done(function () {
+                                        msg += '결제가 완료되었습니다.\n';
+                                        msg += '주문번호 : ' + orderNumber + "\n";
+                                        msg += '결제 금액 : ' + rsp.paid_amount;
+
+                                        alert(msg);
+
+                                        location.href = "/orders";
+                                    })
                                 },
                                 error       : function(e) {
                                     alert(e.responseText);
                                 }
-                            }).done(function () {
-                                msg += '결제가 완료되었습니다.\n';
-                                msg += '주문번호 : ' + orderNumber + "\n";
-                                msg += '결제 금액 : ' + rsp.paid_amount;
-
-                                alert(msg);
-
-                                location.href = "/orders";
                             })
                         } else {
                             msg += '결제에 실패하였습니다.\n';

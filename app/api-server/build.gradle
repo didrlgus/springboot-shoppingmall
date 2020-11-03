@@ -31,5 +31,6 @@ dependencies {
     compile group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
     compile group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: '2.2.0.RELEASE'
     compile group: 'org.springframework.cloud', name: 'spring-cloud-aws-context', version: '2.2.1.RELEASE'
+    compile('org.springframework.boot:spring-boot-starter-mail')
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }

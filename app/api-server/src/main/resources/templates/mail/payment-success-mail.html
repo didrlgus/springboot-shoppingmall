@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Fancy Cart</title>
+</head>
+<body>
+    <div>
+        <h2>안녕하세요. <span th:text="${buyerName}"></span> 님</h2>
+        <h2 th:text="${message}"></h2>
+        <div>
+            <h3>주문번호</h3>
+            <p th:text="${orderNumber}"></p>
+        </div>
+        <div>
+            <h3>주문명</h3>
+            <p th:text="${orderName}"></p>
+        </div>
+        <div>
+            <h3>배송 메세지</h3>
+            <p th:text="${deliveryMessage}"></p>
+        </div>
+        <div>
+            <h3>주소</h3>
+            <p th:text="${address}"></p>
+        </div>
+        <div>
+            <h3>가격</h3>
+            <p th:text="${amount} + '원'"></p>
+        </div>
+        <div>
+            <h3>적립금</h3>
+            <p th:text="${useSavings} + ' point 사용'"></p>
+        </div>
+        <div>
+            <h3>총 결제 금액</h3>
+            <p th:text="${resultAmount} + '원'"></p>
+        </div>
+    </div>
+</body>
+<br/>
+<footer>
+    <a th:href="${host}">
+        <img th:src="${host} + '/images/logo.png'">
+    </a>
+</footer>
+</html>

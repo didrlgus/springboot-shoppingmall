@@ -1,4 +1,4 @@
-# :robot: 스프링 부트로 만드는 쇼핑몰 프로젝트
+# :shopping_cart: 스프링 부트로 만드는 쇼핑몰 프로젝트
 
 ## 배포 URL
 * http://fancy-cart.ga

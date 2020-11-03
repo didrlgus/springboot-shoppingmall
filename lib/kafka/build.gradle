@@ -1,0 +1,14 @@
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+dependencies {
+    compile project(':app:common')
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-stream-kafka', version: '2.2.1.RELEASE'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}

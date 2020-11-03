@@ -1,0 +1,17 @@
+version = '0.0.1-SNAPSHOT'
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.shoppingmall.MailApplication'
+    }
+}
+
+dependencies {
+    compile project(':app:common')
+    compile project(':lib:kafka')
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compile('org.springframework.boot:spring-boot-starter-mail')
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+    compile group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '2.4.1'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}

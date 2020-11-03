@@ -1,25 +1,25 @@
 # :shopping_cart: 스프링 부트로 만드는 쇼핑몰 프로젝트
 
-## 배포 URL
+## :link: 배포 URL
 * http://fancy-cart.ga
 
-## 개발환경
+## :clipboard: 개발환경
 * IntelliJ
 * Postman
 * HeidiSql
 * Sourcetree
 * GitHub
 
-## 성능 테스팅 도구
+## :clipboard: 성능 테스팅 도구
 * K6
 * Grafana
 * InfluxDB
 
-## 로그 분석 도구
+## :clipboard: 로그 분석 도구
 * ELK Stack
   * Elasticsearch, Logstash, Kibana, Filebeats
 
-## 사용 기술
+## :clipboard: 사용 기술
 ### 백엔드
 #### Spring boot
 * JAVA 8
@@ -52,7 +52,7 @@
 * Thymeleaf
 * jQuery
 
-## 주요 키워드
+## :clipboard: 주요 키워드
 * REST API
 * 시큐리티
 * 배치
@@ -64,24 +64,29 @@
 * 예외처리
 * Git 버전관리
 * AWS EC2 배포
+* Message Queue
+* Event Driven Architecture
 
-## 시스템 구조
-<img width="1000" alt="캡처6" src="https://user-images.githubusercontent.com/40568894/96983061-00873400-155b-11eb-98c6-f94a14ba7daf.PNG"><img width="1000" alt="캡처7" src="https://user-images.githubusercontent.com/40568894/96983110-03822480-155b-11eb-8594-48ef5cf2c218.PNG">
+## :factory: 시스템 구조
+<img width="1000" alt="캡처1" src="https://user-images.githubusercontent.com/40568894/97997648-8729f400-1e2c-11eb-8b70-76526adb4634.PNG"><img width="1000" alt="캡처2" src="https://user-images.githubusercontent.com/40568894/97997660-8a24e480-1e2c-11eb-9e11-99510c7f2e00.PNG"><img width="1000" alt="캡처3" src="https://user-images.githubusercontent.com/40568894/97997675-8c873e80-1e2c-11eb-9f77-95e9c66b1c1a.PNG">
 
-## quartz 배치
-* [quartz-batch 스케줄러 Repository](https://github.com/didrlgus/spring-quartz-scheduler)
+## :link: quartz 배치
+* [quartz-batch 스케줄러](https://github.com/didrlgus/springboot-shoppingmall/tree/master/app/batch-server)
 
-## redis update 권한 서버
+## :link: mail 서버 (Consumer)
+* [mail 서버](https://github.com/didrlgus/springboot-shoppingmall/tree/master/app/mail-server)
+
+## :link: redis update 권한 서버
 * [redis update 권한 서버 Repository](https://github.com/didrlgus/redis-update-server)
 
-## Trouble Shooting
+## :link: Trouble Shooting
 * [API 성능 테스트 에서 발생한 문제 해결을 위한 시도](https://github.com/didrlgus/springboot-shoppingmall/issues/6)
 
-## 성능 테스트
+## :link: 성능 테스트
 * [초기 성능 테스트 결과](https://github.com/didrlgus/springboot-shoppingmall/issues/5)
 * [메인화면 API 캐시 적용 전, 후 성능 테스트 비교 결과](https://github.com/didrlgus/springboot-shoppingmall/issues/21)
 
-## ERD 설계
+## :link: ERD 설계
 * [shopping mall ERD](https://github.com/didrlgus/springboot-shoppingmall/issues/1)
 
 ## Rest API 설계

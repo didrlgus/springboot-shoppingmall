@@ -15,7 +15,7 @@ import java.io.IOException;
  **/
 
 @Slf4j
-@Profile("local") // profile이 local일때만 활성화
+@Profile("test") // profile이 local일때만 활성화
 @Configuration
 public class EmbeddedRedisConfig {
     @Value("${spring.redis.port}")

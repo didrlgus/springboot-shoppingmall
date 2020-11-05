@@ -3,12 +3,15 @@ package com.shoppingmall.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.shoppingmall.common.AWSS3Utils;
 import com.shoppingmall.common.UploadFileUtils;
+import com.shoppingmall.domain.cart.Cart;
+import com.shoppingmall.domain.cart.CartRepository;
 import com.shoppingmall.domain.enums.ProductStatus;
 import com.shoppingmall.domain.product.Product;
 import com.shoppingmall.domain.product.ProductRepository;
 import com.shoppingmall.domain.productDisPrc.ProductDisPrc;
 import com.shoppingmall.domain.productDisPrc.ProductDisPrcRepository;
 import com.shoppingmall.dto.PagingDto;
+import com.shoppingmall.dto.PaymentRequestDto;
 import com.shoppingmall.dto.ProductRequestDto;
 import com.shoppingmall.dto.ProductResponseDto;
 import com.shoppingmall.exception.NoValidProductSortException;
@@ -39,6 +42,7 @@ public class ProductService {
 
     private final AWSS3Utils awss3Utils;
     private final ProductRepository productRepository;
+    private final CartRepository cartRepository;
     private final ProductDisPrcRepository productDisPrcRepository;
     private final ZSetOperations<String, Object> zSetOperations;
 
@@ -459,4 +463,27 @@ public class ProductService {
         return awss3Utils.putObjectToS3AndGetUrl(s3Client, saveFilePath, file);
     }
 
+    /**
+     * 결제 완료 후 상품 재고 업데이트
+     */
+    @Transactional
+    public void updateProductStock(PaymentRequestDto.Success message) {
+        List<Long> cartIdList = message.getCartIdList();
+
+        List<Cart> cartList = cartRepository.findAllById(cartIdList);
+
+        List<Product> productList = new ArrayList<>();
+
+        for(Cart cart : cartList) {
+            Product product = cart.getProduct();
+            product.setPurchaseCount(product.getPurchaseCount() + cart.getProductCount());
+            product.setTotalCount(product.getTotalCount() - cart.getProductCount());
+
+            productList.add(cart.getProduct());
+        }
+
+        productRepository.saveAll(productList);
+
+        log.info("[ProductService.updateProductStock] 상품 제고 업데이트 완료");
+    }
 }

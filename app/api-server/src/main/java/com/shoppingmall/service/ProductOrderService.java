@@ -1,19 +1,14 @@
 package com.shoppingmall.service;
 
-import com.google.gson.internal.LinkedTreeMap;
-import com.shoppingmall.common.ImpProperties;
-import com.shoppingmall.common.JsonUtil;
 import com.shoppingmall.domain.cart.Cart;
 import com.shoppingmall.domain.cart.CartRepository;
 import com.shoppingmall.domain.enums.OrderStatus;
-import com.shoppingmall.domain.product.Product;
-import com.shoppingmall.domain.product.ProductRepository;
 import com.shoppingmall.domain.productOrder.ProductOrder;
 import com.shoppingmall.domain.productOrder.ProductOrderRepository;
 import com.shoppingmall.domain.user.User;
 import com.shoppingmall.domain.user.UserRepository;
 import com.shoppingmall.dto.PagingDto;
-import com.shoppingmall.dto.ProductOrderRequestDto;
+import com.shoppingmall.dto.PaymentRequestDto;
 import com.shoppingmall.dto.ProductOrderResponseDto;
 import com.shoppingmall.exception.*;
 import lombok.RequiredArgsConstructor;
@@ -21,14 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -37,116 +26,20 @@ import java.util.*;
 @Service
 public class ProductOrderService {
 
-    private final CartRepository cartRepository;
     private final UserRepository userRepository;
     private final ProductOrderRepository productOrderRepository;
-    private final ProductRepository productRepository;
-    private final RestTemplate restTemplate;
-    private final ImpProperties impProperties;
+    private final CartRepository cartRepository;
 
     @Transactional
-    public void makeOrder(ProductOrderRequestDto productOrderRequestDto) {
-        String getTokenUrl = "https://api.iamport.kr/users/getToken";
+    public void makeOrder(PaymentRequestDto.Success message) {
 
-        Map<String, Object> requestMap = new HashMap<>();
-        requestMap.put("imp_key", impProperties.getKey());
-        requestMap.put("imp_secret", impProperties.getSecret());
+        // 주문 생성
+        ProductOrder productOrder = productOrderRepository.save(getProductOrder(message));
 
-        ResponseEntity<String> responseAccessToken = restTemplate.postForEntity(getTokenUrl, requestMap, String.class);
+        // 장바구니에 연관된 주문데이터 설정
+        setProductOrderOfCart(message.getCartIdList(), productOrder);
 
-        Map<String, Object> responseMap;
-
-        if(responseAccessToken.getStatusCode() == HttpStatus.OK) {
-            responseMap = JsonUtil.JsonToMap(JsonUtil.JsonToMap(responseAccessToken.getBody()).get("response").toString());
-        } else {
-            throw new PaymentsException("결제에러 입니다.");
-        }
-
-        String impAccessToken = (String) responseMap.get("access_token");
-        String impUid = productOrderRequestDto.getImpUid();
-        String getPaymentInfoUrl = "https://api.iamport.kr/payments/" + impUid;
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "application/json");
-        headers.add("Authorization", "Bearer "+impAccessToken);
-
-        HttpEntity<String> request = new HttpEntity<>(headers);
-
-        Map<String, Object> responsePaymentInfoMap;
-
-        ResponseEntity<String> responsePaymentInfo = restTemplate.postForEntity(getPaymentInfoUrl, request, String.class);
-
-        if (responsePaymentInfo.getStatusCode() == HttpStatus.OK) {
-            responsePaymentInfoMap = JsonUtil.JsonToMap(responsePaymentInfo.getBody());
-        } else {
-            throw new PaymentsException("결제에러 입니다.");
-        }
-
-        Map<String, Object> response = (LinkedTreeMap<String, Object>) responsePaymentInfoMap.get("response");
-        String paymentStatus = (String) response.get("status");
-
-
-        if(!paymentStatus.equals("paid")) throw new PaymentsException("결제에러 입니다.");
-
-        // 해당 유저의 장바구니 조회
-        List<Long> cartIdList = productOrderRequestDto.getCartIdList();
-
-        Cart cart = cartRepository.findById(cartIdList.get(0)).orElseThrow(() ->
-                new NotExistCartException("존재하지 않는 장바구니 입니다."));
-
-        UUID userId = cart.getUser().getId();
-
-        User user = userRepository.findById(userId).orElseThrow(() -> new NotExistUserException("존재하지 않는 유저 입니다."));
-
-        ProductOrder productOrder = productOrderRepository.save(ProductOrder.builder()
-                .user(user)
-                .orderNumber(productOrderRequestDto.getOrderNumber())
-                .orderName(productOrderRequestDto.getOrderName())
-                .amount(productOrderRequestDto.getAmount())
-                .deliveryMessage(productOrderRequestDto.getDeliveryMessage())
-                .address(productOrderRequestDto.getAddress())
-                .orderStatus(OrderStatus.COMPLETE)
-                .refundState('N')
-                .build());
-
-        List<HashMap<String, Object>> productMapList = new ArrayList<>();
-
-        for (Long cartId : cartIdList) {
-            cart = cartRepository.findById(cartId).orElseThrow(()
-                    -> new NotExistCartException("존재하지 않는 장바구니 입니다."));
-
-            // 사용한 장바구니 비활성화
-            cart.setProductOrder(productOrder);
-            cart.setUseYn('N');
-
-            HashMap<String, Object> productMap = new HashMap<>();
-            productMap.put("product", cart.getProduct());
-            productMap.put("productCount", cart.getProductCount());
-            productMapList.add(productMap);
-
-            cartRepository.save(cart);
-        }
-
-        // 상품의 재고 수정
-        for (HashMap<String, Object> productMap : productMapList) {
-            Product product = (Product) productMap.get("product");
-            Integer productCount = (Integer) productMap.get("productCount");
-
-            product.setPurchaseCount(product.getPurchaseCount() + productCount);
-            product.setLimitCount(product.getLimitCount() - productCount);
-            product.setTotalCount(product.getTotalCount() - productCount);
-            productRepository.save(product);
-        }
-
-        // 적립금 수정
-        if (user.getSavings() < productOrderRequestDto.getUseSavings()) {
-            throw new SavingsException("갖고 있는 적립금 보다 많은 적립금을 사용할 수 없습니다.");
-        }
-        // 추가될 적립금 (결제금액의 3%)
-        int addSavings = (int)((((float) 3 / (float)100) * productOrderRequestDto.getAmount()));
-
-        user.setSavings(user.getSavings() - productOrderRequestDto.getUseSavings() + addSavings);
-        userRepository.save(user);
+        log.info("[ProductOrderService.makeOrder] 주문 생성 완료");
     }
 
     public ProductOrderResponseDto getOrderDetails(Long orderId) {
@@ -159,9 +52,9 @@ public class ProductOrderService {
         return orderOpt.get().toResponseDto();
     }
 
-    public HashMap<String, Object> getAllOrder(UUID userId, int page, Pageable pageable) {
+    public HashMap<String, Object> getAllOrder(UUID userId, int page) {
         int realPage = (page == 0) ? 0 : (page - 1);
-        pageable = PageRequest.of(realPage, 5);
+        PageRequest pageable = PageRequest.of(realPage, 5);
 
         Page<ProductOrder> productOrderPage = productOrderRepository.findAllByUserIdOrderByCreatedDateDesc(userId, pageable);
 
@@ -186,5 +79,34 @@ public class ProductOrderService {
         }
 
         return null;
+    }
+
+    private User getUser(PaymentRequestDto.Success message) {
+        return userRepository.findById(message.getUserId()).orElseThrow(() -> new NotExistUserException("존재하지 않는 유저 입니다."));
+    }
+
+    private ProductOrder getProductOrder(PaymentRequestDto.Success message) {
+
+        User user = getUser(message);
+
+        return ProductOrder.builder()
+                .user(user)
+                .orderNumber(message.getOrderNumber())
+                .orderName(message.getOrderName())
+                .amount(message.getAmount())
+                .deliveryMessage(message.getDeliveryMessage())
+                .address(message.getAddress())
+                .orderStatus(OrderStatus.COMPLETE)
+                .refundState('N')
+                .build();
+    }
+
+    private void setProductOrderOfCart(List<Long> cartIdList, ProductOrder productOrder) {
+        List<Cart> cartList = cartRepository.findAllById(cartIdList);
+
+        for(Cart cart : cartList) {
+            cart.setProductOrder(productOrder);
+            cart.setUseYn('N');
+        }
     }
 }

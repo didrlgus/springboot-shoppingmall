@@ -6,6 +6,7 @@
         <script th:inline="javascript">
 
             var checkoutData = {
+                userId: "",
                 buyer_name : "",
                 email : "",
                 roadAddr : "",
@@ -52,6 +53,7 @@
                                 }
 
                                 // 유저 정보는 모든 카트 정보에서 공통
+                                checkoutData.userId = cartList[0].user.id;
                                 checkoutData.buyer_name = cartList[0].user.name;
                                 checkoutData.email = cartList[0].user.email;
                                 checkoutData.roadAddr = cartList[0].user.roadAddr;
@@ -200,18 +202,19 @@
                         var msg = "";
                         if (rsp.success) {
                             var orderNumber = rsp.merchant_uid;
-                            var impUid = rsp.imp_uid;
                             checkoutData.deliveryMessage = $("#delivery-message-area").val();
 
                             var paymentSuccessData = {
+                                userId          : checkoutData.userId,
                                 email           : checkoutData.email,
-                                buyerName      : checkoutData.buyer_name,
+                                buyerName       : checkoutData.buyer_name,
                                 orderNumber     : orderNumber,
                                 orderName       : checkoutData.orderName,
                                 deliveryMessage : checkoutData.deliveryMessage,
                                 address         : $("input[name='roadAddr']").val() + " " + $("input[name='buildingName']").val() + " " +  $("input[name='detailAddr']").val(),
                                 amount          : checkoutData.amount,
-                                useSavings      : checkoutData.useSavings
+                                useSavings      : checkoutData.useSavings,
+                                cartIdList      : checkoutData.cartId
                             }
 
                             $.ajax({
@@ -223,39 +226,13 @@
                                     xhr.setRequestHeader(header, token);
                                 },
                                 success     : function(data) {
-                                    var orderData = {
-                                        cartIdList      : checkoutData.cartId,
-                                        orderNumber     : orderNumber,
-                                        orderName       : checkoutData.orderName,
-                                        deliveryMessage : checkoutData.deliveryMessage,
-                                        address         : $("input[name='roadAddr']").val() + " " + $("input[name='buildingName']").val() + " " +  $("input[name='detailAddr']").val(),
-                                        amount          : checkoutData.amount,
-                                        useSavings      : checkoutData.useSavings,
-                                        impUid          : impUid
-                                    }
+                                    msg += data + '\n';
+                                    msg += '주문번호 : ' + orderNumber + "\n";
+                                    msg += '결제 금액 : ' + rsp.paid_amount;
 
-                                    $.ajax({
-                                        type : "POST",
-                                        url  : "/orders",
-                                        contentType : "application/json",
-                                        data        : JSON.stringify(orderData),
-                                        beforeSend  : function(xhr) {
-                                            xhr.setRequestHeader(header, token);
-                                        },
-                                        success     : function(data) {
-                                        },
-                                        error       : function(e) {
-                                            alert(e.responseText);
-                                        }
-                                    }).done(function () {
-                                        msg += '결제가 완료되었습니다.\n';
-                                        msg += '주문번호 : ' + orderNumber + "\n";
-                                        msg += '결제 금액 : ' + rsp.paid_amount;
+                                    alert(msg);
 
-                                        alert(msg);
-
-                                        location.href = "/orders";
-                                    })
+                                    location.href = "/orders";
                                 },
                                 error       : function(e) {
                                     alert(e.responseText);

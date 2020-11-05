@@ -3,19 +3,19 @@ package com.shoppingmall.service;
 import com.shoppingmall.domain.enums.Role;
 import com.shoppingmall.domain.user.User;
 import com.shoppingmall.domain.user.UserRepository;
-import com.shoppingmall.dto.MeRequestDto;
-import com.shoppingmall.dto.UserRequestDto;
-import com.shoppingmall.dto.UserResponseDto;
-import com.shoppingmall.dto.UpdatePasswordRequestDto;
+import com.shoppingmall.dto.*;
 import com.shoppingmall.exception.DuplicatedException;
 import com.shoppingmall.exception.NotExistUserException;
 import com.shoppingmall.exception.UpdatePasswordException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class UserService {
@@ -88,4 +88,24 @@ public class UserService {
         return passwordEncoder.matches(password1, password2);
     }
 
+    /**
+     *
+     * 결제 성공 이후 적립금 update
+     */
+    @Transactional
+    public void updateSavings(PaymentRequestDto.Success message) {
+        int useSavings = message.getUseSavings();
+
+        // 총 결제액의 3% 적립
+        int addSavings = (int)((((float) 3 / (float)100) * message.getAmount()));
+
+        User user = userRepository.findById(message.getUserId()).orElseThrow(()
+                -> new NotExistUserException("존재하지 않는 유저입니다."));
+
+        user.setSavings(user.getSavings() - useSavings + addSavings);
+
+        userRepository.save(user);
+
+        log.info("[UserService.updateSavings] 적립금 업데이트 완료");
+    }
 }

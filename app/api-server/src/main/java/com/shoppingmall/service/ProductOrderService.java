@@ -39,7 +39,7 @@ public class ProductOrderService {
         // 장바구니에 연관된 주문데이터 설정
         setProductOrderOfCart(message.getCartIdList(), productOrder);
 
-        log.info("주문 생성 완료");
+        log.info("[ProductOrderService.makeOrder] 주문 생성 완료");
     }
 
     public ProductOrderResponseDto getOrderDetails(Long orderId) {
@@ -106,6 +106,7 @@ public class ProductOrderService {
 
         for(Cart cart : cartList) {
             cart.setProductOrder(productOrder);
+            cart.setUseYn('N');
         }
     }
 }

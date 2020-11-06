@@ -4,9 +4,7 @@ import com.shoppingmall.channel.PaymentSuccessOrderInputChannel;
 import com.shoppingmall.channel.PaymentSuccessSavingsInputChannel;
 import com.shoppingmall.channel.PaymentSuccessStockInputChannel;
 import com.shoppingmall.dto.PaymentRequestDto;
-import com.shoppingmall.service.ProductOrderService;
-import com.shoppingmall.service.ProductService;
-import com.shoppingmall.service.UserService;
+import com.shoppingmall.service.PaymentSuccessService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
@@ -19,16 +17,14 @@ import org.springframework.cloud.stream.annotation.StreamListener;
         PaymentSuccessStockInputChannel.class})
 public class PaymentSuccessStreamListener {
 
-    private final ProductOrderService productOrderService;
-    private final UserService userService;
-    private final ProductService productService;
+    private final PaymentSuccessService paymentSuccessService;
 
     /**
      주문서 생성 Consumer
      **/
     @StreamListener(PaymentSuccessOrderInputChannel.PAYMENT_SUCCESS_ORDER_CONSUMER)
     public void paymentSuccessOrderListener(PaymentRequestDto.Success message) {
-        productOrderService.makeOrder(message);
+        paymentSuccessService.makeOrder(message);
     }
 
     /**
@@ -36,7 +32,7 @@ public class PaymentSuccessStreamListener {
      **/
     @StreamListener(PaymentSuccessSavingsInputChannel.PAYMENT_SUCCESS_SAVINGS_CONSUMER)
     public void paymentSuccessSavingsListener(PaymentRequestDto.Success message) {
-        userService.updateSavings(message);
+        paymentSuccessService.updateSavings(message);
     }
 
     /**
@@ -44,6 +40,6 @@ public class PaymentSuccessStreamListener {
      */
     @StreamListener(PaymentSuccessStockInputChannel.PAYMENT_SUCCESS_STOCK_CONSUMER)
     public void paymentSuccessStockListener(PaymentRequestDto.Success message) {
-        productService.updateProductStock(message);
+        paymentSuccessService.updateProductStock(message);
     }
 }

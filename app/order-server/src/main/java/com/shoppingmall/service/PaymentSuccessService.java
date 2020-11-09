@@ -67,7 +67,7 @@ public class PaymentSuccessService {
      * 결제 완료 후 상품 재고 업데이트
      */
     @Transactional
-    public void updateProductStock(PaymentRequestDto.Success message) {
+    public void updateProductPurchaseCount(PaymentRequestDto.Success message) {
         List<Long> cartIdList = message.getCartIdList();
 
         List<Cart> cartList = cartRepository.findAllById(cartIdList);
@@ -84,7 +84,7 @@ public class PaymentSuccessService {
 
         productRepository.saveAll(productList);
 
-        log.info("[ProductService.updateProductStock] 상품 재고 업데이트 완료");
+        log.info("[ProductService.updateProductPurchaseCount] 상품 수량 업데이트 완료");
     }
 
     private User getUser(PaymentRequestDto.Success message) {

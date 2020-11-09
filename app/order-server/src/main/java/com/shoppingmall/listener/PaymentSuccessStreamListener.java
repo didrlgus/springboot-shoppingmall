@@ -2,7 +2,7 @@ package com.shoppingmall.listener;
 
 import com.shoppingmall.channel.PaymentSuccessOrderInputChannel;
 import com.shoppingmall.channel.PaymentSuccessSavingsInputChannel;
-import com.shoppingmall.channel.PaymentSuccessStockInputChannel;
+import com.shoppingmall.channel.PaymentSuccessCountInputChannel;
 import com.shoppingmall.dto.PaymentRequestDto;
 import com.shoppingmall.service.PaymentSuccessService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import org.springframework.cloud.stream.annotation.StreamListener;
  */
 @RequiredArgsConstructor
 @EnableBinding({PaymentSuccessOrderInputChannel.class, PaymentSuccessSavingsInputChannel.class,
-        PaymentSuccessStockInputChannel.class})
+        PaymentSuccessCountInputChannel.class})
 public class PaymentSuccessStreamListener {
 
     private final PaymentSuccessService paymentSuccessService;
@@ -36,10 +36,10 @@ public class PaymentSuccessStreamListener {
     }
 
     /**
-     상품 재고 업데이트 Consumer
+     상품 수량 업데이트 Consumer
      */
-    @StreamListener(PaymentSuccessStockInputChannel.PAYMENT_SUCCESS_STOCK_CONSUMER)
-    public void paymentSuccessStockListener(PaymentRequestDto.Success message) {
-        paymentSuccessService.updateProductStock(message);
+    @StreamListener(PaymentSuccessCountInputChannel.PAYMENT_SUCCESS_COUNT_CONSUMER)
+    public void paymentSuccessProductCountListener(PaymentRequestDto.Success message) {
+        paymentSuccessService.updateProductPurchaseCount(message);
     }
 }

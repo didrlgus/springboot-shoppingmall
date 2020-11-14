@@ -29,6 +29,7 @@
 * Spring Data JPA
 * Spring Boot Batch
 * Spring AOP
+* spring cloud stream
 
 #### Build tool
 * Gradle
@@ -89,8 +90,5 @@
 ## :link: ERD 설계
 * [shopping mall ERD](https://github.com/didrlgus/springboot-shoppingmall/issues/1)
 
-## Rest API 설계
-![REST API1](https://user-images.githubusercontent.com/40568894/64402718-d3569880-d0b0-11e9-90df-e14b1a5389bd.png)
-![REST API2](https://user-images.githubusercontent.com/40568894/64402722-d6518900-d0b0-11e9-90d3-6a31dbd4f0dd.png)
-![REST API3](https://user-images.githubusercontent.com/40568894/64402726-d8b3e300-d0b0-11e9-863f-8f654f3df4d6.png)
-![REST API4](https://user-images.githubusercontent.com/40568894/64402728-d9e51000-d0b0-11e9-895f-450f3dae64db.png)
+## :link: Rest API 문서
+* [shopping mall API 문서](https://github.com/didrlgus/springboot-shoppingmall/issues/58)

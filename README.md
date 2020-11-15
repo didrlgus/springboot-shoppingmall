@@ -89,6 +89,14 @@
 ## :link: redis update 권한 서버
 * [redis update 권한 서버 Repository](https://github.com/didrlgus/redis-update-server)
 
+## :link: 공통 모듈
+* app 공통 모듈
+  * [app 공통 모듈](https://github.com/didrlgus/springboot-shoppingmall/tree/master/app/common)
+
+* lib 공통 모듈
+  * [redis 공통 모듈](https://github.com/didrlgus/springboot-shoppingmall/tree/master/lib/redis)
+  * [kafka 공통 모듈](https://github.com/didrlgus/springboot-shoppingmall/tree/master/lib/kafka)
+
 ## :link: Trouble Shooting
 * [API 성능 테스트 에서 발생한 문제 해결을 위한 시도](https://github.com/didrlgus/springboot-shoppingmall/issues/6)
 

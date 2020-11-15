@@ -69,10 +69,19 @@
 * Event Driven Architecture
 
 ## :factory: 시스템 구조
-<img width="1000" alt="캡처7" src="https://user-images.githubusercontent.com/40568894/98373057-09f7bc80-2082-11eb-8b6f-70f927287099.PNG"><img width="1000" alt="캡처8" src="https://user-images.githubusercontent.com/40568894/98373737-09abf100-2083-11eb-9577-6990efefcc76.PNG">
+<img width="1000" alt="캡처" src="https://user-images.githubusercontent.com/40568894/99178455-92e3b780-2756-11eb-967f-e89a391215b4.PNG"><img width="1000" alt="캡처2" src="https://user-images.githubusercontent.com/40568894/99178496-fa016c00-2756-11eb-9319-fcb4c38934b7.PNG">
 
 ## :link: quartz 배치
 * [quartz-batch 스케줄러](https://github.com/didrlgus/springboot-shoppingmall/tree/master/app/batch-server)
+
+## :link: API 서버 (Producer)
+* [API 서버](https://github.com/didrlgus/springboot-shoppingmall/tree/master/app/api-server) 
+
+## :link: order 서버 (Consumer)
+* [order 서버](https://github.com/didrlgus/springboot-shoppingmall/tree/master/app/order-server)
+
+## :link: product-purchase-count 서버 (Consumer)
+* [product-purchase-count 서버](https://github.com/didrlgus/springboot-shoppingmall/tree/master/app/product-purchase-count-server) 
 
 ## :link: mail 서버 (Consumer)
 * [mail 서버](https://github.com/didrlgus/springboot-shoppingmall/tree/master/app/mail-server)

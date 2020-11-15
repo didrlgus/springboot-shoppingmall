@@ -9,7 +9,7 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 
 @RequiredArgsConstructor
 @EnableBinding(PaymentSuccessMailInputChannel.class)
-public class CustomStreamListener {
+public class MailStreamListener {
 
     private final MailService mailService;
 

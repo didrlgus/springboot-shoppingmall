@@ -6,8 +6,9 @@ pluginManagement {
 rootProject.name = 'springboot-webservice'
 include 'app:api-server'
 include 'app:batch-server'
+include 'app:order-server'
+include 'app:product-purchase-count-server'
 include 'app:mail-server'
 include 'app:common'
 include 'lib:redis'
 include 'lib:kafka'
-

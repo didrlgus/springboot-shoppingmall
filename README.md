@@ -29,6 +29,7 @@
 * Spring Data JPA
 * Spring Boot Batch
 * Spring AOP
+* spring cloud stream
 
 #### Build tool
 * Gradle
@@ -68,29 +69,44 @@
 * Event Driven Architecture
 
 ## :factory: 시스템 구조
-<img width="1000" alt="캡처1" src="https://user-images.githubusercontent.com/40568894/97999746-133d1b00-1e2f-11eb-85b0-6212e95ca63d.PNG"><img width="1000" alt="캡처2" src="https://user-images.githubusercontent.com/40568894/98000264-ab3b0480-1e2f-11eb-94ee-1dede8d4393a.PNG"><img width="1000" alt="캡처3" src="https://user-images.githubusercontent.com/40568894/97997675-8c873e80-1e2c-11eb-9f77-95e9c66b1c1a.PNG">
+<img width="1000" alt="캡처" src="https://user-images.githubusercontent.com/40568894/99178455-92e3b780-2756-11eb-967f-e89a391215b4.PNG"><img width="1000" alt="캡처2" src="https://user-images.githubusercontent.com/40568894/99178496-fa016c00-2756-11eb-9319-fcb4c38934b7.PNG">
 
-## :link: quartz 배치
-* [quartz-batch 스케줄러](https://github.com/didrlgus/springboot-shoppingmall/tree/master/app/batch-server)
+## :link: API 서버 (Producer)
+* [API 서버](https://github.com/didrlgus/springboot-shoppingmall/tree/master/app/api-server) 
+
+## :link: order 서버 (Consumer)
+* [order 서버](https://github.com/didrlgus/springboot-shoppingmall/tree/master/app/order-server)
+
+## :link: product-purchase-count 서버 (Consumer)
+* [product-purchase-count 서버](https://github.com/didrlgus/springboot-shoppingmall/tree/master/app/product-purchase-count-server) 
 
 ## :link: mail 서버 (Consumer)
 * [mail 서버](https://github.com/didrlgus/springboot-shoppingmall/tree/master/app/mail-server)
+
+## :link: 공통 모듈
+* app 공통 모듈
+  * [app 공통 모듈](https://github.com/didrlgus/springboot-shoppingmall/tree/master/app/common)
+
+* lib 공통 모듈
+  * [redis 공통 모듈](https://github.com/didrlgus/springboot-shoppingmall/tree/master/lib/redis)
+  * [kafka 공통 모듈](https://github.com/didrlgus/springboot-shoppingmall/tree/master/lib/kafka)
+
+## :link: quartz 배치
+* [quartz-batch 스케줄러](https://github.com/didrlgus/springboot-shoppingmall/tree/master/app/batch-server)
 
 ## :link: redis update 권한 서버
 * [redis update 권한 서버 Repository](https://github.com/didrlgus/redis-update-server)
 
 ## :link: Trouble Shooting
-* [API 성능 테스트 에서 발생한 문제 해결을 위한 시도](https://github.com/didrlgus/springboot-shoppingmall/issues/6)
+* [trouble shooting 기록](https://github.com/didrlgus/springboot-shoppingmall/issues?q=is%3Aissue+is%3Aopen+label%3Atroubleshooting)
 
 ## :link: 성능 테스트
 * [초기 성능 테스트 결과](https://github.com/didrlgus/springboot-shoppingmall/issues/5)
 * [메인화면 API 캐시 적용 전, 후 성능 테스트 비교 결과](https://github.com/didrlgus/springboot-shoppingmall/issues/21)
+* [서버를 2대 돌리면 얼마나 더 많은 트래픽을 감당할 수 있을까?](https://github.com/didrlgus/springboot-shoppingmall/issues/46)
 
 ## :link: ERD 설계
 * [shopping mall ERD](https://github.com/didrlgus/springboot-shoppingmall/issues/1)
 
-## Rest API 설계
-![REST API1](https://user-images.githubusercontent.com/40568894/64402718-d3569880-d0b0-11e9-90df-e14b1a5389bd.png)
-![REST API2](https://user-images.githubusercontent.com/40568894/64402722-d6518900-d0b0-11e9-90d3-6a31dbd4f0dd.png)
-![REST API3](https://user-images.githubusercontent.com/40568894/64402726-d8b3e300-d0b0-11e9-863f-8f654f3df4d6.png)
-![REST API4](https://user-images.githubusercontent.com/40568894/64402728-d9e51000-d0b0-11e9-895f-450f3dae64db.png)
+## :link: Rest API 문서
+* [shopping mall API 문서](https://github.com/didrlgus/springboot-shoppingmall/issues/58)

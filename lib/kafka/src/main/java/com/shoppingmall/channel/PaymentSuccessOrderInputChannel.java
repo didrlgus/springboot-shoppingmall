@@ -3,11 +3,11 @@ package com.shoppingmall.channel;
 import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.messaging.SubscribableChannel;
 
-public interface PaymentSuccessInputChannel {
+public interface PaymentSuccessOrderInputChannel {
 
-    String PAYMENT_SUCCESS_CHANNEL_INPUT_NAME = "payment-success-event-from-kafka";
+    String PAYMENT_SUCCESS_ORDER_CONSUMER = "payment-success-order-consumer";
 
-    @Input(PAYMENT_SUCCESS_CHANNEL_INPUT_NAME)
+    @Input(PAYMENT_SUCCESS_ORDER_CONSUMER)
     SubscribableChannel inputChannel();
 
 }

@@ -458,5 +458,4 @@ public class ProductService {
         // S3에 파일 저장 후 url 반환
         return awss3Utils.putObjectToS3AndGetUrl(s3Client, saveFilePath, file);
     }
-
 }

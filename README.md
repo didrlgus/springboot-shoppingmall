@@ -98,11 +98,12 @@
 * [redis update 권한 서버 Repository](https://github.com/didrlgus/redis-update-server)
 
 ## :link: Trouble Shooting
-* [API 성능 테스트 에서 발생한 문제 해결을 위한 시도](https://github.com/didrlgus/springboot-shoppingmall/issues/6)
+* [trouble shooting 기록](https://github.com/didrlgus/springboot-shoppingmall/issues?q=is%3Aissue+is%3Aopen+label%3Atroubleshooting)
 
 ## :link: 성능 테스트
 * [초기 성능 테스트 결과](https://github.com/didrlgus/springboot-shoppingmall/issues/5)
 * [메인화면 API 캐시 적용 전, 후 성능 테스트 비교 결과](https://github.com/didrlgus/springboot-shoppingmall/issues/21)
+* [서버를 2대 돌리면 얼마나 더 많은 트래픽을 감당할 수 있을까?](https://github.com/didrlgus/springboot-shoppingmall/issues/46)
 
 ## :link: ERD 설계
 * [shopping mall ERD](https://github.com/didrlgus/springboot-shoppingmall/issues/1)

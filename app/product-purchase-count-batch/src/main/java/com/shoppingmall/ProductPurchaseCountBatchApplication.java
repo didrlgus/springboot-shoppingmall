@@ -12,8 +12,8 @@ public class ProductPurchaseCountBatchApplication {
 
     private static final String APPLICATION_LOCATIONS = "spring.config.location="
             + "classpath:application.yml,"
-            + "/home/ec2-user/app/config/springboot-webservice/real-product-count-batch-application.yml";
-            //+ "C:\\config\\real-product-count-batch-application.yml";
+            + "/home/ec2-user/app/config/springboot-webservice/real-product-purchase-count-batch-application.yml";
+            //+ "C:\\config\\real-product-purchase-count-batch-application.yml";
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(ProductPurchaseCountBatchApplication.class)

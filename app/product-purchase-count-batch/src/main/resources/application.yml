@@ -7,6 +7,7 @@ server:
 
 logging.level.org.springframework.batch: DEBUG
 spring.batch.job.names: ${job.name:NONE}
+
 ---
 spring.profiles: local
 spring.profiles.include: local-social
@@ -32,6 +33,10 @@ logging:
     org.hibernate.SQL: debug
     org.hibernate.type.descriptor.sql.BasicBinder: trace
 
+chunkSize: 100
+pageSize: 100
+poolSize: 10
+
 ---
 spring.profiles: real
-spring.profiles.include: real-product-purchase-count
+spring.profiles.include: real-product-purchase-count-batch

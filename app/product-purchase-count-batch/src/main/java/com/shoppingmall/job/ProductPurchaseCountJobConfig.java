@@ -26,6 +26,8 @@ import org.springframework.batch.item.database.orm.JpaNativeQueryProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.persistence.EntityManagerFactory;
 import java.time.LocalDateTime;
@@ -57,8 +59,35 @@ public class ProductPurchaseCountJobConfig {
 
     private static final Long ZERO_COUNT = 0L;
     private static final Long TEN_MINUTE = 10L;
-    private static final Integer CHUNK_SIZE = 100;
-    private static final Integer PAGE_SIZE = 100;
+
+    private int chunkSize;
+    @Value("${chunkSize}")
+    public void setChunkSize(int chunkSize) {
+        this.chunkSize = chunkSize;
+    }
+
+    private int pageSize;
+    @Value("${pageSize}")
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    private int poolSize;
+    @Value("${poolSize}")
+    public void setPoolSize(int poolSize) {
+        this.poolSize = poolSize;
+    }
+
+    @Bean(name = "productPurchaseCountJobTaskPool")
+    public TaskExecutor executor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(poolSize);
+        executor.setMaxPoolSize(poolSize);
+        executor.setThreadNamePrefix("multi-thread-");
+        executor.setWaitForTasksToCompleteOnShutdown(Boolean.TRUE);
+        executor.initialize();
+        return executor;
+    }
 
     @JobScope
     @Bean
@@ -79,20 +108,22 @@ public class ProductPurchaseCountJobConfig {
     @Bean
     public Step sumProductPurchaseCountStep() throws Exception {
         return stepBuilderFactory.get("sumProductPurchaseCountStep")
-                .<ProductPurchaseMergeCount, ProductCount>chunk(CHUNK_SIZE)
+                .<ProductPurchaseMergeCount, ProductCount>chunk(chunkSize)
                 .reader(sumProductPurchaseCountReader())
                 .processor(sumProductPurchaseCountProcessor())
                 .writer(sumProductPurchaseCountWriter())
+                .taskExecutor(executor())
                 .build();
     }
 
     @Bean
     public Step mergeProductPurchaseCountStep() throws Exception {
         return stepBuilderFactory.get("mergeProductPurchaseCountStep")
-                .<ProductPurchaseCount, ProductPurchaseMergeCount>chunk(CHUNK_SIZE)
+                .<ProductPurchaseCount, ProductPurchaseMergeCount>chunk(chunkSize)
                 .reader(mergeProductPurchaseCountReader())
                 .processor(mergeProductPurchaseProcessor())
                 .writer(mergeProductPurchaseWriter())
+                .taskExecutor(executor())
                 .build();
     }
 
@@ -224,7 +255,7 @@ public class ProductPurchaseCountJobConfig {
         jpaPagingItemReader.setParameterValues(paramMap);
         jpaPagingItemReader.setEntityManagerFactory(entityManagerFactory);
         jpaPagingItemReader.setQueryProvider(jpaNativeQueryProvider);
-        jpaPagingItemReader.setPageSize(PAGE_SIZE);
+        jpaPagingItemReader.setPageSize(pageSize);
     }
 
 }

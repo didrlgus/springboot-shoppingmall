@@ -2,6 +2,7 @@
 
 ## :link: 배포 URL
 * http://fancy-cart.ga
+* http://13.209.63.81
 
 ## :clipboard: 개발환경
 * IntelliJ

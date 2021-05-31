@@ -1,6 +1,0 @@
-spring:
-  profiles:
-    active: real
-    include: real-mail
-server:
-  port: 8999

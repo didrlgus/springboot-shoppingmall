@@ -69,7 +69,7 @@
   * Elasticsearch, Logstash, Kibana, Filebeats
 
 ## :factory: 시스템 구조
-<img src="https://user-images.githubusercontent.com/40568894/136735010-af6a9a15-d2d9-4701-93c2-0c59a3d6217b.jpeg" width="80%" height="80%">
+<img src="https://user-images.githubusercontent.com/40568894/136735965-4b807c84-02b4-4410-8bb1-771840a04102.jpeg" width="80%" height="80%">
 
 ## :link: API 서버 (Producer)
 * [API 서버](https://github.com/didrlgus/springboot-shoppingmall/tree/master/app/api-server) 

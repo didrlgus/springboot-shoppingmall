@@ -1,8 +1,5 @@
 # :shopping_cart: 스프링 부트로 만드는 쇼핑몰 프로젝트
 
-## :link: 배포 URL
-* http://13.209.63.81
-
 ## :clipboard: 개발환경
 * IntelliJ
 * Postman
